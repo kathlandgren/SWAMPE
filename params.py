@@ -10,7 +10,7 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=42 #the largest Fourier wave number
+M=63 #the largest Fourier wave number
 # N=M #highest degree of the Legendre functions for m=0
 # I=192 #length of array/ number of samples
 # J=96#int(np.ceil(I/2))
