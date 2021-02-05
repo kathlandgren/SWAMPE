@@ -22,7 +22,7 @@ tmax=100#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=2
+test=1
 ##specifies the testing regime: 
 #1 -- test 1 (advection)
 # 2 -- Hot Jupiter (PBS) 
