@@ -22,14 +22,14 @@ tmax=100#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=10
+test=1
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=np.pi/2-0.05#np.pi/2-0.05 #alpha from Test 1 and 2
+a1=-0.05#np.pi/2-0.05 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     omega=7.2921159*10**(-5) #rotation rate of the planet, radians per second
@@ -63,7 +63,7 @@ Dheq=Phibar/g
 
 zeroflag=0
 
-expflag=0
+expflag=1
 #1 means explicit,
 #anything else means semi-implicit scheme
 
