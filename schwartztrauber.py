@@ -53,15 +53,17 @@ def mnMATgen(I,J,M,N,mus):
     
     for m in range(M+1):
         for n in range(N+1):
-            mnMAT3=(n+2)*(n+1+m)/(np.sqrt((n+1)*(n+2))*(2*(n+1)+1))
+            mnMAT3[m,n]=(n+2)*(n+1+m)/(np.sqrt((n+1)*(n+2))*(2*(n+1)+1))
             
-    for m in range(1,M+1):
+    for m in range(0,M+1):  #this used to be (1:M+1), but that seems wrong
         for n in range(1,N+1):
-            mnMAT4=(n+1)*(n+m)/(np.sqrt(n*(n+1))*(2*n+1))
+            mnMAT4[m,n]=(n+1)*(n+m)/(np.sqrt(n*(n+1))*(2*n+1))
+            
     
-    for m in range(1,M+1):
+    for m in range(0,M+1): #this used to be (1:M+1), but that seems wrong
         for n in range(1,N+1):
-            mnMAT5=(n*(n-m+1))/(np.sqrt(n*(n+1))*(2*n+1))
+            mnMAT5[m,n]=(n*(n-m+1))/(np.sqrt(n*(n+1))*(2*n+1))
+            #mnMAT5=(n*(n-m+1))/(np.sqrt(n*(n-1))*(2*n))
     #mnMAT5=np.triu(mnMAT5)        
     
     for i in range(I):
@@ -91,7 +93,7 @@ def A15(deltarmn,deltaimn,nMAT1,mus,M,J,normnum):
     deltaimnscaled=np.multiply(nMAT1,deltaimn)
 
     #deltamnscaled=np.zeros((2,M+1,M+1))  
-    deltamnscaled=np.zeros((2,J,J))  
+    deltamnscaled=np.zeros((2,J,J)) #padding so that shtools give us the correct dimensions for lat lon
     deltamnscaled[0,:M+1,:M+1] = np.transpose(deltarmnscaled)
     deltamnscaled[1,:M+1,:M+1] = np.transpose(deltaimnscaled)
     
@@ -198,7 +200,7 @@ def A20_A21(delta,zeta,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum):
     return  U, V
 
 
-def A22_A23(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
+def A22_A23(U,V,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
     """Calculates equations A22 and A23 in Schwartztrauber 1996, divergence coefficients
         
         :param M: highest wavenumber
@@ -213,32 +215,45 @@ def A22_A23(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
         """
     lmax = M+1
     
-    Ycmnminus1 = np.zeros((lmax,lmax))
-    Ycmnplus1 = np.zeros((lmax,lmax))
-    Ysmnminus1 = np.zeros((lmax,lmax))
-    Ysmnplus1 = np.zeros((lmax,lmax))
+    # Ycmnminus1 = np.zeros((lmax,lmax))
+    # Ycmnplus1 = np.zeros((lmax,lmax))
+    # Ysmnminus1 = np.zeros((lmax,lmax))
+    # Ysmnplus1 = np.zeros((lmax,lmax))
+    
+    
+    VCmnminus1 = np.zeros((lmax,lmax))
+    VCmnplus1 = np.zeros((lmax,lmax))
+    VSmnminus1 = np.zeros((lmax,lmax))
+    VSmnplus1 = np.zeros((lmax,lmax))
+    
+    
     brmn = np.zeros((lmax,lmax))
     bimn = np.zeros((lmax,lmax))
     
     # #Scale by 1/1-mu^2
-    # X=np.multiply(X,musMAT)
-    # Y=np.multiply(Y,musMAT)
+    # U=np.multiply(U,musMAT)
+    # V=np.multiply(V,musMAT)
     
-    Xlm = pysh.expand.SHExpandGLQ(X, w, mus, norm=normnum,csphase=1,lmax_calc=lmax-1) #lmax-1?
+    Ulm = pysh.expand.SHExpandGLQ(U, w, mus, norm=normnum,lmax_calc=lmax-1) #lmax-1?
     #print(np.shape(Xlm))
-    Xcmn = np.transpose(Xlm[0,:,:])
-    Xsmn = np.transpose(Xlm[1,:,:])
+    UCmn = np.transpose(Ulm[0,:,:])
+    USmn = np.transpose(Ulm[1,:,:])
     
-    Ylm = pysh.expand.SHExpandGLQ(Y, w, mus, norm=normnum,csphase=1,lmax_calc=lmax)  
+    Vlm = pysh.expand.SHExpandGLQ(V, w, mus, norm=normnum,lmax_calc=lmax)  
 
     
-    Ycmnminus1[:,1:] = np.transpose(Ylm[0,:-2,:-1])
-    Ycmnplus1[:,:] = np.transpose(Ylm[0,1:,:-1])
-    Ysmnminus1[:,1:] = np.transpose(Ylm[1,:-2,:-1])
-    Ysmnplus1[:,:] = np.transpose(Ylm[1,1:,:-1])
+    # Ycmnminus1[:,1:] = np.transpose(Ylm[0,:-2,:-1])
+    # Ycmnplus1[:,:] = np.transpose(Ylm[0,1:,:-1])
+    # Ysmnminus1[:,1:] = np.transpose(Ylm[1,:-2,:-1])
+    # Ysmnplus1[:,:] = np.transpose(Ylm[1,1:,:-1])
     
-    brmn = np.multiply(mnMAT4,Ycmnminus1) - np.multiply(mnMAT5,Ycmnplus1) - np.multiply(mnMAT1,Xsmn)
-    bimn = np.multiply(mnMAT4,Ysmnminus1) - np.multiply(mnMAT5,Ysmnplus1) + np.multiply(mnMAT1,Xcmn)
+    VCmnminus1[:,1:] = np.transpose(Vlm[0,:-2,:-1]) #last component is the M, :-1 in the third component is because SHTOOLS does only square things
+    VCmnplus1[:,:] = np.transpose(Vlm[0,1:,:-1])
+    VSmnminus1[:,1:] = np.transpose(Vlm[1,:-2,:-1])
+    VSmnplus1[:,:] = np.transpose(Vlm[1,1:,:-1])
+    
+    brmn = np.multiply(mnMAT4,VCmnminus1) - np.multiply(mnMAT5,VCmnplus1) - np.multiply(mnMAT1,USmn)
+    bimn = np.multiply(mnMAT4,VSmnminus1) - np.multiply(mnMAT5,VSmnplus1) + np.multiply(mnMAT1,UCmn)
                 
     return brmn, bimn
 
@@ -268,13 +283,13 @@ def A24_A25(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
     # X=np.multiply(X,musMAT)
     # Y=np.multiply(Y,musMAT)
     
-    Xlm = pysh.expand.SHExpandGLQ(X, w, mus, norm=normnum,csphase=1,lmax_calc=lmax)
+    Xlm = pysh.expand.SHExpandGLQ(X, w, mus, norm=normnum,lmax_calc=lmax)
     Xcmnminus1[:,1:] = np.transpose(Xlm[0,:-2,:-1])
     Xcmnplus1[:,:] = np.transpose(Xlm[0,1:,:-1])
     Xsmnminus1[:,1:] = np.transpose(Xlm[1,:-2,:-1])
     Xsmnplus1[:,:] = np.transpose(Xlm[1,1:,:-1])
     
-    Ylm = pysh.expand.SHExpandGLQ(Y, w, mus, norm=normnum,csphase=1,lmax_calc=lmax-1)
+    Ylm = pysh.expand.SHExpandGLQ(Y, w, mus, norm=normnum,lmax_calc=lmax-1)
     Ycmn = np.transpose(Ylm[0,:,:])
     Ysmn = np.transpose(Ylm[1,:,:])
     #print(np.shape(Xcmnminus1))

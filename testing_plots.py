@@ -253,7 +253,7 @@ def write_2D_gif(lambdas,mus,Xidata,tmax,frms,string):
     #kwargs_write = {'fps':1.0, 'quantizer':'nq'}
     imageio.mimsave('./'+string, [plot_for_offset_2D(i,lambdas,mus,Xidata) for i in range(tmax)], fps=frms)
     
-def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1):
+def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxlevel):
     U=U[t,:,:]
     V=V[t,:,:]
     Phi=Phi[t,:,:]
@@ -265,8 +265,13 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1):
     #X, Y = np.meshgrid(X, Y)
     
     # Plot the surface.
-    plt.contourf(X, Y, Phi,30)
-    cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
+    plt.contourf(X, Y, (Phi))
+    #plt.colorbar(extend='both')
+
+    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
+    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
+    
+    colorbar = plt.colorbar(CS)
     
     Xsparse=X[0::sparseness]
     Ysparse=Y[0::sparseness]

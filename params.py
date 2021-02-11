@@ -10,26 +10,26 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=42 #the largest Fourier wave number
+M=63 #the largest Fourier wave number
 # N=M #highest degree of the Legendre functions for m=0
 # I=192 #length of array/ number of samples
 # J=96#int(np.ceil(I/2))
 
 
 #time-stepping parameters
-tmax=864 #number of time steps
+tmax=1800 #number of time steps
 # dt=900 #time step length, in seconds
 
 
 #make these into a file that gets read later
-test=1
+test=2
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=0.05#np.pi/2-0.05 #alpha from Test 1 and 2
+a1=np.pi/2#np.pi/2-0.05 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     omega=7.2921159*10**(-5) #rotation rate of the planet, radians per second

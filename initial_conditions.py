@@ -150,11 +150,11 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     if test==1: #Williamson Test 1
         for i in range(I):
             for j in range(J):
-                # Uic[j,i]=SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)#assign according to init.f
-                # Vic[j,i]=-SU0*np.sin(lambdas[i])*sina
+                Uic[j,i]=SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)#assign according to init.f
+                Vic[j,i]=-SU0*np.sin(lambdas[i])*sina
                 
-                Uic[j,i]=SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)*np.cos(np.arcsin(mus[j])) #assign according to init.f
-                Vic[j,i]=-SU0*np.sin(lambdas[i])*sina*np.cos(np.arcsin(mus[j]))
+                #Uic[j,i]=SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)*np.cos(np.arcsin(mus[j])) #assign according to init.f
+                #Vic[j,i]=-SU0*np.sin(lambdas[i])*sina*np.cos(np.arcsin(mus[j]))
     
     elif test==2: #Williamson Test 2
         for i in range(I):
