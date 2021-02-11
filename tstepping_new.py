@@ -15,6 +15,7 @@ import fft_legendre_trans as rfl
 #import exp_t_diff_new as tdiff
 import schwartztrauber as S
 import pyshtools as pysh
+import forcing as f
 
 expflag=p.expflag
 if expflag==1:
@@ -34,7 +35,7 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
     
     return newetamn,newetatstep2,newdeltamn,newdeltatstep2,newPhimn,newPhitstep2,Unew,Vnew
 
-def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar,normnum):
+def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar,normnum,forcflag,PhiF):
     
     # 1 means "now", 0 means the previous time step
     
@@ -63,6 +64,7 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     
     PhiRHS=S.A15(brmn,bimn,nMAT1,mus,M,J,normnum)
     
+    
     #7.5
     
     deltaRHS2=S.step7p5(Phi1,U1,V1,w,mus,J,M,musMAT,nMAT2,normnum)
@@ -76,7 +78,9 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     delta2=delta0+(2*dt)*(np.multiply(acosMAT,deltaRHS1)-deltaRHS2/a**2)
     Phi2=Phi0+(2*dt)*(-np.multiply(acosMAT,PhiRHS))
     #Phi2=Phi0+(2*dt)*(-np.multiply(acosMAT,PhiRHS+Phibar*delta1))
-    
+    if forcflag==1:
+        Phi2=Phi2+(2*dt)*(PhiF)
+        
     print(np.max(PhiRHS))
     print(np.max(zetaRHS))
     print(np.max(deltaRHS1 - deltaRHS2/a))

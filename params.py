@@ -10,19 +10,19 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=63 #the largest Fourier wave number
+M=42 #the largest Fourier wave number
 # N=M #highest degree of the Legendre functions for m=0
 # I=192 #length of array/ number of samples
 # J=96#int(np.ceil(I/2))
 
 
 #time-stepping parameters
-tmax=1800 #number of time steps
+tmax=1000 #number of time steps
 # dt=900 #time step length, in seconds
 
 
 #make these into a file that gets read later
-test=2
+test=10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -54,8 +54,8 @@ elif test==10: # PBS Hot Jupiter
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
     
-    minlevel=3.5 #the log values for the colorbar plotting.
-    maxlevel=6
+    minlevel=5 #the log values for the colorbar plotting.
+    maxlevel=8.5
 
 #Hyperviscosity parameters
 diffflag=1
@@ -67,7 +67,7 @@ alpha=0.01 #filter coefficient to prevent aliasing
 #forcing parameters
 forcflag=1
 taurad=3600*24*1 #in Earth days
-taudrag=3600*24*1 #if set to -1, means infinity
+taudrag=3600*24*10 #if set to -1, means infinity
 Dheq=Phibar/g
 
 zeroflag=0

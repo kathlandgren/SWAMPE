@@ -19,7 +19,7 @@ import initial_conditions as ic
 import fft_legendre_trans as rfl
 import tstepping_new as tstep
 import testing_plots
-#import forcing
+import forcing
 import filters
 import schwartztrauber as S
 
@@ -110,7 +110,8 @@ Vdata[0,:,:]=Vic
 
 
 #### Forcing ####
-# heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
+heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
+PhiF=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
 # Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
 # Phiforcingdata[1,:,:]=g*forcing.Qfun(heq, Phiic1, Phibar, taurad, g)
 
@@ -182,7 +183,7 @@ for t in range(2,tmax):
 
     #PhiFM=Phiforcingmdata[t-1,:,:]    
     
-    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum)
+    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF)
     
     #write new data        
     zetadata[t,:,:]=newzeta
@@ -212,7 +213,8 @@ for t in range(2,tmax):
     # Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
 
     
-    # Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
+    Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
+    PhiF=g*Q
     # Phiforcingdata[t,:,:]=g*Q
     # Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
      
