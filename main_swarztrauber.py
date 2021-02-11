@@ -54,6 +54,10 @@ test=p.test
 #normalization for the spherical harmonics
 normnum = 1
 
+#colorbar settings for plotting
+minlevel=p.minlevel
+maxlevel=p.maxlevel
+
 
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 #print(M)
@@ -220,7 +224,7 @@ for t in range(2,tmax):
     
     if t%10==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
+        testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6,test,a1,minlevel,maxlevel)
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-2,:,:], mus, lambdas)
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-3,:,:], mus, lambdas)
         # testing_plots.physical_plot(neweta-neweta1,mus,lambdas)

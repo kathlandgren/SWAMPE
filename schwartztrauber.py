@@ -100,7 +100,7 @@ def A15(deltarmn,deltaimn,nMAT1,mus,M,J,normnum):
     return delta
 
 def A20_A21(delta,zeta,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum):
-    """Calculates equations A22 and A23 in Schwartztrauber 1996, divergence coefficients
+    """Calculates equations A20 and A21 in Schwartztrauber 1996
         
         :param M: highest wavenumber
         :type M: int

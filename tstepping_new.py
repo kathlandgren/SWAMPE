@@ -46,7 +46,7 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     else: #elif test==10:
         U1,V1=S.A20_A21(delta1,zeta1,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum)
     #7.3: make zeta and delta and forward transfrom, get RHS
-    X=np.multiply(zeta1+f_latlon,V1)
+    X=np.multiply(zeta1+f_latlon,V1) #are we setting up the vorticity twice here? 
     Y=np.multiply(-(zeta1+f_latlon),U1)
     
     brmn, bimn=S.A22_A23(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
