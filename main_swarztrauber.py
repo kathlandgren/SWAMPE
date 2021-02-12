@@ -111,7 +111,22 @@ Vdata[0,:,:]=Vic
 
 #### Forcing ####
 heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
-PhiF=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
+Q=forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
+PhiF=Q
+
+if taudrag==-1:
+    F=np.divide(np.multiply(-Uic,Q),Phiic0)
+    G=np.divide(np.multiply(-Vic,Q),Phiic0)
+    
+else:
+    F=np.divide(np.multiply(-Uic,Q),Phiic0)-Uic/taudrag
+    G=np.divide(np.multiply(-Vic,Q),Phiic0)-Vic/taudrag
+    
+F[Q<0]=0
+G[Q<0]=0
+    
+    
+
 # Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
 # Phiforcingdata[1,:,:]=g*forcing.Qfun(heq, Phiic1, Phibar, taurad, g)
 
@@ -183,7 +198,7 @@ for t in range(2,tmax):
 
     #PhiFM=Phiforcingmdata[t-1,:,:]    
     
-    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF)
+    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF,F,G)
     
     #write new data        
     zetadata[t,:,:]=newzeta
@@ -214,17 +229,27 @@ for t in range(2,tmax):
 
     
     Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
-    PhiF=g*Q
+    PhiF=Q
+    
+    if taudrag==-1:
+        F=np.divide(np.multiply(-newU,Q),Phiic0)
+        G=np.divide(np.multiply(-newV,Q),Phiic0)
+    
+    else:
+        F=np.divide(np.multiply(-newU,Q),Phiic0)-newU/taudrag
+        G=np.divide(np.multiply(-newV,Q),Phiic0)-newV/taudrag
+        
+    F[Q<0]=0
+    G[Q<0]=0
     # Phiforcingdata[t,:,:]=g*Q
     # Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
      
     # F=-np.divide(np.multiply(newU,Q),(newPhi+Phibar)/g)
     # G=-np.divide(np.multiply(newV,Q),(newPhi+Phibar)/g)
-    # F[Q<0]=0
-    # G[Q<0]=0
+
    
     
-    if t%10==0:
+    if t%5==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6,test,a1,minlevel,maxlevel)
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-2,:,:], mus, lambdas)

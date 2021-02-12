@@ -13,7 +13,7 @@ import initial_conditions as ic
 import fft_legendre_trans as rfl
 
 def heqfun(Phibar,Dheq,lambdas,mus,I,J,g):
-    heqMat=Phibar*np.ones((J,I))/g #H
+    heqMat=Phibar*np.ones((J,I))#/g #H
     #heqMat=np.zeros((J,I))
     
     for i in range(I):
@@ -26,7 +26,7 @@ def heqfun(Phibar,Dheq,lambdas,mus,I,J,g):
 
 
 def Qfun(heq,Phi,Phibar,taurad,g):
-    Q=(1/taurad)*(heq-(Phi+Phibar)/g)
+    Q=(1/taurad)*(heq-(Phi))#+Phibar))#/g)
     #Q=(1/taurad)*(heq-(Phi)/g)
     return Q
 

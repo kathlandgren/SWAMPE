@@ -35,7 +35,7 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
     
     return newetamn,newetatstep2,newdeltamn,newdeltatstep2,newPhimn,newPhitstep2,Unew,Vnew
 
-def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar,normnum,forcflag,PhiF):
+def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar,normnum,forcflag,PhiF,F,G):
     
     # 1 means "now", 0 means the previous time step
     
@@ -79,7 +79,15 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     Phi2=Phi0+(2*dt)*(-np.multiply(acosMAT,PhiRHS))
     #Phi2=Phi0+(2*dt)*(-np.multiply(acosMAT,PhiRHS+Phibar*delta1))
     if forcflag==1:
-        Phi2=Phi2+(2*dt)*(PhiF)
+        Phi2=Phi2+(2*dt)*PhiF#*(np.multiply(acosMAT,PhiF))
+        
+        Fbrmn, Fbimn=S.A22_A23(F,G,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
+        Fcrmn, Fcimn=S.A24_A25(F,G,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
+        zetaRHSF=S.A14(Fcrmn,Fcimn,nMAT1,mus,M,J,normnum)  
+        deltaRHSF=S.A15(Fbrmn,Fbimn,nMAT1,mus,M,J,normnum)
+        
+        delta2=delta2+(2*dt)*(np.multiply(acosMAT,deltaRHSF))
+        zeta2=zeta2+(2*dt)*(np.multiply(acosMAT,zetaRHSF))
         
     print(np.max(PhiRHS))
     print(np.max(zetaRHS))

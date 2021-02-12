@@ -167,7 +167,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
         for i in range(I):
             for j in range(J):
                 Uic[j,i]=0 #SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)#assign according to init.f
-                Vic[j,i]=-SU0*np.sin(lambdas[i])*sina
+                Vic[j,i]=0#-SU0*np.sin(lambdas[i])*sina
     return Uic, Vic
 
 def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):

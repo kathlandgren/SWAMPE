@@ -10,7 +10,7 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=42 #the largest Fourier wave number
+M=63 #the largest Fourier wave number
 # N=M #highest degree of the Legendre functions for m=0
 # I=192 #length of array/ number of samples
 # J=96#int(np.ceil(I/2))
@@ -54,8 +54,8 @@ elif test==10: # PBS Hot Jupiter
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
     
-    minlevel=5 #the log values for the colorbar plotting.
-    maxlevel=8.5
+    minlevel=4 #the log values for the colorbar plotting.
+    maxlevel=7
 
 #Hyperviscosity parameters
 diffflag=1
@@ -66,9 +66,9 @@ alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
 forcflag=1
-taurad=3600*24*1 #in Earth days
-taudrag=3600*24*10 #if set to -1, means infinity
-Dheq=Phibar/g
+taurad=3600*24*0.01 #in Earth days
+taudrag=3600*24*0.1#-1 #3600*24*1 #if set to -1, means infinity
+Dheq=Phibar*0.001#/g
 
 zeroflag=0
 
