@@ -87,6 +87,34 @@ def fourier_plot(plotdata,mus):
     ax.set_ylabel('$\mu$', fontsize=20, rotation = 0)
     
     plt.show()
+
+    
+def spinup_plot(plotdata,tmax,dt,test,a1):
+    """
+
+    :param plotdata: first variable, JxM+1 
+    :type statevar1: float
+
+    
+    """
+    t = np.linspace(0, dt*tmax/3600, tmax, endpoint=True)
+    
+    plt.plot(t, plotdata[:,0])
+    plt.plot(t, plotdata[:,1])
+    
+    plt.xlabel('time (hours)')
+    plt.ylabel('RMS Winds')
+    
+    plt.ticklabel_format(axis='both', style='sci')
+    
+    if test<3:
+        plt.title('test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('test= Hot Jupiter')
+    plt.show()
+    
+    plt.show()
+
     
 def fmt(x, pos):
         a, b = '{:.2e}'.format(x).split('e')
@@ -358,7 +386,7 @@ def quiver_plot(U,V,lambdas,mus,sparseness):
     
 
     
-def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxlevel):
+def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxlevel):
     
     X = lambdas*180/np.pi
     Y = np.arcsin(mus)*180/np.pi
@@ -390,7 +418,11 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxleve
     # ax.quiver(X,Y,U,V)
     # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
-    plt.title('t='+str(t)+', test='+str(test)+', alpha='+str(a1))
+    
+    if test<3:
+        plt.title('t='+str(t*dt/3600)+' hours, test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
     plt.show()
         
 #     fig = plt.figure()

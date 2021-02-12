@@ -85,6 +85,12 @@ Phidata=np.zeros((tmax,J,I),dtype=complex)
 Udata=np.zeros((tmax,J,I),dtype=complex)
 Vdata=np.zeros((tmax,J,I),dtype=complex)
 
+Fdata=np.zeros((tmax,J,I),dtype=complex)
+Gdata=np.zeros((tmax,J,I),dtype=complex)
+PhiFdata=np.zeros((tmax,J,I),dtype=complex)
+
+spinupdata=np.zeros((tmax,2),dtype=complex)
+
 ## Set the initial conditions 
 
 etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test)
@@ -105,7 +111,6 @@ Phidata[0,:,:]=Phiic0
 Phidata[1,:,:]=Phiic1
 
 Udata[0,:,:]=Uic
-
 Vdata[0,:,:]=Vic
 
 
@@ -124,7 +129,13 @@ else:
     
 F[Q<0]=0
 G[Q<0]=0
-    
+
+Fdata[0,:,:]=F
+Fdata[1,:,:]=F
+Gdata[0,:,:]=G
+Gdata[1,:,:]=G
+PhiFdata[0,:,:]=PhiF
+PhiFdata[1,:,:]=PhiF  
     
 
 # Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
@@ -141,24 +152,9 @@ G[Q<0]=0
 # Gdata[0,:,:]=G
 # Gdata[1,:,:]=Gdata[0,:,:]
 
-
-
-## Forcing Fourier transform ##
-
-# Phiforcingmdata[0,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[0,:,:], I, M)
-# Phiforcingmdata[1,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[1,:,:], I, M)
-
-# Fmdata[0,:,:]=rfl.fwd_fft_trunc(Fdata[0,:,:], I, M)
-# Fmdata[1,:,:]=rfl.fwd_fft_trunc(Fdata[1,:,:], I, M)
-
-# Gmdata[0,:,:]=rfl.fwd_fft_trunc(Gdata[0,:,:], I, M)
-# Gmdata[1,:,:]=rfl.fwd_fft_trunc(Gdata[1,:,:], I, M)
-
-# Umdata[0,:,:]=rfl.fwd_fft_trunc(Udata[0,:,:], I, M)
-# Umdata[1,:,:]=rfl.fwd_fft_trunc(Udata[1,:,:], I, M)
-
-# Vmdata[0,:,:]=rfl.fwd_fft_trunc(Vdata[0,:,:], I, M)
-# Vmdata[1,:,:]=rfl.fwd_fft_trunc(Vdata[1,:,:], I, M)
+# Spin Up calculations
+spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
+spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
 
 
 ####
@@ -186,6 +182,10 @@ for t in range(2,tmax):
     
     U0=Udata[t-2,:,:]
     V0=Vdata[t-2,:,:]
+    
+    F0=Fdata[t-2,:,:]
+    G0=Gdata[t-2,:,:]
+    PhiF0=PhiFdata[t-2,:,:]
         
     
     #forcing 
@@ -198,7 +198,7 @@ for t in range(2,tmax):
 
     #PhiFM=Phiforcingmdata[t-1,:,:]    
     
-    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF,F,G)
+    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF0,F0,G0)
     
     #write new data        
     zetadata[t,:,:]=newzeta
@@ -215,7 +215,8 @@ for t in range(2,tmax):
     Udata[t-1,:,:]=newU
     Vdata[t-1,:,:]=newV
 
-    
+    spinupdata[t-1,0] = np.min(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
+    spinupdata[t-1,1] = np.max(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
 
 
     
@@ -247,17 +248,21 @@ for t in range(2,tmax):
     # F=-np.divide(np.multiply(newU,Q),(newPhi+Phibar)/g)
     # G=-np.divide(np.multiply(newV,Q),(newPhi+Phibar)/g)
 
+    Fdata[t,:,:]=F
+    Gdata[t,:,:]=G
+    PhiFdata[t,:,:]=PhiF
    
     
-    if t%5==0:
+    if t%25==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6,test,a1,minlevel,maxlevel)
+        testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-2,:,:], mus, lambdas)
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-3,:,:], mus, lambdas)
         # testing_plots.physical_plot(neweta-neweta1,mus,lambdas)
         # testing_plots.physical_plot(newV,mus,lambdas)
         # testing_plots.physical_plot(G,mus,lambdas)
         # testing_plots.physical_plot(Q,mus,lambdas)
+        testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
     
    
  
