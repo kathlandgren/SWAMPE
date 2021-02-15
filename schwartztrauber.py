@@ -299,16 +299,7 @@ def A24_A25(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
                 
     return crmn, cimn
 
-def f_latlon(mus,lambdas,I,J,omega,a1,test):
-    fMAT=np.zeros((J,I))
-    for i in range(I):
-        if test==1: #Williamson Test 1
-            fMAT[:,i]=mus
-        elif test==2: #Williamson Test 2, so that the flow can be specified with the spherical coordinate poles no necessarily coincident with the roation axis
-            for j in range(J):
-                fMAT[j,i]=-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*np.sin(a1)+(mus[j])*np.cos(a1)
-    fMAT=fMAT*2*omega
-    return fMAT
+
 
 def step7p5(Phi1,U1,V1,w,mus,J,M,musMAT,nMAT2,normnum):
     

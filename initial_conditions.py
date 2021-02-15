@@ -22,26 +22,19 @@ import pyshtools as pysh
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
 
-#new variables from init.i 
-SU0=2.0*np.pi*p.a/(3600.0*24*12) 
-a1=p.a1
-sina=np.sin(a1)
-cosa=np.cos(a1)
-etaamp=2.0*(SU0/p.a+p.omega) 
-
-#eta amplitude
 
 def test1_init(a,omega,a1):
-    SU0=2.0*np.pi*a/(3600.0*24*12)
-    sina=np.sin(a1)
-    cosa=np.cos(a1)
-    etaamp = 2.0*((SU0/a)+omega)
-    Phiamp = (SU0*a*omega + 0.5*SU0**2)
+    #Parameters for Test 1 in Williamson et al. (1992)
+    SU0=2.0*np.pi*a/(3600.0*24*12) 
+    sina=np.sin(a1) #sine of the angle of advection
+    cosa=np.cos(a1)  #cosine of the angle of advection
+    etaamp = 2.0*((SU0/a)+omega) #relative vorticity amplitude
+    Phiamp = (SU0*a*omega + 0.5*SU0**2) #geopotential height amplitude
     
     return SU0, sina, cosa, etaamp, Phiamp
     
 
-def state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test):
+def state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,*args):
     """Initializes the state variables
     :param I: number of longitudes
     :type I: int
@@ -51,11 +44,19 @@ def state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test
     :return: J by I data arrays for eta0, eta1, delta0, delta1, and phi0, phi1
     :rtype: arrays of float64
     """
+
+    
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))
-    if test==1: # Williamson Test 1
+    
+    if test<3:
+        a,sina,cosa,etaamp,Phiamp=args
+    
+    if test==1: # Williamson Test 1 as documented in stswm FORTRAN implementation (see init.i)
         bumpr=a/3 #radius of the bump
+        
+        #starting coordinates for the cosine bell to be advected
         mucenter=0
         lambdacenter=3*np.pi/2
         for i in range(I):
@@ -66,24 +67,25 @@ def state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test
                 if dist < bumpr:
                     Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
     
-    if test==2: #Williamson Test 2
+    if test==2: #Williamson Test 2 as documented in stswm FORTRAN implementation (see init.i)
         for i in range(I):
             for j in range(J):
-                latloncoord = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
-                etaic0[j,i]=etaamp*(latloncoord)
+                latlonarg = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
+                etaic0[j,i]=etaamp*(latlonarg)
 
-                Phiic0[j,i]=Phibar-(Phiamp/g)*(latloncoord)**2
+                Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)/g
     
     
     elif test==10: #PBS Hot Jupiter
         for i in range(I):
             for j in range(J):
-                etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
+                etaic0[j,i]=0#etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
                
     etaic1=etaic0 #need two time steps to initialize
 
     deltaic1=deltaic0
 
+    Phiic0=Phiic0+Phibar
     Phiic1=Phiic0
     return etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1
 
@@ -122,7 +124,6 @@ def spectral_params(M):
     I=I-1 #reset for SHtools calculations
     #set longitude array
     lambdas=np.linspace(0, 2*np.pi, num=I,endpoint=False) 
-    #lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
     
     #set sin(latitude) array and the corresponding Gaussian weights
     mus, w = pysh.expand.SHGLQ(J-1)
@@ -132,7 +133,7 @@ def spectral_params(M):
     
     return N,I,J,dt,K4,lambdas,mus,w,normnum
 
-def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
+def velocity_init(I,J,mus,lambdas,test, *args):
     """Initializes the velocity components
     :param I: number of longitudes
     :type I: int
@@ -144,6 +145,9 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     """
     Uic=np.full((J,I),0.0) #initialize
     Vic=np.full((J,I),0.0)
+    
+    if test<3:
+        SU0,cosa,sina=args
     
     if test==1: #Williamson Test 1
         for i in range(I):
@@ -157,7 +161,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     elif test==2: #Williamson Test 2
         for i in range(I):
             for j in range(J):   
-                Uic[j,i] = SU0*(np.sqrt(1-mus[j]**2)*cosa + np.cos(lambdas[i])*(mus[j])*sina)
+                Uic[j,i] = SU0*(np.cos(np.arcsin(mus[j]))*cosa + np.cos(lambdas[i])*(mus[j])*sina)
                 Vic[j,i] = -SU0*(np.sin(lambdas[i])*sina)
    
     
@@ -168,33 +172,17 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
                 Vic[j,i]=0#-SU0*np.sin(lambdas[i])*sina
     return Uic, Vic
 
-def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
-    """Initializes the state auxiliary variables
-    :param Uic: zonal velocity component
-    :type Uic: array of complex128
-    :param Vic: meridional velocity component
-    :type Vic: array of complex128
-    :param etaic0: initial eta
-    :type etaic0:  array of complex128
-    :param Phiic0: initial Phi
-    :type Phiic0:  array of complex128
-    :param mustile: reshaped mu array to fit the dimensions
-    :type mustile:  array of complex128
 
-    :return: J by I data arrays for eta0, eta1, delta0, delta1, and phi0, phi1
-    :rtype:  array of complex128
-    """
-    Aic=np.multiply(Uic,etaic0) #A=U*\eta
-    Bic=np.multiply(Vic,etaic0) #B=V*\eta
-    Cic=np.multiply(Uic,Phiic0) #C=U*\Phi
-    Dic=np.multiply(Vic,Phiic0) #D=V*\Phi
-    
-    Eic=np.zeros((J,I),dtype=complex)
-    #E=(U^2+V^2)/(2(1-mu^2))
+def f_latlon(mus,lambdas,I,J,omega,a1,test):
+    fMAT=np.zeros((J,I))
     for i in range(I):
-        for j in range(J):
-            numerator=(Uic[j,i]**2+Vic[j,i]**2)
-            denominator=(2*(1-mus[j]**2))
-            Eic[j,i]=numerator/denominator
-
-    return Aic, Bic, Cic, Dic, Eic
+        if test==1: #Williamson Test 1
+            fMAT[:,i]=mus
+        elif test==2: #Williamson Test 2, so that the flow can be specified with the spherical coordinate poles no necessarily coincident with the roation axis
+            fMAT[:,i]=mus      
+        # for j in range(J):
+            #     fMAT[j,i]=-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*np.sin(a1)+(mus[j])*np.cos(a1) #eq. 96 in Williamson et al. (1992) p.218
+        elif test==10:
+            fMAT[:,i]=mus            
+    fMAT=fMAT*2*omega
+    return fMAT

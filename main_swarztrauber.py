@@ -67,8 +67,19 @@ modalflag=p.modalflag
 if modalflag==1:
     alpha=p.alpha
 
+## Set the initial conditions 
+
 #parameters for initializing tests 1 and 2
-SU0, sina, cosa, etaamp, Phiamp =ic.test1_init(a, omega, a1)
+if test<3:
+    SU0, sina, cosa, etaamp, Phiamp =ic.test1_init(a, omega, a1)
+    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,a,sina,cosa,etaamp,Phiamp)
+    Uic,Vic=ic.velocity_init(I,J,mus,lambdas,test,SU0,cosa,sina)
+else:
+    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,Phibar,test)
+    Uic,Vic=ic.velocity_init(I,J,mus,lambdas,test)
+
+#Coriolis force
+f_latlon=ic.f_latlon(mus,lambdas,I,J,omega,a1,test)
 
 ## Initialize data arrays 
 zetadata=np.zeros((tmax,J,I))
@@ -84,28 +95,10 @@ PhiFdata=np.zeros((tmax,J,I))
 
 spinupdata=np.zeros((tmax,2))
 
-# zetadata=np.zeros((tmax,J,I),dtype=complex)
-# deltadata=np.zeros((tmax,J,I),dtype=complex)
-# Phidata=np.zeros((tmax,J,I),dtype=complex)
 
-# Udata=np.zeros((tmax,J,I),dtype=complex)
-# Vdata=np.zeros((tmax,J,I),dtype=complex)
 
-# Fdata=np.zeros((tmax,J,I),dtype=complex)
-# Gdata=np.zeros((tmax,J,I),dtype=complex)
-# PhiFdata=np.zeros((tmax,J,I),dtype=complex)
 
-# spinupdata=np.zeros((tmax,2),dtype=complex)
 
-## Set the initial conditions 
-
-etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test)
-Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
-
-Phiic0=Phiic0+Phibar
-Phiic1=Phiic1+Phibar
-
-f_latlon=S.f_latlon(mus,lambdas,I,J,omega,a1,test)
 ## Store initial conditions in the data arrays files for easy access
 zetadata[0,:,:]=etaic0-f_latlon
 zetadata[1,:,:]=etaic1-f_latlon
@@ -274,7 +267,7 @@ for t in range(2,tmax):
             PhitoPlot=newPhi
             
         testing_plots.quiver_geopot_plot(newU,newV,PhitoPlot,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
-        testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
+       # testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
     
    
  

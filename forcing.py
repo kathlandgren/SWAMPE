@@ -19,8 +19,8 @@ def heqfun(Phibar,Dheq,lambdas,mus,I,J,g):
     for i in range(I):
         for j in range(J):
             #assume substellar point is (0,0)
-            if -np.pi/2<lambdas[i]<np.pi/2:
-                heqMat[j,i]=heqMat[j,i]+Dheq*np.cos(lambdas[i])*(1-mus[j]**2)
+            if np.pi/2<lambdas[i]<3*np.pi/2:
+                heqMat[j,i]=heqMat[j,i]+Dheq*np.cos(lambdas[i]-np.pi)*(1-mus[j]**2)
             
     return heqMat
 
