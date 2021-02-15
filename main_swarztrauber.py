@@ -67,19 +67,21 @@ modalflag=p.modalflag
 if modalflag==1:
     alpha=p.alpha
 
+#Coriolis force
+f_latlon=ic.f_latlon(mus,lambdas,I,J,omega,a1,test)
+
 ## Set the initial conditions 
 
 #parameters for initializing tests 1 and 2
 if test<3:
     SU0, sina, cosa, etaamp, Phiamp =ic.test1_init(a, omega, a1)
-    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,a,sina,cosa,etaamp,Phiamp)
+    zetaic0, zetaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,a,sina,cosa,etaamp,Phiamp,f_latlon)
     Uic,Vic=ic.velocity_init(I,J,mus,lambdas,test,SU0,cosa,sina)
 else:
-    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,Phibar,test)
+    zetaic0, zetaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,Phibar,test)
     Uic,Vic=ic.velocity_init(I,J,mus,lambdas,test)
 
-#Coriolis force
-f_latlon=ic.f_latlon(mus,lambdas,I,J,omega,a1,test)
+
 
 ## Initialize data arrays 
 zetadata=np.zeros((tmax,J,I))
@@ -97,11 +99,9 @@ spinupdata=np.zeros((tmax,2))
 
 
 
-
-
 ## Store initial conditions in the data arrays files for easy access
-zetadata[0,:,:]=etaic0-f_latlon
-zetadata[1,:,:]=etaic1-f_latlon
+zetadata[0,:,:]=zetaic0
+zetadata[1,:,:]=zetaic1
 
 deltadata[0,:,:]=deltaic0
 deltadata[1,:,:]=deltaic1
@@ -114,51 +114,26 @@ Vdata[0,:,:]=Vic
 
 
 #### Forcing ####
-heq=forcing.heqfun(Phibar, DPhieq, lambdas, mus, I, J,g)
-Q=forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
+Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
+Q=forcing.Qfun(Phieq, Phiic0, taurad)
+#geopotential forcing to be passed to time stepping
 PhiF=Q
 
-if taudrag==-1:
-    F=np.divide(np.multiply(-Uic,Q),Phiic0)
-    G=np.divide(np.multiply(-Vic,Q),Phiic0)
-    
-else:
-    F=np.divide(np.multiply(-Uic,Q),Phiic0)
-    G=np.divide(np.multiply(-Vic,Q),Phiic0)
-    F[Q<0]=0
-    G[Q<0]=0
-    
-    F=F-Uic/taudrag
-    G=G-Vic/taudrag
+
+F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,taudrag)
     
 
-
+#store forcing initial condition data
 Fdata[0,:,:]=F
 Fdata[1,:,:]=F
 Gdata[0,:,:]=G
 Gdata[1,:,:]=G
 PhiFdata[0,:,:]=PhiF
 PhiFdata[1,:,:]=PhiF  
-    
-
-# Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
-# Phiforcingdata[1,:,:]=g*forcing.Qfun(heq, Phiic1, Phibar, taurad, g)
-
-# Qic=forcing.Qfun(heq, Phiic0, Phibar,taurad,g)
-
-# F=-np.divide(np.multiply(Uic,Qic),(Phiic0+Phibar)/g)
-# F[Qic<0]=0
-# Fdata[0,:,:]=F
-# Fdata[1,:,:]=Fdata[0,:,:]
-# G=-np.divide(np.multiply(Vic,Qic),(Phiic0+Phibar)/g)
-# G[Qic<0]=0
-# Gdata[0,:,:]=G
-# Gdata[1,:,:]=Gdata[0,:,:]
 
 # Spin Up calculations
 spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
 spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
-
 
 ####
 # Time stepping
@@ -191,16 +166,6 @@ for t in range(2,tmax):
     PhiF0=PhiFdata[t-2,:,:]
         
     
-    #forcing 
-    # Um=Umdata[t-1,:,:]
-    # Vm=Vmdata[t-1,:,:]
-    
-    # Fm=Fmdata[t-1,:,:]
-    # Gm=Gmdata[t-1,:,:]
-    
-
-    #PhiFM=Phiforcingmdata[t-1,:,:]    
-    
     newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF0,F0,G0)
     
     #write new data        
@@ -220,40 +185,13 @@ for t in range(2,tmax):
 
     spinupdata[t-1,0] = np.min(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
     spinupdata[t-1,1] = np.max(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
-
-
-    
-    #neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
-    
     
     ######## FORCING ############
-    # etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
-    # deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
-    # Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
-
-    
-    Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
+    Q=forcing.Qfun(Phieq, newPhi, taurad)
+    #geopotential forcing to be passed to time stepping
     PhiF=Q
+    F,G=forcing.Rfun(newU, newV, Q, newPhi,taudrag)
     
-    if taudrag==-1:
-        F=np.divide(np.multiply(-newU,Q),Phiic0)
-        G=np.divide(np.multiply(-newV,Q),Phiic0)
-    
-    else:
-        F=np.divide(np.multiply(-Uic,Q),Phiic0)
-        G=np.divide(np.multiply(-Vic,Q),Phiic0)
-        
-        F[Q<0]=0
-        G[Q<0]=0
-        
-        F=F-Uic/taudrag
-        G=G-Vic/taudrag
-    # Phiforcingdata[t,:,:]=g*Q
-    # Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
-     
-    # F=-np.divide(np.multiply(newU,Q),(newPhi+Phibar)/g)
-    # G=-np.divide(np.multiply(newV,Q),(newPhi+Phibar)/g)
-
     Fdata[t,:,:]=F
     Gdata[t,:,:]=G
     PhiFdata[t,:,:]=PhiF

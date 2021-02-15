@@ -45,13 +45,13 @@ def state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,*args):
     :rtype: arrays of float64
     """
 
-    
-    etaic0=np.zeros((J,I))
+    etaic0=np.zeros((J,I))    
+    zetaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))
     
     if test<3:
-        a,sina,cosa,etaamp,Phiamp=args
+        a,sina,cosa,etaamp,Phiamp,f_latlon=args
     
     if test==1: # Williamson Test 1 as documented in stswm FORTRAN implementation (see init.i)
         bumpr=a/3 #radius of the bump
@@ -65,7 +65,11 @@ def state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,*args):
                
                 dist=p.a*np.arccos(mucenter*mus[j]+np.cos(np.arcsin(mucenter))*np.cos(np.arcsin(mus[j]))*np.cos(lambdas[i]-lambdacenter))
                 if dist < bumpr:
-                    Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
+                    Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))
+            
+        #zeta since swarztrauber timesteps zeta, and not eta
+        zetaic0=etaic0-f_latlon
+                
     
     if test==2: #Williamson Test 2 as documented in stswm FORTRAN implementation (see init.i)
         for i in range(I):
@@ -74,20 +78,25 @@ def state_var_init(I,J,mus,lambdas,g,omega,Phibar,test,*args):
                 etaic0[j,i]=etaamp*(latlonarg)
 
                 Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)/g
-    
+                
+        #zeta since Swarztrauber timesteps zeta, and not eta
+        zetaic0=etaic0-f_latlon
     
     elif test==10: #PBS Hot Jupiter
         for i in range(I):
             for j in range(J):
-                etaic0[j,i]=0#etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
+                
+                zetaic0[j,i]=0#etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
+                
                
-    etaic1=etaic0 #need two time steps to initialize
+    zetaic1=zetaic0 #need two time steps to initialize
 
     deltaic1=deltaic0
 
     Phiic0=Phiic0+Phibar
     Phiic1=Phiic0
-    return etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1
+    
+    return zetaic0, zetaic1, deltaic0, deltaic1, Phiic0, Phiic1
 
 def spectral_params(M):
     N=M
