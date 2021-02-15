@@ -17,7 +17,7 @@ M=42 #the largest Fourier wave number
 
 
 #time-stepping parameters
-tmax=15000 #number of time steps
+tmax=200 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -38,7 +38,7 @@ if test==1: # Williamson Test 1
     g=9.8 #gravity of the planet in m/s^2
     
     minlevel=3 #the log values for the colorbar plotting.
-    maxlevel=4
+    maxlevel=3.3
 elif test==2: # Williamson Test 2
     omega=7.2921159*10**(-5) #rotation rate of the planet, radians per second
     a=6.37122*10**(6)  #radius of the planet, meters
@@ -54,7 +54,7 @@ elif test==10: # PBS Hot Jupiter
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
     
-    minlevel=6.5 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    minlevel=4 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=7
 #Hyperviscosity parameters
 diffflag=1
@@ -64,12 +64,11 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
-forcflag=1
+forcflag=0
 taurad=3600*24*1 #in Earth days
 taudrag=3600*24*100#-1 #3600*24*1 #if set to -1, means infinity
-Dheq=Phibar#/g
+DPhieq=Phibar
 
-zeroflag=0
 
 expflag=1
 #1 means explicit,

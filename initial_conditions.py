@@ -89,6 +89,7 @@ def state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test
 
 def spectral_params(M):
     N=M
+    #set dimensions according to Jakob and Hack (1993), Tables 1, 2, and 3
     if M==42:
         J=64
         I=128
@@ -117,22 +118,19 @@ def spectral_params(M):
     else:
         print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
     
-    # lmax=M
-    # I = int(2*lmax + 1)#p.I 
-    # J = int(lmax+1)#p.J
 
-    I=I-1 #for SHtools
-    lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
-    # [mus,w]=sp.roots_legendre(J)
+    I=I-1 #reset for SHtools calculations
+    #set longitude array
+    lambdas=np.linspace(0, 2*np.pi, num=I,endpoint=False) 
+    #lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
     
-    mus_SH, w_SH = pysh.expand.SHGLQ(J-1)
-    # Sine of the latitude
-    mus = mus_SH# p.mus #need negative to correspond to the transform
-    # Weights for integrating
-    w = w_SH# p.w
-
-        
-    return N,I,J,dt,K4,lambdas,mus,w
+    #set sin(latitude) array and the corresponding Gaussian weights
+    mus, w = pysh.expand.SHGLQ(J-1)
+    
+    #normalization for the spherical harmonics
+    normnum = 1
+    
+    return N,I,J,dt,K4,lambdas,mus,w,normnum
 
 def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     """Initializes the velocity components

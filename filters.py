@@ -35,71 +35,19 @@ def diffusion(Ximn,sigma):
     :param N:
     :type N: int
     """
-    # sigma=np.zeros((M+1,N+1))
-    # # nvec=np.arange(N+1)
-    # # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
-    # # sigmacoeff=(1+2*dt*K4*coeff/a**4)
-    # # sigmas=np.divide(1,sigmacoeff)
-    
-    # nvec=np.arange(N+1)
-    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
-    # const=K4*dt/a**4
-    # sigmacoeff1=2*const*coeff
-    # sigmacoeff=(1+sigmacoeff1)
-    
-    # #sigmacoeff=(1+2*p.dt*p.K4*coeff/p.a**4)
-    # sigmas=np.divide(1,sigmacoeff)
-    
-    # for m in range(M+1):
-    #     sigma[m,:]=sigmas
     
     newXimn=np.multiply(Ximn,sigma)
     return newXimn
 
-# def diffusionPhi(Ximn,dt,a,K4,M, N):
-#     """ Applied the diffusion Filter described in Gelb and Gleeson (eq. 12)
-#     :param Ximn: the spectral coefficient data to be filtered
-#     :type Ximn: list
-#     :param currt: time t so that Ximndata(t) is filtered 
-#     :type currt: int 
-#     :param dt: time step
-#     :type t:
-#     :param a: radius of the planet, meters
-#     :type a: float
-#     :param K4: diffusion coefficient
-#     :type K4: float
-#     :param N:
-#     :type N: int
-#     """
-#     sigma=np.zeros((M+1,N+1))
-#     nvec=np.arange(N+1)
-#     coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))
-    
-#     const=K4*dt/a**4
-#     sigmacoeff1=2*const*coeff
-#     sigmacoeff=(1+sigmacoeff1)
-    
-#     sigmas=np.divide(1,sigmacoeff)
-#     for m in range(M+1):
-#         sigma[m,:]=sigmas
-
-#     newXimn=np.multiply(Ximn,sigma)
-#     return newXimn
 
 def sigma(M,N,K4,a,dt):
     sigma=np.zeros((M+1,N+1))
-    # nvec=np.arange(N+1)
-    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
-    # sigmacoeff=(1+2*dt*K4*coeff/a**4)
-    # sigmas=np.divide(1,sigmacoeff)
     
     nvec=np.arange(N+1)
     coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
     const=K4*dt/a**4
     sigmacoeff1=2*const*coeff
     sigmacoeff=(1+sigmacoeff1)
-    
-    #sigmacoeff=(1+2*p.dt*p.K4*coeff/p.a**4)
     sigmas=np.divide(1,sigmacoeff)
     
     for m in range(M+1):
@@ -107,6 +55,23 @@ def sigma(M,N,K4,a,dt):
     
     return sigma
 
+
+def sigmaPhi(M,N,K4,a,dt):
+    sigma=np.zeros((M+1,N+1))
+    nvec=np.arange(N+1)
+    coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))
+    
+    const=K4*dt/a**4
+    sigmacoeff1=2*const*coeff
+    sigmacoeff=(1+sigmacoeff1)
+    
+    sigmas=np.divide(1,sigmacoeff)
+    for m in range(M+1):
+        sigma[m,:]=sigmas
+    
+    return sigma
+    
+## Spectral Viscosity
 def sigmaSV(M,N,qvec,a,dt):
     sigma=np.array(np.zeros((M+1,N+1)),dtype=np.longfloat)
     # nvec=np.arange(N+1)
@@ -169,19 +134,3 @@ def q(M,N):
     for j in range(nc+1,N+1):
         qvec[j]=np.exp(-(j-M)**2/(2*(j-nc)**2))
     return qvec
-
-def sigmaPhi(M,N,K4,a,dt):
-    sigma=np.zeros((M+1,N+1))
-    nvec=np.arange(N+1)
-    coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))
-    
-    const=K4*dt/a**4
-    sigmacoeff1=2*const*coeff
-    sigmacoeff=(1+sigmacoeff1)
-    
-    sigmas=np.divide(1,sigmacoeff)
-    for m in range(M+1):
-        sigma[m,:]=sigmas
-    
-    return sigma
-    

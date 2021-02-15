@@ -2,19 +2,17 @@
 """
 Spyder Editor
 
-This is the main 2Datmo GCM script (with updates on Legendre and stuff)
+This is the main SWAMP-E GCM script implementing the Swarztrauber (1996) scheme 7
 """
 
 
 ## Import statements
+
 # Import python packages
 import numpy as np
-#import matplotlib.pyplot as plt
-#import math
 
 # Import program packages
 import params as p
-#import reshapefuns
 import initial_conditions as ic
 import fft_legendre_trans as rfl
 import tstepping_new as tstep
@@ -23,73 +21,81 @@ import forcing
 import filters
 import schwartztrauber as S
 
-## Set parameter for type of run
-# 0: Debugging, plot at every step
-runtype = 0
-
 
 ## Set global parameters
-# Spacial and spectral dimensions
-# I = p.I 
-# J = p.J
+
+# Set spectral dimensions
 M = p.M
-# N = p.N
+#get other dimensional parameters using the spectral dimension
+N,I,J,dt,K4,lambdas,mus,w,normnum=ic.spectral_params(M)
+
 # Length of the run in time steps
 tmax = p.tmax
-# Sine of the latitude
-# mus = p.mus
-# Wieghts for integrating
-# w = p.w
-# lambdas=p.lambdas
+#surface gravity
 g=p.g
+#radiative time scale in Earth days
 taurad=p.taurad
+#drag time scale in Earth days
 taudrag=p.taudrag
+#mean geopotential height. In hot Jupiter case, Phibar is the flat nightside thickness
 Phibar=p.Phibar
-Dheq=p.Dheq
+#the difference in radiative-equilibrium thickness between the substellar point and the nightside
+DPhieq=p.DPhieq
+#rotation rate of the planet, radians per second
 omega=p.omega
+#planetary radius, meters
 a=p.a
+#angle for test cases 1 and 2, radians
 a1=p.a1
+#test case, number
 test=p.test
-
-#normalization for the spherical harmonics
-normnum = 1
 
 #colorbar settings for plotting
 minlevel=p.minlevel
 maxlevel=p.maxlevel
 
-
-N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
-#print(M)
-# K4=K4*10**10
-#dt=10
-
+#forcing flag
 forcflag=p.forcflag
+#hyperviscosity filter flag
 diffflag=p.diffflag
-zeroflag=p.zeroflag
+#hyperviscosity coefficients
 sigma=filters.sigma(M,N,K4,a,dt)
 sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+
+#flag for anti-aliasing filter as in Hack and Jakob (1992) eq. (4.4)
 modalflag=p.modalflag
 if modalflag==1:
     alpha=p.alpha
-# Associated Legendre Polynomials and their derivatives
-Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
+#parameters for initializing tests 1 and 2
 SU0, sina, cosa, etaamp, Phiamp =ic.test1_init(a, omega, a1)
 
 ## Initialize data arrays 
-zetadata=np.zeros((tmax,J,I),dtype=complex)
-deltadata=np.zeros((tmax,J,I),dtype=complex)
-Phidata=np.zeros((tmax,J,I),dtype=complex)
+zetadata=np.zeros((tmax,J,I))
+deltadata=np.zeros((tmax,J,I))
+Phidata=np.zeros((tmax,J,I))
 
-Udata=np.zeros((tmax,J,I),dtype=complex)
-Vdata=np.zeros((tmax,J,I),dtype=complex)
+Udata=np.zeros((tmax,J,I))
+Vdata=np.zeros((tmax,J,I))
 
-Fdata=np.zeros((tmax,J,I),dtype=complex)
-Gdata=np.zeros((tmax,J,I),dtype=complex)
-PhiFdata=np.zeros((tmax,J,I),dtype=complex)
+Fdata=np.zeros((tmax,J,I))
+Gdata=np.zeros((tmax,J,I))
+PhiFdata=np.zeros((tmax,J,I))
 
-spinupdata=np.zeros((tmax,2),dtype=complex)
+spinupdata=np.zeros((tmax,2))
+
+# zetadata=np.zeros((tmax,J,I),dtype=complex)
+# deltadata=np.zeros((tmax,J,I),dtype=complex)
+# Phidata=np.zeros((tmax,J,I),dtype=complex)
+
+# Udata=np.zeros((tmax,J,I),dtype=complex)
+# Vdata=np.zeros((tmax,J,I),dtype=complex)
+
+# Fdata=np.zeros((tmax,J,I),dtype=complex)
+# Gdata=np.zeros((tmax,J,I),dtype=complex)
+# PhiFdata=np.zeros((tmax,J,I),dtype=complex)
+
+# spinupdata=np.zeros((tmax,2),dtype=complex)
 
 ## Set the initial conditions 
 
@@ -115,7 +121,7 @@ Vdata[0,:,:]=Vic
 
 
 #### Forcing ####
-heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
+heq=forcing.heqfun(Phibar, DPhieq, lambdas, mus, I, J,g)
 Q=forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
 PhiF=Q
 
@@ -262,15 +268,12 @@ for t in range(2,tmax):
     
     if t%25==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
-        
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
-        
-        #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-2,:,:], mus, lambdas)
-        #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-3,:,:], mus, lambdas)
-        # testing_plots.physical_plot(neweta-neweta1,mus,lambdas)
-        # testing_plots.physical_plot(newV,mus,lambdas)
-        # testing_plots.physical_plot(G,mus,lambdas)
-        # testing_plots.physical_plot(Q,mus,lambdas)
+        if test==10:
+            PhitoPlot=newPhi-Phibar
+        else:
+            PhitoPlot=newPhi
+            
+        testing_plots.quiver_geopot_plot(newU,newV,PhitoPlot,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
         testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
     
    
