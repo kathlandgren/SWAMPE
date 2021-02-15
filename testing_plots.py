@@ -103,6 +103,7 @@ def spinup_plot(plotdata,tmax,dt,test,a1):
     plt.plot(t, plotdata[:,1])
     
     plt.xlabel('time (hours)')
+    plt.ticklabel_format(axis='both', style='sci')
     plt.ylabel('RMS Winds')
     
     plt.ticklabel_format(axis='both', style='sci')
@@ -145,6 +146,30 @@ def physical_plot(plotdata,mus,lambdas):
     
     plt.show()
     
+    
+def physical_plot_latlon(plotdata,lat,lon):
+    """Generates plots for the fourier space with dimensions J, M
+
+    :param plotdata: first variable, JxM+1 
+    :type statevar1: float
+
+    
+    """
+    ## Plot the approximation 
+    fig= plt.figure()
+    
+    # Make data.
+    #X = lambdas*180/np.pi
+    #Y = np.arcsin(mus)*180/np.pi
+    X, Y = np.meshgrid(lon,lat)
+    
+    # Plot the surface.
+    cp = plt.contourf(X, Y, plotdata,30)
+    norm = mpl.colors.Normalize(vmin=0, vmax=5*10**6)
+    cb = plt.colorbar(cp,format=ticker.FuncFormatter(fmt),norm=norm)
+    #cb.set_clim(0, 5*10**(6))
+    
+    plt.show()
     
 
 

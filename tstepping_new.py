@@ -88,6 +88,8 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
         
         delta2=delta2+(2*dt)*(np.multiply(acosMAT,deltaRHSF))
         zeta2=zeta2+(2*dt)*(np.multiply(acosMAT,zetaRHSF))
+        # delta2=delta2+(2*dt)*((deltaRHSF))
+        # zeta2=zeta2+(2*dt)*((zetaRHSF))
         
     print(np.max(PhiRHS))
     print(np.max(zetaRHS))

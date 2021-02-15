@@ -124,11 +124,15 @@ if taudrag==-1:
     G=np.divide(np.multiply(-Vic,Q),Phiic0)
     
 else:
-    F=np.divide(np.multiply(-Uic,Q),Phiic0)-Uic/taudrag
-    G=np.divide(np.multiply(-Vic,Q),Phiic0)-Vic/taudrag
+    F=np.divide(np.multiply(-Uic,Q),Phiic0)
+    G=np.divide(np.multiply(-Vic,Q),Phiic0)
+    F[Q<0]=0
+    G[Q<0]=0
     
-F[Q<0]=0
-G[Q<0]=0
+    F=F-Uic/taudrag
+    G=G-Vic/taudrag
+    
+
 
 Fdata[0,:,:]=F
 Fdata[1,:,:]=F
@@ -237,11 +241,14 @@ for t in range(2,tmax):
         G=np.divide(np.multiply(-newV,Q),Phiic0)
     
     else:
-        F=np.divide(np.multiply(-newU,Q),Phiic0)-newU/taudrag
-        G=np.divide(np.multiply(-newV,Q),Phiic0)-newV/taudrag
+        F=np.divide(np.multiply(-Uic,Q),Phiic0)
+        G=np.divide(np.multiply(-Vic,Q),Phiic0)
         
-    F[Q<0]=0
-    G[Q<0]=0
+        F[Q<0]=0
+        G[Q<0]=0
+        
+        F=F-Uic/taudrag
+        G=G-Vic/taudrag
     # Phiforcingdata[t,:,:]=g*Q
     # Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
      
@@ -255,7 +262,9 @@ for t in range(2,tmax):
     
     if t%25==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
+        
         testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
+        
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-2,:,:], mus, lambdas)
         #testing_plots.physical_plot(deltadata[t-1,:,:]-deltadata[t-3,:,:], mus, lambdas)
         # testing_plots.physical_plot(neweta-neweta1,mus,lambdas)

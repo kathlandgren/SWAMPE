@@ -166,7 +166,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     elif test==10: #PBS Hot Jupiter
         for i in range(I):
             for j in range(J):
-                Uic[j,i]=0 #SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)#assign according to init.f
+                Uic[j,i]=0#SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)#assign according to init.f
                 Vic[j,i]=0#-SU0*np.sin(lambdas[i])*sina
     return Uic, Vic
 
