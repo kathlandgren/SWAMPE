@@ -142,7 +142,7 @@ spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
 ## Matrices with coefficients that depend on M, N
 nMAT1, nMAT2, nMAT3, mnMAT1, mnMAT2, mnMAT3, mnMAT4, mnMAT5, musMAT=S.mnMATgen(I,J,M,N,mus)
 
-## time -stepping
+## time-stepping
 
 for t in range(2,tmax):
     print('t='+str(t))
@@ -205,34 +205,4 @@ for t in range(2,tmax):
             PhitoPlot=newPhi
             
         testing_plots.quiver_geopot_plot(newU,newV,PhitoPlot,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
-       # testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
-    
-   
- 
-    
-    ################# MORE FORCING ##############
-    # Fdata[t,:,:]=F
-    # Gdata[t,:,:]=G
-    
-    # Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
-    # Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
-    
-    
-# ####
-# #Plotting
-# ####
-# testing_plots.state_var_compare(etadata[0,:,:], etadata[tmax-1,:,:], p.lambdas, p.mus)
-# testing_plots.state_var_compare(deltadata[0,:,:], deltadata[tmax-1,:,:], p.lambdas, p.mus)
-# testing_plots.state_var_compare(Phidata[0,:,:]+p.Phibar, Phidata[tmax-1,:,:]+p.Phibar, p.lambdas, p.mus)
-# testing_plots.state_var_compare(Udata[0,:,:], Udata[tmax-1,:,:], p.lambdas, p.mus)
-# testing_plots.state_var_compare(Vdata[0,:,:], Vdata[tmax-1,:,:], p.lambdas, p.mus)
-    
-# testing_plots.physical_plot(Phidata[tmax-1,:,:], mus, lambdas)
-
-
-
-
-
-
-
-
+testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)

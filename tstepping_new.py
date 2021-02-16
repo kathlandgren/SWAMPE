@@ -39,12 +39,13 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     
     # 1 means "now", 0 means the previous time step
     
-    #7.1: fwrd transform zeta and delta    
-    #7.2: get U, V from the above
-    if test<2:
+
+    if test==1: #reset the winds for testing advection
         U1=U0
         V1=V0
-    else: #elif test==10:
+    else: 
+        #7.1: fwrd transform zeta and delta    
+        #7.2: get U, V from the above
         U1,V1=S.A20_A21(delta1,zeta1,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum)
     #7.3: make zeta and delta and forward transfrom, get RHS
     X=np.multiply(zeta1+f_latlon,V1) #are we setting up the vorticity twice here? 

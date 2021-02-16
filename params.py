@@ -17,7 +17,7 @@ M=63 #the largest Fourier wave number
 
 
 #time-stepping parameters
-tmax=1000 #number of time steps
+tmax=200 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -29,7 +29,7 @@ test=10
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=np.pi/4 #alpha from Test 1 and 2
+a1=np.pi/2 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     forcflag=0
@@ -67,7 +67,7 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
-taurad=3600*24*1 #in Earth days
+taurad=3600*24*100#in Earth days
 taudrag=3600*24*100#-1 #3600*24*1 #if set to -1, means infinity
 DPhieq=Phibar
 

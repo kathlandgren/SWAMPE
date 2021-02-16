@@ -45,6 +45,7 @@ def mnMATgen(I,J,M,N,mus):
         
     for m in range(1,M+1):
         mnMAT1[m,1:]=m/nnplus1sqrt[1:]
+    mnMAT1=np.triu(mnMAT1) 
         
     for m in range(M+1):
         for n in range(2,N+1):
@@ -54,17 +55,18 @@ def mnMATgen(I,J,M,N,mus):
     for m in range(M+1):
         for n in range(N+1):
             mnMAT3[m,n]=(n+2)*(n+1+m)/(np.sqrt((n+1)*(n+2))*(2*(n+1)+1))
+    mnMAT3=np.triu(mnMAT3) 
             
     for m in range(0,M+1):  #this used to be (1:M+1), but that seems wrong
         for n in range(1,N+1):
             mnMAT4[m,n]=(n+1)*(n+m)/(np.sqrt(n*(n+1))*(2*n+1))
+    mnMAT4=np.triu(mnMAT4)     
             
-    
     for m in range(0,M+1): #this used to be (1:M+1), but that seems wrong
         for n in range(1,N+1):
             mnMAT5[m,n]=(n*(n-m+1))/(np.sqrt(n*(n+1))*(2*n+1))
             #mnMAT5=(n*(n-m+1))/(np.sqrt(n*(n-1))*(2*n))
-    #mnMAT5=np.triu(mnMAT5)        
+    mnMAT5=np.triu(mnMAT5)        
     
     for i in range(I):
         musMAT[:,i]=np.divide(1,(1-mus**2))
@@ -158,6 +160,8 @@ def A20_A21(delta,zeta,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum):
     deltasmnplus1[:,:] = np.triu(np.transpose(deltalm[1,1:,:-1]))
     
     zetacmnminus1[:,1:] = np.transpose(zetalm[0,:-2,:-1])
+    #print(np.shape(zetacmnminus1))
+    #print(np.shape(zetalm))
     zetacmnplus1[:,:] = np.triu(np.transpose(zetalm[0,1:,:-1]))
     zetasmnminus1[:,1:] = np.transpose(zetalm[1,:-2,:-1])
     zetasmnplus1[:,:] = np.triu(np.transpose(zetalm[1,1:,:-1]))
