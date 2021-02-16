@@ -32,7 +32,7 @@ def mnMATgen(I,J,M,N,mus):
     nnplus1sqrt=np.sqrt(np.multiply(nrange, nplus1))
 
     for m in range(M+1):
-        nMAT1[m,:]=nnplus1sqrt
+        nMAT1[m,:]=nnplus1sqrt      
         
     for m in range(M+1):
         nMAT2[m,:]=nnplus1
@@ -42,6 +42,7 @@ def mnMATgen(I,J,M,N,mus):
         nplus1BIG=nrangeBIG+1
         nnplus1sqrtBIG=np.sqrt(np.multiply(nrangeBIG, nplus1BIG))
         nMAT3[m,1:]=1/nnplus1sqrtBIG[1:]
+    nMAT3=np.triu(nMAT3) 
         
     for m in range(1,M+1):
         mnMAT1[m,1:]=m/nnplus1sqrt[1:]
@@ -134,46 +135,32 @@ def A20_A21(delta,zeta,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum):
     
     Ulm=np.zeros((2,J,J))
     Vlm=np.zeros((2,J,J))
-    #temp_size = int((lmax+1)*(lmax+2)/2)
     
-    # Ycmnminus1 = np.zeros((lmax+1,lmax+1))
-    # Ycmnplus1 = np.zeros((lmax+1,lmax+1))
-    # Ysmnminus1 = np.zeros((lmax+1,lmax+1))
-    # Ysmnplus1 = np.zeros((lmax+1,lmax+1))
-    # brmn = np.zeros((lmax+1,lmax+1))
-    # bimn = np.zeros((lmax+1,lmax+1))
-    
-    #7.1 in Swarztrauber
+    #7.1 in Swarztrauber and part of 7.2
+    #take the forward transform and divide the coefficients by (n(n+1))^(1/2), with a minus on delta
     deltalm = -np.multiply(nMAT3,pysh.expand.SHExpandGLQ(delta, w, mus,norm=normnum,csphase=1,lmax_calc=lmax))
     deltacmn = np.transpose(deltalm[0,:-1,:-1]) #cosine coeff
     deltasmn = np.transpose(deltalm[1,:-1,:-1]) #sine coeff
     
-    #7.1 in Swarztrauber
+
     zetalm = np.multiply(nMAT3,pysh.expand.SHExpandGLQ(zeta, w, mus, norm=normnum,csphase=1,lmax_calc=lmax))
     zetacmn = np.transpose(zetalm[0,:-1,:-1])
     zetasmn = np.transpose(zetalm[1,:-1,:-1])
 
-
+    #shift the matrices by 1 and -1 in the n dimension according to the recurrence relation for Hmn (see eq. A.18 in Swarztrauber (1996))
     deltacmnminus1[:,1:] = np.transpose(deltalm[0,:-2,:-1])
     deltacmnplus1[:,:] = np.triu(np.transpose(deltalm[0,1:,:-1]))
     deltasmnminus1[:,1:] = np.transpose(deltalm[1,:-2,:-1])
     deltasmnplus1[:,:] = np.triu(np.transpose(deltalm[1,1:,:-1]))
     
     zetacmnminus1[:,1:] = np.transpose(zetalm[0,:-2,:-1])
-    #print(np.shape(zetacmnminus1))
-    #print(np.shape(zetalm))
     zetacmnplus1[:,:] = np.triu(np.transpose(zetalm[0,1:,:-1]))
     zetasmnminus1[:,1:] = np.transpose(zetalm[1,:-2,:-1])
     zetasmnplus1[:,:] = np.triu(np.transpose(zetalm[1,1:,:-1]))
-    
-    
-    # Ucmnminus1[1:,:] = np.transpose(Ylm[0,:-1,:])
-    # Ucmnplus1[:-1,:] = np.transpose(Ylm[0,1:,:])
-    # smnminus1[1:,:] = np.transpose(Ylm[1,:-1,:])
-    # Ysmnplus1[:-1,:] = np.transpose(Ylm[1,1:,:])
-    
-    #cos
-    Umn[0,:,:] = np.multiply(mnMAT1,deltasmn) - np.multiply(mnMAT2,zetacmnminus1) + np.multiply(mnMAT3,zetacmnplus1)
+
+    #Using the recurrence relation for Hmn, compile the mn coefficient matrices for the cos and sin parts of A.20 and A.21 in Swarztrauber (1996)
+    #cos 
+    Umn[0,:,:] = np.multiply(mnMAT1,deltasmn) - np.multiply(mnMAT2,zetacmnminus1) + np.multiply(mnMAT3,zetacmnplus1) 
     #sin
     Umn[1,:,:] = -np.multiply(mnMAT1,deltacmn) - np.multiply(mnMAT2,zetasmnminus1) + np.multiply(mnMAT3,zetasmnplus1)
 
@@ -182,22 +169,16 @@ def A20_A21(delta,zeta,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum):
     #sin
     Vmn[1,:,:] = np.multiply(mnMAT1,zetacmn) - np.multiply(mnMAT2,deltasmnminus1) + np.multiply(mnMAT3,deltasmnplus1)
     
+    
+    #include 0-padding and transpose for SHtools calculation
     Ulm[0,:lmax,:lmax]=np.transpose(Umn[0,:,:])
     Ulm[1,:lmax,:lmax]=np.transpose(Umn[1,:,:])
     
     
     Vlm[0,:lmax,:lmax]=np.transpose(Vmn[0,:,:])
     Vlm[1,:lmax,:lmax]=np.transpose(Vmn[1,:,:])
-    ## try lmax option in makegrid, if it fails, let's pad it as we did before to satisfy the 2/3 rule
-    
-    # print(np.shape(Ulm))
-    # print(np.shape(mus))
-    # Upad=np.zeros((2,J,J))
-    # Upad[:,0:64,0:64]=Ulm
-    
-    # Vpad=np.zeros((2,J,J))
-    # Vpad[:,0:,0:64]=Ulm
-    # print(np.shape(Utest))
+
+    #inverse transform using SHtools    
     U=pysh.expand.MakeGridGLQ(Ulm, mus, norm=normnum)
     V=pysh.expand.MakeGridGLQ(Vlm, mus, norm=normnum)
             
