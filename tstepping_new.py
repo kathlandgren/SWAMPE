@@ -16,6 +16,7 @@ import fft_legendre_trans as rfl
 import schwartztrauber as S
 import pyshtools as pysh
 import forcing as f
+import filters
 
 expflag=p.expflag
 if expflag==1:
@@ -35,7 +36,7 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
     
     return newetamn,newetatstep2,newdeltamn,newdeltatstep2,newPhimn,newPhitstep2,Unew,Vnew
 
-def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar,normnum,forcflag,PhiF,F,G):
+def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar,normnum,diffflag,K4,forcflag,PhiF,F,G):
     
     # 1 means "now", 0 means the previous time step
     
@@ -43,14 +44,16 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     if test==1: #reset the winds for testing advection
         U1=U0
         V1=V0
+        X=np.multiply(zeta1,V1) #deleted the COriolis force -- NOT SURE THIS IS RIGHT
+        Y=np.multiply(-zeta1,U1)
     else: 
         #7.1: fwrd transform zeta and delta    
         #7.2: get U, V from the above
         U1,V1=S.A20_A21(delta1,zeta1,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum)
-    #7.3: make zeta and delta and forward transfrom, get RHS
-    X=np.multiply(zeta1+f_latlon,V1) #are we setting up the vorticity twice here? 
-    Y=np.multiply(-(zeta1+f_latlon),U1)
-    
+        #7.3: make zeta and delta and forward transfrom, get RHS
+        X=np.multiply(zeta1+f_latlon,V1) #are we setting up the vorticity twice here? 
+        Y=np.multiply(-(zeta1+f_latlon),U1)
+        
     brmn, bimn=S.A22_A23(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
     crmn, cimn=S.A24_A25(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
     
@@ -67,7 +70,6 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     
     
     #7.5
-    
     deltaRHS2=S.step7p5(Phi1,U1,V1,w,mus,J,M,musMAT,nMAT2,normnum)
     
     #make outermost coefficient 
@@ -91,6 +93,16 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
         zeta2=zeta2+(2*dt)*(np.multiply(acosMAT,zetaRHSF))
         # delta2=delta2+(2*dt)*((deltaRHSF))
         # zeta2=zeta2+(2*dt)*((zetaRHSF))
+        
+        
+    if diffflag==1:
+        sigma=filters.sigma(M,M,K4,a,dt)
+        sigmaPhi=filters.sigmaPhi(M,M,K4,a,dt)
+        deltaHV,zetaHV,PhiHV=filters.hyperviscfilter(delta2,zeta2,Phi2,a,K4,w,mus,J,M,musMAT,sigma,sigmaPhi,normnum,M+1)
+        
+        zeta2=zetaHV
+        delta2=deltaHV
+        Phi2=PhiHV        
         
     print(np.max(PhiRHS))
     print(np.max(zetaRHS))

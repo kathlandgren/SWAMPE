@@ -6,6 +6,7 @@ Created on Wed Jun 24 17:33:29 2020
 """
 import numpy as np
 import mpmath
+import pyshtools as pysh
 
 def modal_splitting(Xidataslice,alpha):
     """Applies the filter from Hack and Jacob (1992)
@@ -70,6 +71,84 @@ def sigmaPhi(M,N,K4,a,dt):
         sigma[m,:]=sigmas
     
     return sigma
+
+
+def hyperviscfun(statevar,w,mus,J,M,musMAT,sigma,normnum,lmax):
+    """Computes the Laplacian according to step 7.5 in Swarztrauber (1996)
+            
+        :param M: 
+        :type M: 
+        :param mus: 
+        :type mus:
+        
+        :return: 
+        :rtype: 
+        :return: 
+        :rtype: 
+        """
+        
+    #lmax=M+1, lmax-1=M
+    svlm = pysh.expand.SHExpandGLQ(statevar, w, mus, norm=normnum,csphase=1,lmax_calc=lmax-1)
+    
+    svlm[0,:,:]=np.multiply(np.transpose(sigma),svlm[0,:,:])
+    svlm[1,:,:]=np.multiply(np.transpose(sigma),svlm[1,:,:])
+    
+    svlmPad=np.zeros((2,J,J))
+    svlmPad[0,:M+1,:M+1]=svlm[0,:,:]
+    svlmPad[1,:M+1,:M+1]=svlm[1,:,:]
+    
+    hypervisc1=pysh.expand.MakeGridGLQ(svlmPad, mus, norm=normnum)
+
+    return hypervisc1
+
+
+##compute lat-lon hyperviscosity
+# def hyperviscfun(statevar,w,mus,J,M,musMAT,nMAT2,normnum,lmax):
+#     """Computes the Laplacian according to step 7.5 in Swarztrauber (1996)
+            
+#         :param M: 
+#         :type M: 
+#         :param mus: 
+#         :type mus:
+        
+#         :return: 
+#         :rtype: 
+#         :return: 
+#         :rtype: 
+#         """
+        
+# ##Compute two Laplacians
+#     #lmax=M+1, lmax-1=M
+#     svlm = pysh.expand.SHExpandGLQ(statevar, w, mus, norm=normnum,csphase=1,lmax_calc=lmax-1)
+    
+#     nsqMAT=np.multiply(nMAT2,nMAT2)
+    
+#     svlm[0,:,:]=np.multiply(np.transpose(nsqMAT),svlm[0,:,:])
+#     svlm[1,:,:]=np.multiply(np.transpose(nsqMAT),svlm[1,:,:])
+    
+#     svlmPad=np.zeros((2,J,J))
+#     svlmPad[0,:M+1,:M+1]=svlm[0,:,:]
+#     svlmPad[1,:M+1,:M+1]=svlm[1,:,:]
+    
+#     hypervisc1=pysh.expand.MakeGridGLQ(svlmPad, mus, norm=normnum)
+
+#     return hypervisc1
+
+def hyperviscfilter(delta,zeta,Phi,a,K4,w,mus,J,M,musMAT,sigma,sigmaPhi,normnum,lmax):
+    
+    deltaHV=hyperviscfun(delta,w,mus,J,M,musMAT,sigma,normnum,lmax)#-4*delta
+    zetaHV=hyperviscfun(zeta,w,mus,J,M,musMAT,sigma,normnum,lmax)#-4*zeta #zeta might need to be zeta+f_latlon
+    PhiHV=hyperviscfun(delta,w,mus,J,M,musMAT,sigmaPhi,normnum,lmax)    
+    
+    # deltaHV=-deltaHV1*K4#/a**4
+    # zetaHV=-zetaHV1*K4#/a**4
+    # PhiHV=-PhiHV1*K4 # /a**4   
+    
+    return deltaHV,zetaHV,PhiHV
+    
+    
+    
+    
     
 ## Spectral Viscosity
 def sigmaSV(M,N,qvec,a,dt):

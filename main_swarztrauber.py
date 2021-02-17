@@ -29,6 +29,8 @@ M = p.M
 #get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w,normnum=ic.spectral_params(M)
 
+
+dt=10
 # Length of the run in time steps
 tmax = p.tmax
 #surface gravity
@@ -166,7 +168,7 @@ for t in range(2,tmax):
     PhiF0=PhiFdata[t-2,:,:]
         
     
-    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,forcflag,PhiF0,F0,G0)
+    newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,diffflag,K4,forcflag,PhiF0,F0,G0)
     
     #write new data        
     zetadata[t,:,:]=newzeta
@@ -197,7 +199,7 @@ for t in range(2,tmax):
     PhiFdata[t,:,:]=PhiF
    
     
-    if t%25==0:
+    if t%10==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         if test==10:
             PhitoPlot=newPhi-Phibar

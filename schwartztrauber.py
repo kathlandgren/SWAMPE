@@ -287,7 +287,18 @@ def A24_A25(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
 
 
 def step7p5(Phi1,U1,V1,w,mus,J,M,musMAT,nMAT2,normnum):
-    
+    """Computes the Laplacian according to step 7.5 in Swarztrauber (1996)
+            
+        :param M: 
+        :type M: 
+        :param mus: 
+        :type mus:
+        
+        :return: 
+        :rtype: 
+        :return: 
+        :rtype: 
+        """
     PhiE=Phi1+np.multiply(0.5*(np.multiply(U1,U1)+np.multiply(V1,V1)),musMAT)
     lmax=M+1
     PhiElm = pysh.expand.SHExpandGLQ(PhiE, w, mus, norm=normnum,csphase=1,lmax_calc=lmax-1)
