@@ -83,38 +83,54 @@ Uic,Vic=ic.velocity_init(I,J,mus,lambdas,test,SU0,cosa,sina)
 # Viccos=np.multiply(Vic,musMAT)
 
 #testing the forward transfrom
-zetalm0 = np.multiply(1,pysh.expand.SHExpandGLQ(zetaic0, w, mus, norm=normnum,csphase=1,lmax_calc=M+1))
-zetacmn0 = np.transpose(zetalm0[0,:-1,:-1])
-zetasmn0 = np.transpose(zetalm0[1,:-1,:-1])
+Pmn,Hmn=rfl.PmnHmn(J, M, M, mus)
+zetamn=rfl.fwd_sht(zetaic0,I,J,M,Pmn,w)
+zetalm = pysh.expand.SHExpandGLQ(zetaic0, w, mus, norm=normnum,csphase=1,lmax_calc=M)
+# zetacmn0 = np.transpose(zetalm0[0,:-1,:-1])
+# zetasmn0 = np.transpose(zetalm0[1,:-1,:-1])
+
+#get wind field from delta, zeta
+zetalmPad=np.zeros((2,J,J))
+zetalmPad[0,:M+1,:M+1]=zetalm[0,:,:]
+zetalmPad[1,:M+1,:M+1]=zetalm[1,:,:]
 
 
-lmax=M+1
-zetacmnminus1 = np.zeros((lmax,lmax))
-zetacmnplus1 = np.zeros((lmax,lmax))
-zetasmnminus1 = np.zeros((lmax,lmax))
-zetasmnplus1 = np.zeros((lmax,lmax))
+zetanewSH=pysh.expand.MakeGridGLQ(zetalmPad, mus, norm=normnum)
 
 
-zetacmnminus1[:,1:] = np.transpose(zetalm0[0,:-2,:-1])
-zetacmnplus1[:,:] = np.triu(np.transpose(zetalm0[0,1:,:-1]))
-zetasmnminus1[:,1:] = np.transpose(zetalm0[1,:-2,:-1])
-zetasmnplus1[:,:] = np.triu(np.transpose(zetalm0[1,1:,:-1]))
+zetanew=rfl.invs_sht(zetamn,I,J,M,Pmn)
+
+# lmax=M+1
+# zetacmnminus1 = np.zeros((lmax,lmax))
+# zetacmnplus1 = np.zeros((lmax,lmax))
+# zetasmnminus1 = np.zeros((lmax,lmax))
+# zetasmnplus1 = np.zeros((lmax,lmax))
+
+
+# zetacmnminus1[:,1:] = np.transpose(zetalm0[0,:-2,:-1])
+# zetacmnplus1[:,:] = np.triu(np.transpose(zetalm0[0,1:,:-1]))
+# zetasmnminus1[:,1:] = np.transpose(zetalm0[1,:-2,:-1])
+# zetasmnplus1[:,:] = np.triu(np.transpose(zetalm0[1,1:,:-1]))
 
 
 zetatestmn=np.zeros((2,M+1,N+1))
+deltatestmn=np.zeros((2,M+1,N+1))
 
 #get delta, zeta coefficient from wind field
 
 brmn,bimn=S.A22_A23(Uic,Vic,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
 crmn,cimn=S.A24_A25(Uic,Vic,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
 
-zetatestmn[0,:-1,:]=brmn[1:,:]
-zetatestmn[1,:-1,:]=bimn[1:,:]
-#inverse transform
+# zetatestmn[0,:-1,:]=crmn[1:,:]
+# zetatestmn[1,:-1,:]=cimn[1:,:]
+
+# deltatestmn[0,:-1,:]=brmn[1:,:]
+# deltatestmn[1,:-1,:]=bimn[1:,:]
+# #inverse transform
 
 
 #zeta=S.A14(crmn,cimn,nMAT1,mus,M,J,normnum)
-zeta=S.A14(zetatestmn[0,:,:],zetatestmn[1,:,:],nMAT1,mus,M,J,normnum)
+zeta=S.A14(crmn,cimn,nMAT1,mus,M,J,normnum)
 delta=S.A15(brmn,bimn,nMAT1,mus,M,J,normnum)
 
 #get wind field from delta, zeta
@@ -122,8 +138,8 @@ Ulm=np.zeros((2,J,J))
 
 
 #cos 
-Ulm[0,0,0] = mnMAT3[0,0]*zetacmnplus1[0,0]
-Ulm[0,2,0] = -mnMAT3[0,0]*zetacmnplus1[0,0]
+# Ulm[0,0,0] = mnMAT3[0,0]*zetacmnplus1[0,0]
+# Ulm[0,2,0] = -mnMAT3[0,0]*zetacmnplus1[0,0]
 
 U=pysh.expand.MakeGridGLQ(Ulm, mus, norm=normnum)
 
@@ -131,22 +147,22 @@ U=pysh.expand.MakeGridGLQ(Ulm, mus, norm=normnum)
 #U,V=S.A20_A21(deltaic0,zetaic0,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum)
 
 
-#plotting
-plt.contourf(lambdas, mus, Uic-U)
-plt.colorbar()
-plt.title('error')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, Uic-U)
+# plt.colorbar()
+# plt.title('error')
+# plt.show()
 
-#plotting
-plt.contourf(lambdas, mus, Uic)
-plt.colorbar()
-plt.title('IC')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, Uic)
+# plt.colorbar()
+# plt.title('IC')
+# plt.show()
 
-plt.contourf(lambdas, mus, U)
-plt.colorbar()
-plt.title('Transform')
-plt.show()
+# plt.contourf(lambdas, mus, U)
+# plt.colorbar()
+# plt.title('Transform')
+# plt.show()
 
 
 #plotting
@@ -166,21 +182,25 @@ plt.colorbar()
 plt.title('zeta Transform')
 plt.show()
 
-
-# #plotting
-# plt.contourf(lambdas, mus, deltaic0-delta)
+# plt.contourf(lambdas, mus, zetanewSH)
 # plt.colorbar()
-# plt.title('delta error')
+# plt.title('zeta Transform')
 # plt.show()
 
-# #plotting
-# plt.contourf(lambdas, mus, deltaic0)
-# plt.colorbar()
-# plt.title('delta IC')
-# plt.show()
+#plotting
+plt.contourf(lambdas, mus, deltaic0-delta)
+plt.colorbar()
+plt.title('delta error')
+plt.show()
 
-# plt.contourf(lambdas, mus, delta)
-# plt.colorbar()
-# plt.title('delta Transform')
-# plt.show()
+#plotting
+plt.contourf(lambdas, mus, deltaic0)
+plt.colorbar()
+plt.title('delta IC')
+plt.show()
+
+plt.contourf(lambdas, mus, delta)
+plt.colorbar()
+plt.title('delta Transform')
+plt.show()
 

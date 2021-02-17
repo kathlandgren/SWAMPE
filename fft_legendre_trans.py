@@ -86,6 +86,21 @@ def PmnHmnSH(J,M,N,mus):
     return Pmn, Hmn
 
 
+def fwd_sht(data,I,J,M,Pmn,w):
+    step1=fwd_fft_trunc(data,I,M)
+    step2=fwd_leg(step1,J,M,M,Pmn,w)
+    
+    return step2
+    
+
+def invs_sht(datamn,I,J,M,Pmn):
+    
+    temp,step1=invrs_leg(datamn,I,J,M,M,Pmn)
+    step2=invrs_fft(step1,I)
+    
+    return step2
+    
+
 def fwd_leg(data,J,M,N,Pmn,w):
     """Calculates the forward legendre transform function
 
