@@ -75,8 +75,8 @@ def PmnHmnSH(J,M,N,mus):
     for j in range (0,J-1):
 
         Pmntemp[j,:], Hmntemp[j,:] = pysh.legendre.PlmBar_d1(lmax, mus[j])
-        Pmntemp[j,:]=0.5*Pmntemp[j,:] #rescale by 1/2 to match our factor
-        Hmntemp[j,:] = 0.5*(1-mus[j]**2)*Hmntemp[j,:]
+        Pmntemp[j,:]=Pmntemp[j,:] #rescale by 1/2 to match our factor
+        Hmntemp[j,:] = (1-mus[j]**2)*Hmntemp[j,:] #*0.5
         
     for m in range (0,M+1):
         for n in range (m,N+1):

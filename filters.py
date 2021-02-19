@@ -74,7 +74,7 @@ def sigmaPhi(M,N,K4,a,dt):
 
 
 def hyperviscfun(statevar,w,mus,J,M,musMAT,sigma,normnum,lmax):
-    """Computes the Laplacian according to step 7.5 in Swarztrauber (1996)
+    """Computes the hyperviscosity given sigma and state variable
             
         :param M: 
         :type M: 

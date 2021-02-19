@@ -10,6 +10,7 @@ This is the main SWAMP-E GCM script implementing the Swarztrauber (1996) scheme 
 
 # Import python packages
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Import program packages
 import params as p
@@ -29,8 +30,6 @@ M = p.M
 #get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w,normnum=ic.spectral_params(M)
 
-
-dt=10
 # Length of the run in time steps
 tmax = p.tmax
 #surface gravity
@@ -170,17 +169,27 @@ for t in range(2,tmax):
     
     newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,diffflag,K4,forcflag,PhiF0,F0,G0)
     
+    ##BAD CODING PRACTICES!!!
+    newPhi[0:20,:]=np.mean(newPhi)
+    newPhi[76:96,:]=np.mean(newPhi)
+
+    
+    
     #write new data        
-    zetadata[t,:,:]=newzeta
-    deltadata[t,:,:]=newdelta
+    #zetadata[t,:,:]=newzeta
+    zetadata[t,:,:]=zetaic0
+    deltadata[t,:,:]=deltaic0#newdelta
     Phidata[t,:,:]=newPhi
     
-    if modalflag==1 & t>2:
-        print(np.shape(Phidata[t-2:t,:,:]))
-        Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-2:t,:,:],alpha)
-        zetadata[t-1,:,:]=filters.modal_splitting(zetadata[t-2:t,:,:],alpha)
-        deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-2:t,:,:],alpha)
-        
+
+
+    if modalflag==1:
+        if t>2:
+            print(np.shape(Phidata[t-3:t,:,:]))
+            Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-3:t,:,:],alpha)
+            zetadata[t-1,:,:]=filters.modal_splitting(zetadata[t-3:t,:,:],alpha)
+            deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-3:t,:,:],alpha)
+    
         
     Udata[t-1,:,:]=newU
     Vdata[t-1,:,:]=newV
@@ -199,7 +208,7 @@ for t in range(2,tmax):
     PhiFdata[t,:,:]=PhiF
    
     
-    if t%10==0:
+    if t%25==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         if test==10:
             PhitoPlot=newPhi-Phibar
@@ -207,4 +216,8 @@ for t in range(2,tmax):
             PhitoPlot=newPhi
             
         testing_plots.quiver_geopot_plot(newU,newV,PhitoPlot,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
+        # plt.contourf(lambdas, mus, newzeta)
+        # plt.colorbar()
+        # plt.title('zeta IC')
+        # plt.show()
 testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)

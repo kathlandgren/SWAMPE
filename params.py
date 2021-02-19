@@ -10,14 +10,14 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=63 #the largest Fourier wave number
+M=42 #the largest Fourier wave number
 # N=M #highest degree of the Legendre functions for m=0
 # I=192 #length of array/ number of samples
 # J=96#int(np.ceil(I/2))
 
 
 #time-stepping parameters
-tmax=200 #number of time steps
+tmax=1000 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -62,7 +62,7 @@ elif test==10: # PBS Hot Jupiter
 #Hyperviscosity parameters
 diffflag=0
 #Modal Splitting Fiter 
-modalflag=0
+modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
