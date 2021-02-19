@@ -169,7 +169,7 @@ for t in range(2,tmax):
     
     newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,diffflag,K4,forcflag,PhiF0,F0,G0)
     
-    ##BAD CODING PRACTICES!!!
+    #BAD CODING PRACTICES!!!
     newPhi[0:20,:]=np.mean(newPhi)
     newPhi[76:96,:]=np.mean(newPhi)
 
@@ -177,18 +177,21 @@ for t in range(2,tmax):
     
     #write new data        
     #zetadata[t,:,:]=newzeta
-    zetadata[t,:,:]=zetaic0
-    deltadata[t,:,:]=deltaic0#newdelta
+    zetadata[t,:,:]=newzeta#zetaic0
+    deltadata[t,:,:]=newdelta#deltaic0#newdelta
     Phidata[t,:,:]=newPhi
     
 
 
     if modalflag==1:
         if t>2:
-            print(np.shape(Phidata[t-3:t,:,:]))
-            Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-3:t,:,:],alpha)
-            zetadata[t-1,:,:]=filters.modal_splitting(zetadata[t-3:t,:,:],alpha)
-            deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-3:t,:,:],alpha)
+            print(t-3)
+            print(t-2)
+        
+            print(np.shape(Phidata[t-2:t+1,:,:]))
+            Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-2:t+1,:,:],alpha)
+            zetadata[t-1,:,:]=filters.modal_splitting(zetadata[t-2:t+1,:,:],alpha)
+            deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-2:t+1,:,:],alpha)
     
         
     Udata[t-1,:,:]=newU
@@ -208,7 +211,7 @@ for t in range(2,tmax):
     PhiFdata[t,:,:]=PhiF
    
     
-    if t%25==0:
+    if t%31==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         if test==10:
             PhitoPlot=newPhi-Phibar

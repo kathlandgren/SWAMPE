@@ -19,6 +19,8 @@ def modal_splitting(Xidataslice,alpha):
     :rtype: list
     """
     newxi=Xidataslice[1,:,:]+alpha*(Xidataslice[0]-2*Xidataslice[1]+Xidataslice[2])
+    print(np.mean(Xidataslice[1:,:]))
+    print(np.mean(alpha*(Xidataslice[0]-2*Xidataslice[1]+Xidataslice[2])))
     return newxi
 
 def diffusion(Ximn,sigma):

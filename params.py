@@ -10,7 +10,7 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=42 #the largest Fourier wave number
+M=63 #the largest Fourier wave number
 # N=M #highest degree of the Legendre functions for m=0
 # I=192 #length of array/ number of samples
 # J=96#int(np.ceil(I/2))
@@ -29,7 +29,7 @@ test=1
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=0.05 #alpha from Test 1 and 2
+a1=0.0 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     forcflag=0
@@ -63,7 +63,7 @@ elif test==10: # PBS Hot Jupiter
 diffflag=0
 #Modal Splitting Fiter 
 modalflag=1
-alpha=0.01 #filter coefficient to prevent aliasing
+alpha=0.1 #filter coefficient to prevent aliasing
 
 #forcing parameters
 taurad=3600*24*100#in Earth days

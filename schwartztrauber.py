@@ -308,6 +308,8 @@ def step7p5(Phi1,U1,V1,w,mus,J,M,musMAT,nMAT2,normnum):
     
     PhiElmPad=np.zeros((2,J,J))
     PhiElmPad[0,:M+1,:M+1]=PhiElm[0,:,:]
+    print(np.shape(PhiElm[0,:,:]))
+    print(np.shape(PhiElmPad[0,:M+1,:M+1]))
     PhiElmPad[1,:M+1,:M+1]=PhiElm[1,:,:]
     
     deltaRHS2=pysh.expand.MakeGridGLQ(PhiElmPad, mus, norm=normnum)
