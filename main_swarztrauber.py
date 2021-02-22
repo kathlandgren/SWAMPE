@@ -170,8 +170,8 @@ for t in range(2,tmax):
     newdelta, newzeta, newPhi, newU, newV=tstep.tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w, mus,J,M,nMAT1,nMAT2,nMAT3,mnMAT1,mnMAT2,mnMAT3,mnMAT4,mnMAT5,musMAT,a,dt,Phibar, normnum,diffflag,K4,forcflag,PhiF0,F0,G0)
     
     #BAD CODING PRACTICES!!!
-    newPhi[0:20,:]=np.mean(newPhi)
-    newPhi[76:96,:]=np.mean(newPhi)
+    # newPhi[0:20,:]=np.mean(newPhi)
+    # newPhi[76:96,:]=np.mean(newPhi)
 
     
     

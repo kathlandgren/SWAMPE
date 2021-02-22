@@ -44,13 +44,16 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     if test==1: #reset the winds for testing advection
         U1=U0
         V1=V0
-        X=np.multiply(zeta1,V1) #deleted the COriolis force -- NOT SURE THIS IS RIGHT
-        Y=np.multiply(-zeta1,U1)
+        X=np.multiply(zeta1+f_latlon,V1) #deleted the COriolis force -- NOT SURE THIS IS RIGHT
+        Y=np.multiply(-zeta1-f_latlon,U1)
     else: 
         #7.1: fwrd transform zeta and delta    
         #7.2: get U, V from the above
+        
         U1,V1=S.A20_A21(delta1,zeta1,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum)
+        
         #7.3: make zeta and delta and forward transfrom, get RHS
+        
         X=np.multiply(zeta1+f_latlon,V1) #are we setting up the vorticity twice here? 
         Y=np.multiply(-(zeta1+f_latlon),U1)
         
@@ -61,12 +64,12 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     deltaRHS1=S.A15(brmn,bimn,nMAT1,mus,M,J,normnum)
     
     #7.4 get the geopotential RHS
-    X=np.multiply(Phi1,U1)
-    Y=np.multiply(Phi1,V1)
+    X2=np.multiply(Phi1,U0)
+    Y2=np.multiply(Phi1,V0)
     
-    brmn, bimn=S.A22_A23(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
-    
-    PhiRHS=S.A15(brmn,bimn,nMAT1,mus,M,J,normnum)
+    brmn2, bimn2=S.A22_A23(X2,Y2,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
+
+    PhiRHS=S.A15(brmn2,bimn2,nMAT1,mus,M,J,normnum)
     
     
     #7.5
@@ -77,8 +80,8 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
     #print(np.shape(musMAT))
     #print(np.shape(zetaRHS))
     #timestepping
-    zeta2=zeta0 +(2*dt)*(-np.multiply(acosMAT,zetaRHS))
-    delta2=delta0+(2*dt)*(np.multiply(acosMAT,deltaRHS1)-deltaRHS2/a**2)
+    zeta2=zeta0 #+(2*dt)*(-np.multiply(acosMAT,zetaRHS))
+    delta2=delta0#+(2*dt)*(np.multiply(acosMAT,deltaRHS1)-deltaRHS2/a**2)
     Phi2=Phi0+(2*dt)*(-np.multiply(acosMAT,PhiRHS))
     #Phi2=Phi0+(2*dt)*(-np.multiply(acosMAT,PhiRHS+Phibar*delta1))
     if forcflag==1:
@@ -99,7 +102,7 @@ def tstepping_latlon(test,U0,V0,delta0,delta1,zeta0,zeta1,f_latlon,Phi0,Phi1, w,
         sigma=filters.sigma(M,M,K4,a,dt)
         sigmaPhi=filters.sigmaPhi(M,M,K4,a,dt)
         deltaHV,zetaHV,PhiHV=filters.hyperviscfilter(delta2,zeta2,Phi2,a,K4,w,mus,J,M,musMAT,sigma,sigmaPhi,normnum,M+1)
-        
+    
         zeta2=zetaHV
         delta2=deltaHV
         Phi2=PhiHV        

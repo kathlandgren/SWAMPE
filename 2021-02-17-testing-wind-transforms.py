@@ -9,6 +9,7 @@ Created on Tue Feb 16 12:16:09 2021
 import numpy as np
 import matplotlib.pyplot as plt
 import pyshtools as pysh
+import scipy.signal
 
 # Import program packages
 import params as p
@@ -68,6 +69,12 @@ sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
 nMAT1, nMAT2, nMAT3, mnMAT1, mnMAT2, mnMAT3, mnMAT4, mnMAT5, musMAT=S.mnMATgen(I,J,M,N,mus)
 
 
+G=np.ones((M+1,M+1))
+
+for m in range(0,M+1):
+    for n in range(1,M+1):
+        G[m,n]=np.arctan(M/6-m/1.5)/np.pi+0.5
+        
 #Coriolis force
 f_latlon=ic.f_latlon(mus,lambdas,I,J,omega,a1,test)
 
@@ -86,6 +93,9 @@ Uic,Vic=ic.velocity_init(I,J,mus,lambdas,test,SU0,cosa,sina)
 Pmn,Hmn=rfl.PmnHmn(J, M, M, mus)
 zetamn=rfl.fwd_sht(zetaic0,I,J,M,Pmn,w)
 zetalm = pysh.expand.SHExpandGLQ(zetaic0, w, mus, norm=normnum,csphase=1,lmax_calc=M)
+
+q=2
+# zetalm=scipy.signal.decimate(zetalm,q)
 # zetacmn0 = np.transpose(zetalm0[0,:-1,:-1])
 # zetasmn0 = np.transpose(zetalm0[1,:-1,:-1])
 
@@ -93,6 +103,8 @@ zetalm = pysh.expand.SHExpandGLQ(zetaic0, w, mus, norm=normnum,csphase=1,lmax_ca
 zetalmPad=np.zeros((2,J,J))
 zetalmPad[0,:M+1,:M+1]=zetalm[0,:,:]
 zetalmPad[1,:M+1,:M+1]=zetalm[1,:,:]
+# zetalmPad[0,:M+1,:32]=zetalm[0,:,:]
+# zetalmPad[1,:M+1,:32]=zetalm[1,:,:]
 
 
 zetanewSH=pysh.expand.MakeGridGLQ(zetalmPad, mus, norm=normnum)
@@ -119,7 +131,20 @@ deltatestmn=np.zeros((2,M+1,N+1))
 #get delta, zeta coefficient from wind field
 
 brmn,bimn=S.A22_A23(Uic,Vic,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
+ 
 crmn,cimn=S.A24_A25(Uic,Vic,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
+
+# crmn=np.multiply(G,crmn)
+# cimn=np.multiply(G,cimn)
+
+
+crmnnew=np.zeros((M+1,M+1))
+
+for i in range(M+1):
+    for j in range(M):
+        crmnnew[i,j]=crmn[i,j+1]
+        print(crmnnew[i,j])
+#crmn=crmnnew
 
 # zetatestmn[0,:-1,:]=crmn[1:,:]
 # zetatestmn[1,:-1,:]=cimn[1:,:]
@@ -130,7 +155,7 @@ crmn,cimn=S.A24_A25(Uic,Vic,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum)
 
 
 #zeta=S.A14(crmn,cimn,nMAT1,mus,M,J,normnum)
-zeta=S.A14(crmn,cimn,nMAT1,mus,M,J,normnum)
+zeta=S.A14(crmnnew,cimn,nMAT1,mus,M,J,normnum)
 delta=S.A15(brmn,bimn,nMAT1,mus,M,J,normnum)
 
 #get wind field from delta, zeta
@@ -187,20 +212,20 @@ plt.show()
 # plt.title('zeta Transform')
 # plt.show()
 
-#plotting
-plt.contourf(lambdas, mus, deltaic0-delta)
-plt.colorbar()
-plt.title('delta error')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, deltaic0-delta)
+# plt.colorbar()
+# plt.title('delta error')
+# plt.show()
 
-#plotting
-plt.contourf(lambdas, mus, deltaic0)
-plt.colorbar()
-plt.title('delta IC')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, deltaic0)
+# plt.colorbar()
+# plt.title('delta IC')
+# plt.show()
 
-plt.contourf(lambdas, mus, delta)
-plt.colorbar()
-plt.title('delta Transform')
-plt.show()
+# plt.contourf(lambdas, mus, delta)
+# plt.colorbar()
+# plt.title('delta Transform')
+# plt.show()
 

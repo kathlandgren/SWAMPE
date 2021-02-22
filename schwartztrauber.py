@@ -13,6 +13,13 @@ import numpy as np
 #import testing_plots
 import pyshtools as pysh
 
+###MOVE THIS LATER
+import params as p
+
+
+
+        
+
 def mnMATgen(I,J,M,N,mus):
     
     nMAT1=np.zeros((M+1,N+1))
@@ -79,7 +86,10 @@ def A14(zetarmn,zetaimn,nMAT1,mus,M,J,normnum):
     zetarmnscaled=np.multiply(nMAT1,zetarmn)
     zetaimnscaled=np.multiply(nMAT1,zetaimn)
 
-    #zetamnscaled=np.zeros((2,M+1,M+1))  
+    #zetamnscaled=np.zeros((2,M+1,M+1))
+
+    
+    
     zetamnscaled=np.zeros((2,J,J))
     zetamnscaled[0,:M+1,:M+1] = np.transpose(zetarmnscaled)
     zetamnscaled[1,:M+1,:M+1] = np.transpose(zetaimnscaled)
@@ -94,6 +104,8 @@ def A15(deltarmn,deltaimn,nMAT1,mus,M,J,normnum):
     
     deltarmnscaled=np.multiply(nMAT1,deltarmn)
     deltaimnscaled=np.multiply(nMAT1,deltaimn)
+    
+
 
     #deltamnscaled=np.zeros((2,M+1,M+1))  
     deltamnscaled=np.zeros((2,J,J)) #padding so that shtools give us the correct dimensions for lat lon
@@ -170,6 +182,9 @@ def A20_A21(delta,zeta,M,nMAT3,mnMAT1,mnMAT2,mnMAT3,w,mus,J,normnum):
     Vmn[1,:,:] = np.multiply(mnMAT1,zetacmn) - np.multiply(mnMAT2,deltasmnminus1) + np.multiply(mnMAT3,deltasmnplus1)
     
     
+
+    
+    
     #include 0-padding and transpose for SHtools calculation
     Ulm[0,:lmax,:lmax]=np.transpose(Umn[0,:,:])
     Ulm[1,:lmax,:lmax]=np.transpose(Umn[1,:,:])
@@ -200,12 +215,6 @@ def A22_A23(U,V,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
         """
     lmax = M+1
     
-    # Ycmnminus1 = np.zeros((lmax,lmax))
-    # Ycmnplus1 = np.zeros((lmax,lmax))
-    # Ysmnminus1 = np.zeros((lmax,lmax))
-    # Ysmnplus1 = np.zeros((lmax,lmax))
-    
-    
     VCmnminus1 = np.zeros((lmax,lmax))
     VCmnplus1 = np.zeros((lmax,lmax))
     VSmnminus1 = np.zeros((lmax,lmax))
@@ -226,12 +235,6 @@ def A22_A23(U,V,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
     
     Vlm = pysh.expand.SHExpandGLQ(V, w, mus, norm=normnum,lmax_calc=lmax)  
 
-    
-    # Ycmnminus1[:,1:] = np.transpose(Ylm[0,:-2,:-1])
-    # Ycmnplus1[:,:] = np.transpose(Ylm[0,1:,:-1])
-    # Ysmnminus1[:,1:] = np.transpose(Ylm[1,:-2,:-1])
-    # Ysmnplus1[:,:] = np.transpose(Ylm[1,1:,:-1])
-    
     VCmnminus1[:,1:] = np.transpose(Vlm[0,:-2,:-1]) #last component is the M, :-1 in the third component is because SHTOOLS does only square things
     VCmnplus1[:,:] = np.transpose(Vlm[0,1:,:-1])
     VSmnminus1[:,1:] = np.transpose(Vlm[1,:-2,:-1])
@@ -264,6 +267,8 @@ def A24_A25(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
     crmn = np.zeros((lmax,lmax))
     cimn = np.zeros((lmax,lmax))
     
+    
+    
     # #Scale by 1/1-mu^2
     # X=np.multiply(X,musMAT)
     # Y=np.multiply(Y,musMAT)
@@ -281,6 +286,7 @@ def A24_A25(X,Y,M,mnMAT1,mnMAT4,mnMAT5,musMAT,w,mus,normnum):
     
     crmn = np.multiply(mnMAT4,Xcmnminus1) - np.multiply(mnMAT5,Xcmnplus1) + np.multiply(mnMAT1,Ysmn)
     cimn = np.multiply(mnMAT4,Xsmnminus1) - np.multiply(mnMAT5,Xsmnplus1) - np.multiply(mnMAT1,Ycmn)
+
                 
     return crmn, cimn
 
@@ -304,12 +310,10 @@ def step7p5(Phi1,U1,V1,w,mus,J,M,musMAT,nMAT2,normnum):
     PhiElm = pysh.expand.SHExpandGLQ(PhiE, w, mus, norm=normnum,csphase=1,lmax_calc=lmax-1)
     
     PhiElm[0,:,:]=np.multiply(np.transpose(-nMAT2),PhiElm[0,:,:])
-    PhiElm[1,:,:]=np.multiply(np.transpose(-nMAT2),PhiElm[1,:,:])
+    PhiElm[1,:,:]=np.multiply(np.transpose(-nMAT2),PhiElm[1,:,:])    
     
     PhiElmPad=np.zeros((2,J,J))
     PhiElmPad[0,:M+1,:M+1]=PhiElm[0,:,:]
-    print(np.shape(PhiElm[0,:,:]))
-    print(np.shape(PhiElmPad[0,:M+1,:M+1]))
     PhiElmPad[1,:M+1,:M+1]=PhiElm[1,:,:]
     
     deltaRHS2=pysh.expand.MakeGridGLQ(PhiElmPad, mus, norm=normnum)
