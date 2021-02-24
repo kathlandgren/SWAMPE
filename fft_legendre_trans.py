@@ -75,8 +75,8 @@ def PmnHmnSH(J,M,N,mus):
     for j in range (0,J-1):
 
         Pmntemp[j,:], Hmntemp[j,:] = pysh.legendre.PlmBar_d1(lmax, mus[j])
-        Pmntemp[j,:]=Pmntemp[j,:] #rescale by 1/2 to match our factor
-        Hmntemp[j,:] = (1-mus[j]**2)*Hmntemp[j,:] #*0.5
+        Pmntemp[j,:]=0.5*Pmntemp[j,:] #rescale by 1/2 to match our factor
+        Hmntemp[j,:] = 0.5*(1-mus[j]**2)*Hmntemp[j,:]
         
     for m in range (0,M+1):
         for n in range (m,N+1):
@@ -85,21 +85,6 @@ def PmnHmnSH(J,M,N,mus):
                 
     return Pmn, Hmn
 
-
-def fwd_sht(data,I,J,M,Pmn,w):
-    step1=fwd_fft_trunc(data,I,M)
-    step2=fwd_leg(step1,J,M,M,Pmn,w)
-    
-    return step2
-    
-
-def invs_sht(datamn,I,J,M,Pmn):
-    
-    temp,step1=invrs_leg(datamn,I,J,M,M,Pmn)
-    step2=invrs_fft(step1,I)
-    
-    return step2
-    
 
 def fwd_leg(data,J,M,N,Pmn,w):
     """Calculates the forward legendre transform function

@@ -58,19 +58,15 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 forcflag=p.forcflag
 diffflag=p.diffflag
 zeroflag=p.zeroflag
-qvec=filters.q(M, N)
 sigma=filters.sigma(M,N,K4,a,dt)
 sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
-#sigma=filters.sigmaSV(M, N, qvec, a, dt)
-#sigmaPhi=filters.sigmaPhiSV(M, N, qvec, a, dt)
 modalflag=p.modalflag
 if modalflag==1:
     alpha=p.alpha
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
-# SU0, sina, cosa, etaamp=ic.test1_init(a, omega, a1)
-SU0, sina, cosa, etaamp, Phiamp =ic.test1_init(a, omega, a1)
+SU0, sina, cosa, etaamp=ic.test1_init(a, omega, a1)
 
     
 #orthogterms=rfl.orthogterms(M, N)
@@ -149,12 +145,10 @@ Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
 
 ## Set the initial conditions 
 
-# etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
-# Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
-# Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
-etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,g,omega,a,sina,cosa,etaamp,Phiamp,Phibar,test)
+etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
 Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
 Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
+
 
 ## Store initial conditions in the data arrays files for easy access
 etadata[0,:,:]=etaic0
@@ -273,20 +267,11 @@ Phimndata[1,:,:]=rfl.fwd_leg(Phimdata[1,:,:],J,M,N,Pmn,w)
 ####
 
 ## time-stepping inputs
+
+
 fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-fMAT=np.zeros((J,I))
-if test==1:
-    fmn[0,1]=omega/np.sqrt(0.375)
-elif test==2:   
-    for i in range(I):
-        for j in range(J):
-                fMAT[j,i]=-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*np.sin(a1)+(mus[j])*np.cos(a1)
-    fMAT=fMAT*2*omega
-    fmMAT = rfl.fwd_fft_trunc(fMAT, I, M)
-    fmn = rfl.fwd_leg(fmMAT,J,M,N,Pmn,w)
-    
-    
-    
+fmn[0,1]=omega/np.sqrt(0.375)
+
 tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
 tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
 tstepcoeff2=tstep.tstepcoeff2(J,M,dt,a)
@@ -386,7 +371,7 @@ for t in range(2,tmax):
     G[Q<0]=0
    
     
-    if t%10==0:
+    if t%2==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
         # testing_plots.physical_plot(newdelta-newdelta1, mus, lambdas)
@@ -417,7 +402,6 @@ for t in range(2,tmax):
     Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
     
     
-    
 # ####
 # #Plotting
 # ####
@@ -427,7 +411,7 @@ for t in range(2,tmax):
 # testing_plots.state_var_compare(Udata[0,:,:], Udata[tmax-1,:,:], p.lambdas, p.mus)
 # testing_plots.state_var_compare(Vdata[0,:,:], Vdata[tmax-1,:,:], p.lambdas, p.mus)
     
-# testing_plots.physical_plot(Phidata[tmax-1,:,:], mus, lambdas)
+testing_plots.physical_plot(Phidata[tmax-1,:,:], mus, lambdas)
 
 
 

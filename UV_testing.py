@@ -1,9 +1,21 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Aug 18 13:18:44 2020
+
+@author: ek672
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Aug  3 16:15:17 2020
+
+@author: ek672
+"""
 
 
 
 import numpy as np
 import scipy.special as sp
-import initial_conditions as ic
 import matplotlib.pyplot as plt
 import math
 
@@ -19,73 +31,50 @@ import testing_plots
 
 ################ PARAMS #####################
 #Spectral parameters
-M=106 #the largest Fourier wave number
-N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
+M=p.M #the largest Fourier wave number
+N=M #highest degree of the Legendre functions for m=0
+K=N+M #highest degree of the Legendre functions
+I=p.I #length of array/ number of samples
+J=p.J
 
-test=p.test
-g=p.g
-omega=p.omega
-a1=p.a1
-a=p.a
-Phibar=p.Phibar
-SU0, sina, cosa, etaamp, Phiamp=ic.test1_init(a, omega, a1)
 lambdas=np.linspace(0, 2*np.pi, num=I) #longitudes
 [mus,w]=sp.roots_legendre(J) #Gaussian latitudes and weights
 
 Pmn, Hmn= rfl.PmnHmn(J, M, N, mus)
 
 
-# Hmnrecur=np.zeros(np.shape(Hmn))
-# epsmn=np.zeros((M+2,N+2))
+Hmnrecur=np.zeros(np.shape(Hmn))
+epsmn=np.zeros((M+2,N+2))
 
-# Pmnlarge,Hmnlarge=rfl.PmnHmn(J,M+1,N+1,mus)
-
-
-# for m in range(M+2):
-#     for n in range(m,N+2):
-#         epsmn[m,n]=np.sqrt((n**2-m**2)/(4*n**2-1))
+Pmnlarge,Hmnlarge=rfl.PmnHmn(J,M+1,N+1,mus)
 
 
-# for j in range(J):
-#     for m in range(M+1):
-#         for n in range(m,N+1):
-#             Hmnrecur[j,m,n]=-n*epsmn[m,n+1]*Pmnlarge[j,m,n+1]+(n+1)*epsmn[m,n]*Pmnlarge[j,m,n-1]
+for m in range(M+2):
+    for n in range(m,N+2):
+        epsmn[m,n]=np.sqrt((n**2-m**2)/(4*n**2-1))
 
 
-# plt.plot(mus,Hmn[:,1,5])
-# plt.plot(mus,Hmnrecur[:,1,5])
+for j in range(J):
+    for m in range(M+1):
+        for n in range(m,N+1):
+            Hmnrecur[j,m,n]=-n*epsmn[m,n+1]*Pmnlarge[j,m,n+1]+(n+1)*epsmn[m,n]*Pmnlarge[j,m,n-1]
 
-# fmn=np.zeros([M+1,N+1])
-# fmn[0,1]=p.omega/np.sqrt(0.375)
+
+plt.plot(mus,Hmn[:,1,5])
+plt.plot(mus,Hmnrecur[:,1,5])
+
+fmn=np.zeros([M+1,N+1])
+fmn[0,1]=p.omega/np.sqrt(0.375)
 
 
-# test,fm=rfl.invrs_leg(fmn,I,J,M,N,Pmn)
-# f=rfl.invrs_fft(fm,I)
+test,fm=rfl.invrs_leg(fmn,I,J,M,N,Pmn)
+f=rfl.invrs_fft(fm,I)
 # tstepcoeffmn=tstepping_new.tstepcoeffmn(M,N,p.a)
-etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I, J, mus, lambdas, g, omega, a, sina, cosa, etaamp, Phiamp, Phibar, test)
-
-deltam=rfl.fwd_fft_trunc(deltaic0,I,M)
-deltamn=rfl.fwd_leg(deltam,J,M,N,Pmn,w)
-etam=rfl.fwd_fft_trunc(etaic0,I,M)
-etamn=rfl.fwd_leg(etam,J,M,N,Pmn,w)
 
 
-fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-fmn[0,1]=omega/np.sqrt(0.375)
-tstepcoeffmn=tstepping_new.tstepcoeffmn(M,N,a)
-marray=tstepping_new.marray(M, N)
-UfromSV,VfromSV=rfl.invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
 
-Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
+# #### INITIAL CONDITIONS ####
 
-
-Um=rfl.fwd_fft_trunc(UfromSV,I,M)
-Vm=rfl.fwd_fft_trunc(VfromSV,I,M)
-tstepcoeff=tstepping_new.tstepcoeff(J, M, dt, mus, a)
-mJarray=tstepping_new.mJarray(J, M)
-neweta,newdelta,etamn,deltamn=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
-
-    
 
 # etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J)
 # Uic,Vic=ic.velocity_init(I,J)

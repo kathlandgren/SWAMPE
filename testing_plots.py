@@ -13,7 +13,6 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import imageio
 import matplotlib.ticker as ticker
-import matplotlib.colors as colors
 
 def spectral_plot(plotdata):
     """Generates plots for the spectral space with dimensions M, N
@@ -87,35 +86,6 @@ def fourier_plot(plotdata,mus):
     ax.set_ylabel('$\mu$', fontsize=20, rotation = 0)
     
     plt.show()
-
-    
-def spinup_plot(plotdata,tmax,dt,test,a1):
-    """
-
-    :param plotdata: first variable, JxM+1 
-    :type statevar1: float
-
-    
-    """
-    t = np.linspace(0, dt*tmax/3600, tmax, endpoint=True)
-    
-    plt.plot(t, plotdata[:,0])
-    plt.plot(t, plotdata[:,1])
-    
-    plt.xlabel('time (hours)')
-    plt.ticklabel_format(axis='both', style='sci')
-    plt.ylabel('RMS Winds')
-    
-    plt.ticklabel_format(axis='both', style='sci')
-    
-    if test<3:
-        plt.title('test='+str(test)+', alpha='+str(a1))
-    else:
-        plt.title('test= Hot Jupiter')
-    plt.show()
-    
-    plt.show()
-
     
 def fmt(x, pos):
         a, b = '{:.2e}'.format(x).split('e')
@@ -146,30 +116,6 @@ def physical_plot(plotdata,mus,lambdas):
     
     plt.show()
     
-    
-def physical_plot_latlon(plotdata,lat,lon):
-    """Generates plots for the fourier space with dimensions J, M
-
-    :param plotdata: first variable, JxM+1 
-    :type statevar1: float
-
-    
-    """
-    ## Plot the approximation 
-    fig= plt.figure()
-    
-    # Make data.
-    #X = lambdas*180/np.pi
-    #Y = np.arcsin(mus)*180/np.pi
-    X, Y = np.meshgrid(lon,lat)
-    
-    # Plot the surface.
-    cp = plt.contourf(X, Y, plotdata,30)
-    norm = mpl.colors.Normalize(vmin=0, vmax=5*10**6)
-    cb = plt.colorbar(cp,format=ticker.FuncFormatter(fmt),norm=norm)
-    #cb.set_clim(0, 5*10**(6))
-    
-    plt.show()
     
 
 
@@ -306,7 +252,7 @@ def write_2D_gif(lambdas,mus,Xidata,tmax,frms,string):
     #kwargs_write = {'fps':1.0, 'quantizer':'nq'}
     imageio.mimsave('./'+string, [plot_for_offset_2D(i,lambdas,mus,Xidata) for i in range(tmax)], fps=frms)
     
-def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxlevel):
+def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness):
     U=U[t,:,:]
     V=V[t,:,:]
     Phi=Phi[t,:,:]
@@ -318,13 +264,8 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxle
     #X, Y = np.meshgrid(X, Y)
     
     # Plot the surface.
-    plt.contourf(X, Y, (Phi))
-    #plt.colorbar(extend='both')
-
-    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
-    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
-    
-    colorbar = plt.colorbar(CS)
+    plt.contourf(X, Y, Phi,30)
+    cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
     
     Xsparse=X[0::sparseness]
     Ysparse=Y[0::sparseness]
@@ -336,7 +277,7 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxle
     # ax.quiver(X,Y,U,V)
     # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
-    plt.title('t='+str(t)+', test='+str(test)+', alpha='+str(a1))
+    plt.title('t='+str(t))
     plt.show()
     # IMPORTANT ANIMATION CODE HERE
     # Used to keep the limits constant
@@ -349,7 +290,7 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness,test,a1,minlevel,maxle
     return image
 
 
-def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,tmax,frms,string,sparseness,test,a1,minlevel,maxlevel):
+def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,tmax,frms,string,sparseness):
     """ Writes a .gif file using the plot_for_offset function
     :param z_max: max plot height
     :type z_max: float
@@ -367,7 +308,7 @@ def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,tmax,frms,string,sparseness
     :type string: string
     """
     #kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-    imageio.mimsave('./'+string, [quiver_for_offset_2D(Udata,Vdata,Phidata,lambdas,mus,i,sparseness,test,a1,minlevel,maxlevel) for i in range(tmax)], fps=frms)
+    imageio.mimsave('./'+string, [quiver_for_offset_2D(Udata,Vdata,Phidata,lambdas,mus,i,sparseness) for i in range(tmax)], fps=frms)
 # # def gif_contour():
 # #     # Generate grid for plotting
 # #     X = lambdas
@@ -409,29 +350,16 @@ def quiver_plot(U,V,lambdas,mus,sparseness):
     
     plt.show()
     
-
     
-def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxlevel):
+def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,sparseness):
     
     X = lambdas*180/np.pi
     Y = np.arcsin(mus)*180/np.pi
     #X, Y = np.meshgrid(X, Y)
     
     # Plot the surface.
-
-    plt.contourf(X, Y, (Phi))
-    #plt.colorbar(extend='both')
-
-    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
-    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
-    
-    colorbar = plt.colorbar(CS)
-
-    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
- 
-
-    #plt.colorbar(extend='both')
-    #plt.clim(0, 10**4)
+    plt.contourf(X, Y, Phi,30)
+    cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
     
     Xsparse=X[0::sparseness]
     Ysparse=Y[0::sparseness]
@@ -443,11 +371,7 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     # ax.quiver(X,Y,U,V)
     # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
-    
-    if test<3:
-        plt.title('t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
-    else:
-        plt.title('t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+    plt.title('t='+str(t))
     plt.show()
         
 #     fig = plt.figure()
