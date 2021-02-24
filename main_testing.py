@@ -57,7 +57,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 forcflag=p.forcflag
 diffflag=p.diffflag
-zeroflag=p.zeroflag
+
 sigma=filters.sigma(M,N,K4,a,dt)
 sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
 modalflag=p.modalflag
@@ -353,8 +353,8 @@ for t in range(2,tmax):
     neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
     
     
-    if zeroflag==1:
-        newPhi[newPhi<-1000]=-1000
+    # if zeroflag==1:
+    #     newPhi[newPhi<-1000]=-1000
     
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
     deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
