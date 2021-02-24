@@ -145,7 +145,14 @@ Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
 
 ## Set the initial conditions 
 
-etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
+#etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
+
+if test==1:
+    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar)
+    
+elif test==10:
+    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp)
+
 Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
 Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
 
@@ -352,9 +359,6 @@ for t in range(2,tmax):
     
     neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
     
-    
-    # if zeroflag==1:
-    #     newPhi[newPhi<-1000]=-1000
     
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
     deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)

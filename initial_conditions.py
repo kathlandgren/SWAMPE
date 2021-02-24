@@ -11,30 +11,21 @@ import numpy as np
 import scipy.special as sp
 
 #local imports
-import params as p
+#import params as p
 import pyshtools as pysh
-#testfun1=np.outer(np.sin(2*p.mus)**2,np.cos(p.lambdas))
-#testfun=np.outer(np.sqrt(1-p.mus**2),np.cos(p.lambdas))
 
-#new variables from init.i 
-SU0=2.0*np.pi*p.a/(3600.0*24*12) 
-a1=p.a1
-sina=np.sin(a1)
-cosa=np.cos(a1)
-etaamp=2.0*(SU0/p.a+p.omega) 
-
-#eta amplitude
 
 def test1_init(a,omega,a1):
-    SU0=2.0*np.pi*a/(3600.0*24*12)
-    sina=np.sin(a1)
-    cosa=np.cos(a1)
-    etaamp=2.0*(SU0/a+omega)
+    #Parameters for Test 1 in Williamson et al. (1992)
+    SU0=2.0*np.pi*a/(3600.0*24*12) 
+    sina=np.sin(a1) #sine of the angle of advection
+    cosa=np.cos(a1)  #cosine of the angle of advection
+    etaamp = 2.0*((SU0/a)+omega) #relative vorticity amplitude
+    #Phiamp = (SU0*a*omega + 0.5*SU0**2) #geopotential height amplitude
     
-    return SU0, sina, cosa, etaamp
-    
+    return SU0, sina, cosa, etaamp#, Phiamp
 
-def state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test):
+def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     """Initializes the state variables
     :param I: number of longitudes
     :type I: int
@@ -47,7 +38,10 @@ def state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test):
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))
+    
+
     if test==1:
+        a,sina,cosa,Phibar=args
         bumpr=a/3 #radius of the bump
         mucenter=0
         lambdacenter=3*np.pi/2
@@ -55,11 +49,11 @@ def state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test):
             for j in range(J):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa)
                
-                dist=p.a*np.arccos(mucenter*mus[j]+np.cos(np.arcsin(mucenter))*np.cos(np.arcsin(mus[j]))*np.cos(lambdas[i]-lambdacenter))
+                dist=a*np.arccos(mucenter*mus[j]+np.cos(np.arcsin(mucenter))*np.cos(np.arcsin(mus[j]))*np.cos(lambdas[i]-lambdacenter))
                 if dist < bumpr:
-                    Phiic0[j,i]=(p.Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
+                    Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
     
-    else:
+    elif test==10:
         for i in range(I):
             for j in range(J):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
@@ -73,6 +67,7 @@ def state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test):
 
 def spectral_params(M):
     N=M
+    #set dimensions according to Jakob and Hack (1993), Tables 1, 2, and 3
     if M==42:
         J=64
         I=128
@@ -107,14 +102,13 @@ def spectral_params(M):
 
     
     lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
-    # [mus,w]=sp.roots_legendre(J)
+    [mus,w]=sp.roots_legendre(J)
     
-    mus_SH, w_SH = pysh.expand.SHGLQ(N)
+    #mus_SH, w_SH = pysh.expand.SHGLQ(N)
     # Sine of the latitude
-    mus = mus_SH# p.mus #need negative to correspond to the transform
+    #mus = mus_SH# p.mus #need negative to correspond to the transform
     # Weights for integrating
-    w = w_SH# p.w
-
+    #w = w_SH# p.w
         
     return N,I,J,dt,K4,lambdas,mus,w
 
@@ -139,11 +133,11 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
                 
                 Uic[j,i]=SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)*np.cos(np.arcsin(mus[j])) #assign according to init.f
                 Vic[j,i]=-SU0*np.sin(lambdas[i])*sina*np.cos(np.arcsin(mus[j]))
-    elif test==2:
+    elif test==10:
         for i in range(I):
             for j in range(J):
-                Uic[j,i]=0 #SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)#assign according to init.f
-                Vic[j,i]=-SU0*np.sin(lambdas[i])*sina
+                Uic[j,i]=0#SU0*(np.cos(np.arcsin(mus[j]))*1 +mus[j]*np.cos(lambdas[i])*0)#assign according to init.f
+                Vic[j,i]=0#-SU0*np.sin(lambdas[i])*0
     return Uic, Vic
 
 def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
