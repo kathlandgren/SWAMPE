@@ -10,7 +10,7 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=63 #the largest Fourier wave number
+M=106 #the largest Fourier wave number
 
 #time-stepping parameters
 tmax=500#864 #number of time steps
@@ -88,9 +88,8 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
-taurad=3600*24*10 #in Earth days
+taurad=3600*24*0.01 #in Earth days
 taudrag=3600*24*100 #if set to -1, means infinity
 
-Dheq=Phibar/g
 DPhieq=Phibar
 

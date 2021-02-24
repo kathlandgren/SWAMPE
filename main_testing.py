@@ -50,7 +50,7 @@ taudrag=p.taudrag
 Phibar=p.Phibar
 #the difference in radiative-equilibrium thickness between the substellar point and the nightside
 DPhieq=p.DPhieq
-Dheq=p.Dheq
+
 #rotation rate of the planet, radians per second
 omega=p.omega
 #planetary radius, meters
@@ -163,21 +163,6 @@ Edata[1,:,:]=Eic
 
 #### Forcing ####
 
-#heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
-# Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
-# Phiforcingdata[1,:,:]=g*forcing.Qfun(heq, Phiic1, Phibar, taurad, g)
-
-# Qic=forcing.Qfun(heq, Phiic0, Phibar,taurad,g)
-
-# F=-np.divide(np.multiply(Uic,Qic),(Phiic0+Phibar)/g)
-# F[Qic<0]=0
-# Fdata[0,:,:]=F
-# Fdata[1,:,:]=Fdata[0,:,:]
-# G=-np.divide(np.multiply(Vic,Qic),(Phiic0+Phibar)/g)
-# G[Qic<0]=0
-# Gdata[0,:,:]=G
-# Gdata[1,:,:]=Gdata[0,:,:]
-
 
 Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
 Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
@@ -206,59 +191,59 @@ Gdata[1,:,:]=Gdata[0,:,:]
     
 
 Amdata[0,:,:]=rfl.fwd_fft_trunc(Aic, I, M)
-Amdata[1,:,:]=rfl.fwd_fft_trunc(Aic, I, M)
+Amdata[1,:,:]=Amdata[0,:,:]
 
 Bmdata[0,:,:]=rfl.fwd_fft_trunc(Bic, I, M)
-Bmdata[1,:,:]=rfl.fwd_fft_trunc(Bic, I, M)
+Bmdata[1,:,:]=Bmdata[0,:,:]
 
 Cmdata[0,:,:]=rfl.fwd_fft_trunc(Cic, I, M)
-Cmdata[1,:,:]=rfl.fwd_fft_trunc(Cic, I, M)
+Cmdata[1,:,:]=Cmdata[0,:,:]
 
 Dmdata[0,:,:]=rfl.fwd_fft_trunc(Dic, I, M)
-Dmdata[1,:,:]=rfl.fwd_fft_trunc(Dic, I, M)
+Dmdata[1,:,:]=Dmdata[0,:,:]
 
 Emdata[0,:,:]=rfl.fwd_fft_trunc(Eic, I, M)
-Emdata[1,:,:]=rfl.fwd_fft_trunc(Eic, I, M)
+Emdata[1,:,:]=Emdata[0,:,:]
 
 etamdata[0,:,:]=rfl.fwd_fft_trunc(etaic0, I, M)
-etamdata[1,:,:]=rfl.fwd_fft_trunc(etaic1, I, M)
+etamdata[1,:,:]=etamdata[0,:,:]
 
-deltamdata[0,:,0:M+1]=rfl.fwd_fft_trunc(deltaic0, I, M)
-deltamdata[1,:,0:M+1]=rfl.fwd_fft_trunc(deltaic1, I, M)
+deltamdata[0,:,:]=rfl.fwd_fft_trunc(deltaic0, I, M)
+deltamdata[1,:,:]=deltamdata[0,:,:]
 
-Phimdata[0,:,0:M+1]=rfl.fwd_fft_trunc(Phiic0, I, M)
-Phimdata[1,:,0:M+1]=rfl.fwd_fft_trunc(Phiic1, I, M)
+Phimdata[0,:,:]=rfl.fwd_fft_trunc(Phiic0, I, M)
+Phimdata[1,:,:]=Phimdata[0,:,:]
 
 
 ## Forcing Fourier transform ##
 
 Phiforcingmdata[0,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[0,:,:], I, M)
-Phiforcingmdata[1,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[1,:,:], I, M)
+Phiforcingmdata[1,:,:]=Phiforcingmdata[0,:,:]
 
 Fmdata[0,:,:]=rfl.fwd_fft_trunc(Fdata[0,:,:], I, M)
-Fmdata[1,:,:]=rfl.fwd_fft_trunc(Fdata[1,:,:], I, M)
+Fmdata[1,:,:]=Fmdata[0,:,:]
 
 Gmdata[0,:,:]=rfl.fwd_fft_trunc(Gdata[0,:,:], I, M)
-Gmdata[1,:,:]=rfl.fwd_fft_trunc(Gdata[1,:,:], I, M)
+Gmdata[1,:,:]=Gmdata[0,:,:]
 
 Umdata[0,:,:]=rfl.fwd_fft_trunc(Udata[0,:,:], I, M)
-Umdata[1,:,:]=rfl.fwd_fft_trunc(Udata[1,:,:], I, M)
+Umdata[1,:,:]=Umdata[0,:,:]
 
 Vmdata[0,:,:]=rfl.fwd_fft_trunc(Vdata[0,:,:], I, M)
-Vmdata[1,:,:]=rfl.fwd_fft_trunc(Vdata[1,:,:], I, M)
+Vmdata[1,:,:]=Vmdata[0,:,:]
 
 
 
 ## Forward Legendre
 
 etamndata[0,:,:]=rfl.fwd_leg(etamdata[0,:,:],J,M,N,Pmn,w)
-etamndata[1,:,:]=rfl.fwd_leg(etamdata[1,:,:],J,M,N,Pmn,w)
+etamndata[1,:,:]=etamndata[0,:,:]
 
 deltamndata[0,:,:]=rfl.fwd_leg(deltamdata[0,:,:],J,M,N,Pmn,w)
-deltamndata[1,:,:]=rfl.fwd_leg(deltamdata[1,:,:],J,M,N,Pmn,w)
+deltamndata[1,:,:]=deltamndata[0,:,:]
 
 Phimndata[0,:,:]=rfl.fwd_leg(Phimdata[0,:,:],J,M,N,Pmn,w)
-Phimndata[1,:,:]=rfl.fwd_leg(Phimdata[1,:,:],J,M,N,Pmn,w)
+Phimndata[1,:,:]=Phimndata[0,:,:]
 
 ####
 # Time stepping
@@ -311,9 +296,6 @@ for t in range(2,tmax):
     
     newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi)
     
-    # ##########BRUTE FORCE
-    # newdeltamn=np.zeros((M+1,N+1))
-    # newdelta=np.zeros((J,I))
     
     #write new data
     etamndata[t,:,:]=newetamn
@@ -324,19 +306,19 @@ for t in range(2,tmax):
     deltadata[t,:,:]=newdelta
     Phidata[t,:,:]=newPhi
     
+        
+    if modalflag==1:
+        if t>2:
+
+            Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-2:t+1,:,:],alpha)
+            etadata[t-1,:,:]=filters.modal_splitting(etadata[t-2:t+1,:,:],alpha)
+            deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-2:t+1,:,:],alpha)
     
-    if modalflag==1 & t>2:
-        print(np.shape(Phidata[t-2:t,:,:]))
-        Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-2:t,:,:],alpha)
-        etadata[t-1,:,:]=filters.modal_splitting(etadata[t-2:t,:,:],alpha)
-        deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-2:t,:,:],alpha)
-        
-        
-        
 
     if test==1:
         newU=Uic
         newV=Vic
+
 
     
     Udata[t,:,:]=newU
@@ -349,23 +331,13 @@ for t in range(2,tmax):
     Vm=Vmdata[t,:,:]
     
     neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
-    
+    print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
     
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
     deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
     Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
     
-    
-    # Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
-    # Phiforcingdata[t,:,:]=g*Q
-    # Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
-     
-    # F=-np.divide(np.multiply(newU,Q),(newPhi+Phibar)/g)
-    # G=-np.divide(np.multiply(newV,Q),(newPhi+Phibar)/g)
-    # F[Q<0]=0
-    # G[Q<0]=0
-    
-    
+        
     ######## FORCING ############
     Q=forcing.Qfun(Phieq, newPhi,Phibar, taurad)
     #geopotential forcing to be passed to time stepping
