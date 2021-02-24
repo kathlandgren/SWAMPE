@@ -28,80 +28,55 @@ runtype = 0
 
 
 ## Set global parameters
-# Spacial and spectral dimensions
-# I = p.I 
-# J = p.J
+
+
+# Set spectral dimensions
 M = p.M
-# N = p.N
-# Length of the run in time steps
-tmax = p.tmax
-# Sine of the latitude
-# mus = p.mus
-# Wieghts for integrating
-# w = p.w
-# lambdas=p.lambdas
-g=p.g
-taurad=p.taurad
-taudrag=p.taudrag
-Phibar=p.Phibar
-Dheq=p.Dheq
-omega=p.omega
-a=p.a
-a1=p.a1
-test=p.test
-
-
+#get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
-# K4=K4*10**10
-#dt=10
-
-forcflag=p.forcflag
-diffflag=p.diffflag
-
-sigma=filters.sigma(M,N,K4,a,dt)
-sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
-modalflag=p.modalflag
-if modalflag==1:
-    alpha=p.alpha
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
-SU0, sina, cosa, etaamp=ic.test1_init(a, omega, a1)
 
+# Length of the run in time steps
+tmax = p.tmax
+#surface gravity
+g=p.g
+#radiative time scale in Earth days
+taurad=p.taurad
+#drag time scale in Earth days
+taudrag=p.taudrag
+#mean geopotential height. In hot Jupiter case, Phibar is the flat nightside thickness
+Phibar=p.Phibar
+#the difference in radiative-equilibrium thickness between the substellar point and the nightside
+DPhieq=p.DPhieq
+Dheq=p.Dheq
+#rotation rate of the planet, radians per second
+omega=p.omega
+#planetary radius, meters
+a=p.a
+#angle for test cases 1 and 2, radians
+a1=p.a1
+#test case, number
+test=p.test
+
+#colorbar settings for plotting
+minlevel=p.minlevel
+maxlevel=p.maxlevel
+
+#forcing flag
+forcflag=p.forcflag
+#hyperviscosity filter flag
+diffflag=p.diffflag
+#hyperviscosity coefficients
+sigma=filters.sigma(M,N,K4,a,dt)
+sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+
+#flag for anti-aliasing filter as in Hack and Jakob (1992) eq. (4.4)
+modalflag=p.modalflag
+if modalflag==1:
+    alpha=p.alpha
     
-#orthogterms=rfl.orthogterms(M, N)
-
-# if runtype==0:
-#     ## Check to make sure Pmn are the right thing
-#     # When dividing by the scaling term the even Legendre polynomials (m=0)
-#     # should have p(-1)=p(1)=1
-#     ntest = 2
-#     mtest = 0
-#     scaling_term = np.sqrt((((2*ntest)+1)*math.factorial(ntest-mtest))/(2*math.factorial(ntest+mtest)))
-#     plt.plot(mus,Pmn[:,0,2]/scaling_term)
-    
-#     ## Check to make sure the Associated Legendre Polynomials are orthonormal
-#     # First orthogonal check from Wikipedia page on Associated Legendre 
-#     # polynomials.  In the plot you should get 1 for n=ntest1, m<ntest1 and 0
-#     # otherwise.
-#     ntest1 = 4
-#     orthocheckPmn1 = rfl.fwd_leg(Pmn[:,:,ntest],J,M,N,Pmn,w)
-#     testing_plots.spectral_plot(orthocheckPmn1)
-#     # Second orthogonal check from Wikipedia page on Associated Legendre 
-#     # polynomials. Note that for m=0, we have set the polynomial to zero so 
-#     # that we don't get infinity when integrating 1/(1-x^2). In the print out
-#     # you should get a vector with terms (2*ntest2 +1)/2*m, m>0 and 0 for m=0.
-#     ntest2 = 20
-#     Pmnscaled = np.zeros((J, M+1, N+1))
-#     for j in range (0,J):
-#         Pmnscaled[j]=Pmn[j,:,:]/(1-mus[j]**2)
-    
-#     Pmnscaled[:,0,:] = 0
-#     orthocheckPmn2 = rfl.fwd_leg(Pmnscaled[:,:,20],J,M,N,Pmn,w)
-#     print(orthocheckPmn2[:,20])
-#     #testing_plots.spectral_plot(orthocheckPmn2)
-
-
 ## Initialize data arrays 
 etadata=np.zeros((tmax,J,I),dtype=complex)
 deltadata=np.zeros((tmax,J,I),dtype=complex)
@@ -133,7 +108,6 @@ Cmdata=np.zeros((tmax,J,M+1),dtype=complex)
 Dmdata=np.zeros((tmax,J,M+1),dtype=complex)
 Emdata=np.zeros((tmax,J,M+1),dtype=complex)
 
-
 Fdata=np.zeros((tmax,J,I),dtype=complex)
 Gdata=np.zeros((tmax,J,I),dtype=complex)
 
@@ -144,8 +118,7 @@ Phiforcingdata=np.zeros((tmax,J,I),dtype=complex)
 Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
 
 ## Set the initial conditions 
-
-#etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
+SU0, sina, cosa, etaamp=ic.test1_init(a, omega, a1)
 
 if test==1:
     etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar)
@@ -189,20 +162,38 @@ Edata[0,:,:]=Eic
 Edata[1,:,:]=Eic
 
 #### Forcing ####
-heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
-Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
-Phiforcingdata[1,:,:]=g*forcing.Qfun(heq, Phiic1, Phibar, taurad, g)
 
-Qic=forcing.Qfun(heq, Phiic0, Phibar,taurad,g)
+#heq=forcing.heqfun(Phibar, Dheq, lambdas, mus, I, J,g)
+# Phiforcingdata[0,:,:]=g*forcing.Qfun(heq, Phiic0, Phibar, taurad, g)
+# Phiforcingdata[1,:,:]=g*forcing.Qfun(heq, Phiic1, Phibar, taurad, g)
 
-F=-np.divide(np.multiply(Uic,Qic),(Phiic0+Phibar)/g)
-F[Qic<0]=0
+# Qic=forcing.Qfun(heq, Phiic0, Phibar,taurad,g)
+
+# F=-np.divide(np.multiply(Uic,Qic),(Phiic0+Phibar)/g)
+# F[Qic<0]=0
+# Fdata[0,:,:]=F
+# Fdata[1,:,:]=Fdata[0,:,:]
+# G=-np.divide(np.multiply(Vic,Qic),(Phiic0+Phibar)/g)
+# G[Qic<0]=0
+# Gdata[0,:,:]=G
+# Gdata[1,:,:]=Gdata[0,:,:]
+
+
+Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
+Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
+#geopotential forcing to be passed to time stepping
+PhiF=Q
+
+Phiforcingdata[0,:,:]=PhiF
+Phiforcingdata[1,:,:]=PhiF
+
+
+F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
 Fdata[0,:,:]=F
 Fdata[1,:,:]=Fdata[0,:,:]
-G=-np.divide(np.multiply(Vic,Qic),(Phiic0+Phibar)/g)
-G[Qic<0]=0
 Gdata[0,:,:]=G
 Gdata[1,:,:]=Gdata[0,:,:]
+    
 
 
 ####
@@ -363,17 +354,28 @@ for t in range(2,tmax):
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
     deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
     Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
-
     
-    Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
-    Phiforcingdata[t,:,:]=g*Q
-    Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
+    
+    # Q=forcing.Qfun(heq, newPhi, Phibar,taurad,g)
+    # Phiforcingdata[t,:,:]=g*Q
+    # Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)
      
-    F=-np.divide(np.multiply(newU,Q),(newPhi+Phibar)/g)
-    G=-np.divide(np.multiply(newV,Q),(newPhi+Phibar)/g)
-    F[Q<0]=0
-    G[Q<0]=0
-   
+    # F=-np.divide(np.multiply(newU,Q),(newPhi+Phibar)/g)
+    # G=-np.divide(np.multiply(newV,Q),(newPhi+Phibar)/g)
+    # F[Q<0]=0
+    # G[Q<0]=0
+    
+    
+    ######## FORCING ############
+    Q=forcing.Qfun(Phieq, newPhi,Phibar, taurad)
+    #geopotential forcing to be passed to time stepping
+    PhiF=Q
+    F,G=forcing.Rfun(newU, newV, Q, newPhi,Phibar,taudrag)
+    
+    Fdata[t,:,:]=F
+    Gdata[t,:,:]=G
+    Phiforcingdata[t,:,:]=PhiF
+    Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
     if t%2==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
@@ -398,9 +400,6 @@ for t in range(2,tmax):
     Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
     Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
     
-    
-    Fdata[t,:,:]=F
-    Gdata[t,:,:]=G
     
     Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
     Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
