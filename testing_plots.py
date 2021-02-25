@@ -351,15 +351,61 @@ def quiver_plot(U,V,lambdas,mus,sparseness):
     plt.show()
     
     
-def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,sparseness):
+# def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,sparseness):
+    
+#     X = lambdas*180/np.pi
+#     Y = np.arcsin(mus)*180/np.pi
+#     #X, Y = np.meshgrid(X, Y)
+    
+#     # Plot the surface.
+#     plt.contourf(X, Y, Phi,30)
+#     cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
+    
+#     Xsparse=X[0::sparseness]
+#     Ysparse=Y[0::sparseness]
+#     #norm=np.sqrt(np.multiply(U,U)+np.multiply(V,V))
+#     Usparse=U[0::sparseness,0::sparseness]
+#     Vsparse=V[0::sparseness,0::sparseness]
+#     # plt.quiver(x, y[skip], u[skip], v[skip], color='black', headwidth=1, scale = 10, headlength=4)
+    
+#     # ax.quiver(X,Y,U,V)
+#     # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
+#     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
+#     plt.title('t='+str(t))
+#     plt.show()
+        
+# #     fig = plt.figure()
+# # ax1 = fig.add_subplot(111)
+# # ax1.plot(series1_x, series1_y)
+
+# # ax2 = fig.add_subplot(111)
+# # ax2.plot(series2_x, series2_y)
+
+# # ax3 = fig.add_subplot(111)
+# # ax3.scatter(series2_x, series2_y)
+    
+   
+def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxlevel):
     
     X = lambdas*180/np.pi
     Y = np.arcsin(mus)*180/np.pi
     #X, Y = np.meshgrid(X, Y)
     
     # Plot the surface.
-    plt.contourf(X, Y, Phi,30)
-    cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
+
+    plt.contourf(X, Y, (Phi))
+    #plt.colorbar(extend='both')
+
+    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
+    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
+    
+    colorbar = plt.colorbar(CS)
+
+    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
+ 
+
+    #plt.colorbar(extend='both')
+    #plt.clim(0, 10**4)
     
     Xsparse=X[0::sparseness]
     Ysparse=Y[0::sparseness]
@@ -371,16 +417,37 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,sparseness):
     # ax.quiver(X,Y,U,V)
     # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
-    plt.title('t='+str(t))
-    plt.show()
-        
-#     fig = plt.figure()
-# ax1 = fig.add_subplot(111)
-# ax1.plot(series1_x, series1_y)
-
-# ax2 = fig.add_subplot(111)
-# ax2.plot(series2_x, series2_y)
-
-# ax3 = fig.add_subplot(111)
-# ax3.scatter(series2_x, series2_y)
     
+    if test<3:
+        plt.title('t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+    plt.show()
+    
+
+def spinup_plot(plotdata,tmax,dt,test,a1):
+    """
+
+    :param plotdata: first variable, JxM+1 
+    :type statevar1: float
+
+    
+    """
+    t = np.linspace(0, dt*tmax/3600, tmax, endpoint=True)
+    
+    plt.plot(t, plotdata[:,0])
+    plt.plot(t, plotdata[:,1])
+    
+    plt.xlabel('time (hours)')
+    plt.ticklabel_format(axis='both', style='sci')
+    plt.ylabel('RMS Winds')
+    
+    plt.ticklabel_format(axis='both', style='sci')
+    
+    if test<3:
+        plt.title('test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('test= Hot Jupiter')
+    plt.show()
+    
+    plt.show()

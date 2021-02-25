@@ -34,6 +34,9 @@ runtype = 0
 M = p.M
 #get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
+
+K4=10**16
+dt=450
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -117,6 +120,8 @@ Gmdata=np.zeros((tmax,J,M+1),dtype=complex)
 Phiforcingdata=np.zeros((tmax,J,I),dtype=complex)
 Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
 
+spinupdata=np.zeros((tmax,2),dtype=complex)
+
 ## Set the initial conditions 
 SU0, sina, cosa, etaamp=ic.test1_init(a, omega, a1)
 
@@ -161,9 +166,14 @@ Ddata[1,:,:]=Dic
 Edata[0,:,:]=Eic
 Edata[1,:,:]=Eic
 
+
+
+# Spin Up calculations
+spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
+spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
+
+
 #### Forcing ####
-
-
 Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
 Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
 #geopotential forcing to be passed to time stepping
@@ -324,6 +334,10 @@ for t in range(2,tmax):
     Udata[t,:,:]=newU
     Vdata[t,:,:]=newV
     
+    spinupdata[t-1,0] = np.min(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
+    spinupdata[t-1,1] = np.max(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
+    
+    
     Umdata[t,:,:]=rfl.fwd_fft_trunc(newU,I,M)
     Vmdata[t,:,:]=rfl.fwd_fft_trunc(newV,I, M)
     
@@ -346,17 +360,29 @@ for t in range(2,tmax):
     
     Fdata[t,:,:]=F
     Gdata[t,:,:]=G
+    
+    Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
+    Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
+    
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
     if t%2==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
+        
+        #testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
         # testing_plots.physical_plot(newdelta-newdelta1, mus, lambdas)
         # testing_plots.physical_plot(neweta-neweta1,mus,lambdas)
         # testing_plots.physical_plot(newV,mus,lambdas)
         # testing_plots.physical_plot(G,mus,lambdas)
         # testing_plots.physical_plot(Q,mus,lambdas)
+        
+        testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,6.55,6.8)
+        # plt.contourf(lambdas, mus, newzeta)
+        # plt.colorbar()
+        # plt.title('zeta IC')
+        # plt.show()
+        testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
     
     A,B,C,D,E = ic.ABCDE_init(newU,newV,neweta,newPhi,mus,I,J)
     
@@ -373,9 +399,7 @@ for t in range(2,tmax):
     Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
     
     
-    Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
-    Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
-    
+
     
 # ####
 # #Plotting

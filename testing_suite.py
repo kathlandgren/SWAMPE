@@ -56,20 +56,17 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
 
 
-def transform_test(U,V,I,J,M,N,Pmn,w,mus,lambdas):
-    ## This test takes a wind field, transforms is to spectral space and back
+def transform_test(U,I,J,M,N,Pmn,w,mus,lambdas):
+    ## This test takes a scalar field, transforms is to spectral space and back
     Um=rfl.fwd_fft_trunc(U,I,M)
-    Vm=rfl.fwd_fft_trunc(V,I, M)
+
      
     Umn=rfl.fwd_leg(Um,J,M,N,Pmn,w)
-    Vmn=rfl.fwd_leg(Vm,J,M,N,Pmn,w)
         
     temp, Umnew=rfl.invrs_leg(Umn,I,J,M,N,Pmn)
-    temp, Vmnew=rfl.invrs_leg(Vmn,I,J,M,N,Pmn)
     print(np.shape(Umnew))
     
     Unew=rfl.invrs_fft(Umnew,I)
-    Vnew=rfl.invrs_fft(Vmnew,I)
     
     #plotting
     plt.contourf(lambdas, mus, U-Unew)
@@ -88,7 +85,7 @@ def transform_test(U,V,I,J,M,N,Pmn,w,mus,lambdas):
     plt.title('Transform')
     plt.show()
     
-    return Unew,Vnew
+    return Unew
 
 def wind_test(U,V,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn):
    ## This test takes a wind field, converts it to vorticity and divergence and recreates the wind field 
@@ -124,6 +121,6 @@ def wind_test(U,V,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fm
 ## This is a test from Liu and Showman 
 
 
-Unew,Vnew=transform_test(Uic,Vic,I,J,M,N,Pmn,w,mus,lambdas)
+Unew=transform_test(Uic,I,J,M,N,Pmn,w,mus,lambdas)
 
 Unew,Vnew=wind_test(Uic,Vic,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
