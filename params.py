@@ -45,7 +45,7 @@ test=2
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=0.08#np.pi/2 #alpha from Test 1 and 2
+a1=np.pi/2 #0.08#np.pi/2 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     forcflag=0
@@ -62,11 +62,11 @@ elif test==2: # Williamson Test 2
     expflag=1 #1 means explicit, anything else means semi-implicit scheme
     omega=7.2921159*10**(-5) #rotation rate of the planet, radians per second
     a=6.37122*10**(6)  #radius of the planet, meters
-    Phibar=3*(10**3) #Geopotential height m
+    Phibar=1*(10**3) #Geopotential height m
     g=9.8 #gravity of the planet in m/s^2
     
-    minlevel=3 #the log values for the colorbar plotting.
-    maxlevel=5
+    minlevel=3#the log values for the colorbar plotting.
+    maxlevel=4.5
 elif test==10: # PBS Hot Jupiter
     #Physical parameters
     forcflag=1

@@ -109,6 +109,7 @@ def fwd_leg(data,J,M,N,Pmn,w):
     
     for m in range (0, M+1):
         for j in range (0,J):
+            print(j)
             legterm[j,m,:]=w[j]*(data[j,m])*Pmn[j,m,:] 
     legcoeff=np.sum(legterm,0)
     return legcoeff

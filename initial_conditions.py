@@ -60,7 +60,9 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 latlonarg = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
                 etaic0[j,i]=etaamp*(latlonarg)
 
-                Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)#/g
+
+                Phiic0[j,i]=Phibar-Phiamp*((latlonarg)**2)#/g
+
     
     elif test==10:
         for i in range(I):
@@ -105,9 +107,9 @@ def spectral_params(M):
     else:
         print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
     
-    lmax=M
-    I = int(2*lmax + 1)#p.I 
-    J = int(lmax+1)#p.J
+    #lmax=M
+    #I = int(2*lmax + 1)#p.I 
+    #J = int(lmax+1)#p.J
 
     
     lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 

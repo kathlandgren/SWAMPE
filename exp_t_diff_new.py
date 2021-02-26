@@ -66,8 +66,8 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     
     deltacomp4=np.multiply(narray,deltacomp4)
     
-    #deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4
-    deltamntstep=deltacomp1#+deltacomp2+deltacomp4
+    deltamntstep=deltacomp1#+deltacomp2+deltacomp3+deltacomp4
+    #deltamntstep=deltacomp1#+deltacomp2+deltacomp4
 
     if forcflag==1:
 

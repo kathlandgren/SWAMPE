@@ -262,9 +262,18 @@ Phimndata[1,:,:]=Phimndata[0,:,:]
 
 ## time-stepping inputs
 
+if test!=2:
+    fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
+    fmn[0,1]=omega/np.sqrt(0.375)
+else:
+    f=np.zeros([J,I])
+    for i in range(I):
+        for j in range(J):
+            f[j,i] = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
+    fm=rfl.fwd_fft_trunc(2*omega*f, I, M)
+    fmn=rfl.fwd_leg(fm,J,M,N,Pmn,w)
 
-fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-fmn[0,1]=omega/np.sqrt(0.375)
+
 
 tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
 tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
