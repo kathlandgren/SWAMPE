@@ -35,8 +35,8 @@ M = p.M
 #get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
-K4=10**16
-dt=450
+#K4=10**17
+#dt=100
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -123,11 +123,12 @@ Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
 spinupdata=np.zeros((tmax,2),dtype=complex)
 
 ## Set the initial conditions 
-SU0, sina, cosa, etaamp=ic.test1_init(a, omega, a1)
+SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
 
 if test==1:
-    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar)
-    
+    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
+elif test==2:
+    etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)   
 elif test==10:
     etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp)
 
@@ -377,12 +378,13 @@ for t in range(2,tmax):
         # testing_plots.physical_plot(G,mus,lambdas)
         # testing_plots.physical_plot(Q,mus,lambdas)
         
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,6.55,6.8)
+        testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
+        
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()
         # plt.title('zeta IC')
         # plt.show()
-        testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
+        #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
     
     A,B,C,D,E = ic.ABCDE_init(newU,newV,neweta,newPhi,mus,I,J)
     

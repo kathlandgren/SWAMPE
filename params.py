@@ -13,7 +13,7 @@ import numpy as np
 M=63 #the largest Fourier wave number
 
 #time-stepping parameters
-tmax=2000#864 #number of time steps
+tmax=100#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -38,14 +38,14 @@ tmax=2000#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=10
+test=2
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=np.pi/2 #alpha from Test 1 and 2
+a1=0.08#np.pi/2 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     forcflag=0
@@ -66,7 +66,7 @@ elif test==2: # Williamson Test 2
     g=9.8 #gravity of the planet in m/s^2
     
     minlevel=3 #the log values for the colorbar plotting.
-    maxlevel=4
+    maxlevel=5
 elif test==10: # PBS Hot Jupiter
     #Physical parameters
     forcflag=1
@@ -76,8 +76,8 @@ elif test==10: # PBS Hot Jupiter
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
     
-    minlevel=4 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
-    maxlevel=7
+    minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    maxlevel=6.8
 
 
 #Hyperviscosity parameters
@@ -85,7 +85,7 @@ diffflag=1
 
 #Modal Splitting Fiter 
 modalflag=1
-alpha=0.01 #filter coefficient to prevent aliasing
+alpha=0.05 #filter coefficient to prevent aliasing
 
 #forcing parameters
 taurad=3600*24*1 #in Earth days

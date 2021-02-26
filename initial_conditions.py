@@ -21,9 +21,9 @@ def test1_init(a,omega,a1):
     sina=np.sin(a1) #sine of the angle of advection
     cosa=np.cos(a1)  #cosine of the angle of advection
     etaamp = 2.0*((SU0/a)+omega) #relative vorticity amplitude
-    #Phiamp = (SU0*a*omega + 0.5*SU0**2) #geopotential height amplitude
+    Phiamp = (SU0*a*omega + 0.5*SU0**2) #geopotential height amplitude
     
-    return SU0, sina, cosa, etaamp#, Phiamp
+    return SU0, sina, cosa, etaamp, Phiamp
 
 def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     """Initializes the state variables
@@ -40,8 +40,9 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     deltaic0=np.zeros((J,I))
     
 
+    if test<=2:
+        a,sina,cosa,Phibar,Phiamp=args
     if test==1:
-        a,sina,cosa,Phibar=args
         bumpr=a/3 #radius of the bump
         mucenter=0
         lambdacenter=3*np.pi/2
@@ -53,13 +54,21 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 if dist < bumpr:
                     Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
     
+    elif test==2: #Williamson Test 2 as documented in stswm FORTRAN implementation (see init.i)
+        for i in range(I):
+            for j in range(J):
+                latlonarg = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
+                etaic0[j,i]=etaamp*(latlonarg)
+
+                Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)#/g
+    
     elif test==10:
         for i in range(I):
             for j in range(J):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
                
     etaic1=etaic0 #need two time steps to initialize
-
+    print(etaic0)
     deltaic1=deltaic0
 
     Phiic1=Phiic0
@@ -133,6 +142,14 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
                 
                 Uic[j,i]=SU0*(np.cos(np.arcsin(mus[j]))*cosa +mus[j]*np.cos(lambdas[i])*sina)*np.cos(np.arcsin(mus[j])) #assign according to init.f
                 Vic[j,i]=-SU0*np.sin(lambdas[i])*sina*np.cos(np.arcsin(mus[j]))
+    
+    elif test==2: #Williamson Test 2
+        for i in range(I):
+            for j in range(J):   
+                Uic[j,i] = SU0*(np.cos(np.arcsin(mus[j]))*cosa + np.cos(lambdas[i])*(mus[j])*sina)
+                Vic[j,i] = -SU0*(np.sin(lambdas[i])*sina)
+               
+
     elif test==10:
         for i in range(I):
             for j in range(J):
