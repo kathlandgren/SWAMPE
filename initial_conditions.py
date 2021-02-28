@@ -39,9 +39,10 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))
     
-
+    print(test)
     if test<=2:
         a,sina,cosa,Phibar,Phiamp=args
+        
     if test==1:
         bumpr=a/3 #radius of the bump
         mucenter=0
@@ -49,7 +50,7 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
         for i in range(I):
             for j in range(J):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa)
-               
+                
                 dist=a*np.arccos(mucenter*mus[j]+np.cos(np.arcsin(mucenter))*np.cos(np.arcsin(mus[j]))*np.cos(lambdas[i]-lambdacenter))
                 if dist < bumpr:
                     Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
@@ -70,7 +71,6 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
                
     etaic1=etaic0 #need two time steps to initialize
-    print(etaic0)
     deltaic1=deltaic0
 
     Phiic1=Phiic0

@@ -27,7 +27,7 @@ taudrag=p.taudrag
 Phibar=p.Phibar
 omega=p.omega
 a=p.a
-a1=0#p.a1
+a1=np.pi/2#p.a1
 test=1
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 # K4=K4*10**10
@@ -37,13 +37,17 @@ dt=100 #dt/10
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
 SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
-etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
+etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
 Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
 Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
 
 
 fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
 fmn[0,1]=omega/np.sqrt(0.375)
+
+flatlon=np.zeros((J,I))
+for i in range(I):
+    flatlon[:,i]=2*omega*mus
 
 tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
 tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
@@ -63,6 +67,12 @@ def wind_test(U,V,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fm
     Unew,Vnew=rfl.invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
     
         #plotting
+    plt.contourf(lambdas, mus, eta)
+    plt.colorbar()
+    plt.title('eta')
+    plt.show()    
+        
+        
     plt.contourf(lambdas, mus, U-Unew)
     plt.colorbar()
     plt.title('U error')
@@ -128,25 +138,56 @@ def inverse_wind_test(U,V,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     plt.title('U Transform')
     plt.show()
     
-    plt.contourf(lambdas, mus, V-Vnew)
-    plt.colorbar()
-    plt.title('V error')
-    plt.show()
+    # plt.contourf(lambdas, mus, V-Vnew)
+    # plt.colorbar()
+    # plt.title('V error')
+    # plt.show()
     
-    #plotting
-    plt.contourf(lambdas, mus, V)
-    plt.colorbar()
-    plt.title('V IC')
-    plt.show()
+    # #plotting
+    # plt.contourf(lambdas, mus, V)
+    # plt.colorbar()
+    # plt.title('V IC')
+    # plt.show()
     
-    plt.contourf(lambdas, mus, Vnew)
-    plt.colorbar()
-    plt.title('V Transform')
-    plt.show()
+    # plt.contourf(lambdas, mus, Vnew)
+    # plt.colorbar()
+    # plt.title('V Transform')
+    # plt.show()
     
     return Unew, Vnew
+
+def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
+    coeff=tstepcoeff/(2*dt)
+    etacomp1prep=np.multiply(np.multiply(coeff,(1j)*mJarray),Vm)
+    etacomp2prep=np.multiply(coeff,Um)
+    
+    zetamn=rfl.fwd_leg(etacomp1prep, J, M, N, Pmn, w)+rfl.fwd_leg(etacomp2prep, J, M, N, Hmn, w)
+    
+    etamn=zetamn+fmn
+    
+    deltacomp1prep=np.multiply(np.multiply(coeff,(1j)*mJarray),Um)
+    deltacomp2prep=np.multiply(coeff,Vm)
+    
+    deltacomp1=rfl.fwd_leg(deltacomp1prep, J, M, N, Pmn, w)
+    deltacomp2=rfl.fwd_leg(deltacomp2prep, J, M, N, Hmn, w)
+    
+    deltamn=deltacomp1-deltacomp2
+    
+    test,newdeltam=rfl.invrs_leg(deltamn, I,J, M, N, Pmn)
+    newdelta=rfl.invrs_fft(newdeltam, I)
+    
+    test,newetam=rfl.invrs_leg(etamn, I,J, M, N, Pmn)
+    neweta=rfl.invrs_fft(newetam, I)
+   
+    return neweta,newdelta,etamn,deltamn
+
 Unew,Vnew=wind_test(Uic,Vic,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
 
-Unew,Vnew=inverse_wind_test(Uic,Vic,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+plt.contourf(lambdas, mus, etaic0+flatlon)
+plt.colorbar()
+plt.title('eta IC')
+plt.show() 
+
+#Unew,Vnew=inverse_wind_test(Uic,Vic,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
 
 #winds to vorticity and div and compare

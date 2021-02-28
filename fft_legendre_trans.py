@@ -109,7 +109,7 @@ def fwd_leg(data,J,M,N,Pmn,w):
     
     for m in range (0, M+1):
         for j in range (0,J):
-            print(j)
+
             legterm[j,m,:]=w[j]*(data[j,m])*Pmn[j,m,:] 
     legcoeff=np.sum(legterm,0)
     return legcoeff
@@ -235,7 +235,7 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     etacomp1prep=np.multiply(np.multiply(coeff,(1j)*mJarray),Vm)
     etacomp2prep=np.multiply(coeff,Um)
     
-    zetamn=fwd_leg(etacomp1prep, J, M, N, Pmn, w)+fwd_leg(etacomp2prep, J, M, N, Pmn, w)
+    zetamn=fwd_leg(etacomp1prep, J, M, N, Pmn, w)+fwd_leg(etacomp2prep, J, M, N, Hmn, w)
     
     etamn=zetamn+fmn
     
