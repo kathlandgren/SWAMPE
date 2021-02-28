@@ -39,7 +39,6 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))
     
-    print(test)
     if test<=2:
         a,sina,cosa,Phibar,Phiamp=args
         

@@ -200,7 +200,9 @@ def invrs_fft(approxXim,I):
 
 def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     
-    
+    #do not sum over n=0 according to Hack and Jakob 5.24-5.25
+    deltamn[:,0]=0
+    etamn[:,0]=0
     # marray=np.zeros((M+1,N+1)) #TODO make this an input, compute once
     # mtemp=np.arange(M+1)
     # for n in range(N+1):

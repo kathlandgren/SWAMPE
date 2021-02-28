@@ -36,7 +36,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**17
-#dt=100
+dt=100
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -286,7 +286,7 @@ narray=tstep.narray(M,N)
 ## time -stepping
 
 for t in range(2,tmax):
-    print('t='+str(t))
+    # print('t='+str(t))
     
     etam0=etamdata[t-2,:,:]
     etam1=etamdata[t-1,:,:]
@@ -355,8 +355,8 @@ for t in range(2,tmax):
     Vm=Vmdata[t,:,:]
     
     neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
-    print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
-    
+    # print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
+    #print('Diagnostic delta - timestepping delta '+str(np.max(newdelta1-newdelta)))    
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
     deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
     Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
@@ -377,7 +377,7 @@ for t in range(2,tmax):
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
-    if t%2==0:
+    if t%25==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         
         #testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
@@ -386,14 +386,15 @@ for t in range(2,tmax):
         # testing_plots.physical_plot(newV,mus,lambdas)
         # testing_plots.physical_plot(G,mus,lambdas)
         # testing_plots.physical_plot(Q,mus,lambdas)
-        
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
+       
+        print('t='+str(t))
+        #testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
         
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()
         # plt.title('zeta IC')
         # plt.show()
-        #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
+        #testing_plots.spinup_plot(np.real(spinupdata),tmax,dt,test,a1)
     
     A,B,C,D,E = ic.ABCDE_init(newU,newV,neweta,newPhi,mus,I,J)
     
