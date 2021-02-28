@@ -36,7 +36,6 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**17
-dt=100
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -377,7 +376,7 @@ for t in range(2,tmax):
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
-    if t%25==0:
+    if t%5==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         
         #testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
@@ -388,7 +387,7 @@ for t in range(2,tmax):
         # testing_plots.physical_plot(Q,mus,lambdas)
        
         print('t='+str(t))
-        #testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
+        testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
         
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()
