@@ -13,7 +13,7 @@ import numpy as np
 M=63 #the largest Fourier wave number
 
 #time-stepping parameters
-tmax=50#864 #number of time steps
+tmax=1500#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -38,7 +38,7 @@ tmax=50#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=1
+test=10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -88,7 +88,7 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
-taurad=3600*24*1 #in Earth days
+taurad=3600*24*0.01 #in Earth days
 taudrag=3600*24*100 #if set to -1, means infinity
 
 DPhieq=Phibar

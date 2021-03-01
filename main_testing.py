@@ -36,6 +36,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**17
+dt=900
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -376,7 +377,7 @@ for t in range(2,tmax):
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
-    if t%5==0:
+    if t%1==0:
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         
         #testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
@@ -388,12 +389,14 @@ for t in range(2,tmax):
        
         print('t='+str(t))
         testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
+        print(np.max(Phieq-(Phibar+Phidata[0,:,:])))
+        print(np.min(Phieq-(Phibar+Phidata[0,:,:])))
         
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()
         # plt.title('zeta IC')
         # plt.show()
-        #testing_plots.spinup_plot(np.real(spinupdata),tmax,dt,test,a1)
+        testing_plots.spinup_plot(np.real(spinupdata),tmax,dt,test,a1)
     
     A,B,C,D,E = ic.ABCDE_init(newU,newV,neweta,newPhi,mus,I,J)
     

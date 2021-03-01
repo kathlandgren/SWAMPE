@@ -261,9 +261,9 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
 #Unew,Vnew=wind_test(Uic,Vic,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
 
 
-#Unew,Vnew,etamnD, etamn=inverse_wind_test(Uic,Vic,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+Unew,Vnew,etamnD, etamn=inverse_wind_test(Uic,Vic,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
 
-etanew, deltanew, etamnnew, deltamnnew,Unew,Vnew=vor_div_test(etaic0,deltaic0,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
+#etanew, deltanew, etamnnew, deltamnnew,Unew,Vnew=vor_div_test(etaic0,deltaic0,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
            
 V=Vic
 U=Uic

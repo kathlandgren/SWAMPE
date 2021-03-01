@@ -45,7 +45,6 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     flatlon=np.zeros((J,I))
     for i in range(I):
         flatlon[:,i]=2*omega*mus
-    print(np.max(flatlon))
     
     if test<=2:
         a,sina,cosa,Phibar,Phiamp=args
