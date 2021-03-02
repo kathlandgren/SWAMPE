@@ -20,8 +20,7 @@ def test1_init(a,omega,a1):
     SU0=2.0*np.pi*a/(3600.0*24*12) 
     sina=np.sin(a1) #sine of the angle of advection
     cosa=np.cos(a1)  #cosine of the angle of advection
-    # etaamp = 2.0*((SU0/a)+omega) #relative vorticity amplitude
-    etaamp = 2.0*((SU0/a)) #relative vorticity amplitude
+    etaamp = 2.0*((SU0/a)+omega) #relative vorticity amplitude
     Phiamp = (SU0*a*omega + 0.5*SU0**2) #geopotential height amplitude
     
     return SU0, sina, cosa, etaamp, Phiamp
@@ -39,25 +38,18 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))
-
-    ###MOVE THIS
-    omega=7.2921159*10**(-5)
-    flatlon=np.zeros((J,I))
-    for i in range(I):
-        flatlon[:,i]=2*omega*mus
     
+
     if test<=2:
         a,sina,cosa,Phibar,Phiamp=args
-        
     if test==1:
         bumpr=a/3 #radius of the bump
         mucenter=0
         lambdacenter=3*np.pi/2
         for i in range(I):
             for j in range(J):
-                etaic0[j,i]=-etaamp*(cosa*np.sqrt(1-mus[j]**2)/mus[j]+np.cos(lambdas[i])*sina)*np.sqrt(1-mus[j]**2) +flatlon[j,i]
-                # etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa)
-                
+                etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa)
+               
                 dist=a*np.arccos(mucenter*mus[j]+np.cos(np.arcsin(mucenter))*np.cos(np.arcsin(mus[j]))*np.cos(lambdas[i]-lambdacenter))
                 if dist < bumpr:
                     Phiic0[j,i]=(Phibar/2)*(1+np.cos(np.pi*dist/(bumpr)))#*p.g
@@ -68,16 +60,13 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 latlonarg = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
                 etaic0[j,i]=etaamp*(latlonarg)
 
-
-                Phiic0[j,i]=Phibar-Phiamp*((latlonarg)**2)#/g
-
+                Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)#/g
     
     elif test==10:
         for i in range(I):
             for j in range(J):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
-       
-          
+               
     etaic1=etaic0 #need two time steps to initialize
     deltaic1=deltaic0
 
@@ -115,9 +104,9 @@ def spectral_params(M):
     else:
         print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
     
-    #lmax=M
-    #I = int(2*lmax + 1)#p.I 
-    #J = int(lmax+1)#p.J
+    lmax=M
+    I = int(2*lmax + 1)#p.I 
+    J = int(lmax+1)#p.J
 
     
     lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 

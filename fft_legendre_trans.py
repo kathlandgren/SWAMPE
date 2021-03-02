@@ -109,7 +109,6 @@ def fwd_leg(data,J,M,N,Pmn,w):
     
     for m in range (0, M+1):
         for j in range (0,J):
-
             legterm[j,m,:]=w[j]*(data[j,m])*Pmn[j,m,:] 
     legcoeff=np.sum(legterm,0)
     return legcoeff
@@ -199,6 +198,7 @@ def invrs_fft(approxXim,I):
     return approxXinew
 
 def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
+    
     
     #do not sum over n=0 according to Hack and Jakob 5.24-5.25
     deltamn[:,0]=0

@@ -22,6 +22,7 @@ import numpy as np
 
 
 def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
+
     PhieqMat=Phibar*np.ones((J,I)) #initialize to flat nightside temperature
     
     for i in range(I):
@@ -57,9 +58,12 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
      #if taudrag is infinity, only have the R component from Perez-Becker and Showman    
     if taudrag!=-1:
         
-        F=Ru-U/taudrag
-        G=Rv-V/taudrag
+        F=Ru-(U/taudrag)
+        G=Rv-(V/taudrag)
+        
     else:
         F=Ru
         G=Rv
+        
+    
     return F, G

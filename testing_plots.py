@@ -450,4 +450,33 @@ def spinup_plot(plotdata,tmax,dt,test,a1):
         plt.title('test= Hot Jupiter')
     plt.show()
     
+    
+def zonal_wind_plot(plotdata,mus,t,dt,test,a1):
+    
+    """
+
+    :param plotdata: first variable, JxM+1 
+    :type statevar1: float
+
+    
+    """
+    #t = np.linspace(0, dt*tmax/3600, tmax, endpoint=True)
+    
+    Ubar=np.mean(plotdata,axis=1)
+    Y = np.arcsin(mus)*180/np.pi #generate latitude
+    
+    plt.plot(Ubar, Y)
+
+    
+    plt.xlabel('mean U, m/s')
+    plt.ticklabel_format(axis='both', style='sci')
+    plt.ylabel('latitude')
+    plt.ticklabel_format(axis='both', style='sci')
+    
+    if test<3:
+        plt.title('t='+str(dt*t/3600)+' hours, test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('t='+str(dt*t/3600)+' hours, test= Hot Jupiter')
     plt.show()
+    
+    

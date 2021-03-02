@@ -36,7 +36,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**17
-dt=900
+
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -262,18 +262,9 @@ Phimndata[1,:,:]=Phimndata[0,:,:]
 
 ## time-stepping inputs
 
-if test!=2:
-    fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-    fmn[0,1]=omega/np.sqrt(0.375)
-else:
-    f=np.zeros([J,I])
-    for i in range(I):
-        for j in range(J):
-            f[j,i] = -np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa
-    fm=rfl.fwd_fft_trunc(2*omega*f, I, M)
-    fmn=rfl.fwd_leg(fm,J,M,N,Pmn,w)
 
-
+fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
+fmn[0,1]=omega/np.sqrt(0.375)
 
 tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
 tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
@@ -354,9 +345,9 @@ for t in range(2,tmax):
     Um=Umdata[t,:,:]
     Vm=Vmdata[t,:,:]
     
-    neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm,fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
-    # print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
-    #print('Diagnostic delta - timestepping delta '+str(np.max(newdelta1-newdelta)))    
+    neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
+    #print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
+    
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
     deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
     Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
@@ -378,6 +369,7 @@ for t in range(2,tmax):
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
     if t%1==0:
+        print('t='+str(t))
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         
         #testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
@@ -386,20 +378,16 @@ for t in range(2,tmax):
         # testing_plots.physical_plot(newV,mus,lambdas)
         # testing_plots.physical_plot(G,mus,lambdas)
         # testing_plots.physical_plot(Q,mus,lambdas)
-       
-        print('t='+str(t))
-        testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
-        Phidiff=Phieq-(Phibar+Phidata[t,:,:])
-        print(np.max(Phidiff))
-        print(np.min(Phidiff))
         
-        print(np.unravel_index(Phidiff.argmax(), Phidiff.shape))
+        testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
+        
+        testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
         
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()
         # plt.title('zeta IC')
         # plt.show()
-        testing_plots.spinup_plot(np.real(spinupdata),tmax,dt,test,a1)
+
     
     A,B,C,D,E = ic.ABCDE_init(newU,newV,neweta,newPhi,mus,I,J)
     
