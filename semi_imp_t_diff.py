@@ -55,6 +55,7 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
 
     if forcflag==1:
         Phiforcing=rfl.fwd_leg(2*dt*PhiFM, J, M, N, Pmn, w)
+        #Phiforcing=rfl.fwd_leg(np.multiply(tstepcoeff1,PhiFM), J, M, N, Pmn, w)        
         Phimntstep=Phimntstep+Phiforcing
         
     
@@ -113,14 +114,14 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
             deltaf2=rfl.fwd_leg(deltaf2prep, J, M, N, Hmn, w)
        
         
-        deltaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Fm)
+        deltaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Fm)      
         deltaf3=rfl.fwd_leg(deltaf3prep, J, M, N, Pmn, w)
         
-        deltaf4prep=np.multiply(tstepcoeff1,Gm)
+        deltaf4prep=np.multiply(tstepcoeff1,Gm)       
         deltaf4=rfl.fwd_leg(deltaf4prep, J, M, N, Hmn, w)
         
-        deltaforcing=-deltaf1+deltaf2+deltaf3-deltaf4
-        #deltaforcing=deltaf3+deltaf4
+        #deltaforcing=-deltaf1+deltaf2+deltaf3-deltaf4
+        deltaforcing=deltaf3+deltaf4
         deltamntstep=deltamntstep+deltaforcing
         
     
@@ -149,15 +150,15 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     #etamntstep=etacomp1#-etacomp2+etacomp3
     
     if forcflag==1:
-        if taudrag==-1:
-            etaf1=np.zeros((M+1,N+1))
-            etaf2=np.zeros((M+1,N+1))
-        else:
-            etaf1prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Vm)/taudrag
-            etaf1=rfl.fwd_leg(etaf1prep, J, M, N, Pmn, w)
+        # if taudrag==-1:
+        #     etaf1=np.zeros((M+1,N+1))
+        #     etaf2=np.zeros((M+1,N+1))
+        # else:
+        #     etaf1prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Vm)/taudrag
+        #     etaf1=rfl.fwd_leg(etaf1prep, J, M, N, Pmn, w)
             
-            etaf2prep=np.multiply(tstepcoeff1,Um)/taudrag
-            etaf2=rfl.fwd_leg(etaf2prep, J, M, N, Hmn, w)
+        #     etaf2prep=np.multiply(tstepcoeff1,Um)/taudrag
+        #     etaf2=rfl.fwd_leg(etaf2prep, J, M, N, Hmn, w)
         
         etaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Gm)
         etaf3=rfl.fwd_leg(etaf3prep, J, M, N, Pmn, w)
@@ -165,8 +166,8 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
         etaf4prep=np.multiply(tstepcoeff1,Fm)
         etaf4=rfl.fwd_leg(etaf4prep, J, M, N, Hmn, w)
         
-        etaforcing=-etaf1+etaf2+etaf3+etaf4
-        #etaforcing=etaf3+etaf4
+        #etaforcing=-etaf1+etaf2+etaf3+etaf4
+        etaforcing=etaf3-etaf4
     
         etamntstep=etamntstep+etaforcing
 

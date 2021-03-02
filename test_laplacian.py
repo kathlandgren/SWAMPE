@@ -28,7 +28,7 @@ taudrag=p.taudrag
 Phibar=p.Phibar
 omega=p.omega
 a=p.a
-a1=np.pi/4#p.a1
+a1=np.pi/2-0.05#p.a1
 test=1
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 # K4=K4*10**10
@@ -81,11 +81,14 @@ def laplacian(Xi,I,J,M,N,Pmn,w,a,narray):
 WolframLap=np.zeros((J,I))
 WolframLap2=np.zeros((J,I)) 
 WolframLap3=np.zeros((J,I)) 
+
 for i in range(I):
     for j in range(J):
         WolframLap[j,i]=-2*a*SU0*(cosa*mus[j]/np.sqrt(1-mus[j]**2)+np.cos(lambdas[i])*sina)*mus[j]/a**2
         WolframLap2[j,i]=-2*SU0*(cosa*np.sqrt(1-mus[j]**2)/mus[j]+np.cos(lambdas[i])*sina)*np.sqrt(1-mus[j]**2)/a    
         WolframLap3[j,i]=np.sqrt(2)*SU0*(mus[j]+np.cos(lambdas[i]-np.pi)*np.sqrt(1-mus[j]**2))/a  
+        
+        #etaic0[j,i]=(SU0/a)*(+0.0999583*mus[j]+1.9975*np.cos(lambdas[i]-np.pi)*np.sqrt(1-mus[j]**2))
  
 lapSF=laplacian(sf,I,J,M,N,Pmn,w,a,narray)
 

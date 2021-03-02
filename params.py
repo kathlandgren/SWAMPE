@@ -38,7 +38,7 @@ tmax=1500#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=10
+test=2
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -69,7 +69,7 @@ elif test==2: # Williamson Test 2
     maxlevel=4.5
 elif test==10: # PBS Hot Jupiter
     #Physical parameters
-    forcflag=1
+    forcflag=0
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
     omega=3.2*(10**(-5))#7.2921159*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
@@ -88,7 +88,7 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
-taurad=3600*24*0.01 #in Earth days
+taurad=3600*24*10 #in Earth days
 taudrag=3600*24*100 #if set to -1, means infinity
 
 DPhieq=Phibar

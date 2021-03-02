@@ -57,6 +57,30 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
 
 
+
+if test==1:
+    for i in range(I):
+        for j in range(J):
+            if a1==0:
+                etaic0[j,i]=2*SU0*mus[j]/a +flatlon[j,i]#2*SU0*np.sqrt(1-mus[j]**2)/a +flatlon[j,i]
+                #print('ok')
+            elif a1==0.05:
+                etaic0[j,i]=-SU0*(-1.9975005207899326*mus[j]-0.09995833854135687*np.cos(lambdas[i]-np.pi)*np.sqrt(1-mus[j]**2))/a+flatlon[j,i]
+                #print('ok')
+                # etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*sina+(mus[j])*cosa)
+            elif a1==np.pi/4:
+                etaic0[j,i]=np.sqrt(2)*(SU0/a)*(mus[j]+np.cos(lambdas[i]-np.pi)*np.sqrt(1-mus[j]**2)) +flatlon[j,i]                
+            elif a1==np.pi/3:
+                etaic0[j,i]=(SU0/a)*(mus[j]+np.sqrt(3)*np.cos(lambdas[i]-np.pi)*np.sqrt(1-mus[j]**2)) +flatlon[j,i]
+            elif a1==np.pi/2-0.05:
+                etaic0[j,i]=(SU0/a)*(+0.09995833854135687*mus[j]+1.9975005207899326*np.cos(lambdas[i]-np.pi)*np.sqrt(1-mus[j]**2)) +flatlon[j,i]
+                #print('ok')                
+            elif a1==np.pi/2:
+                etaic0[j,i]=-2*SU0*np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)/a+flatlon[j,i]
+                #print('ok')
+
+            
+
 def wind_test(U,V,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn):
    ## This test takes a wind field, converts it to vorticity and divergence and recreates the wind field 
     Um=rfl.fwd_fft_trunc(U,I,M)
@@ -154,6 +178,9 @@ def vor_div_test(eta,delta,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,mar
 ## This is a test for the Laplacian
 
 ## This is a test from Liu and Showman 
+
+
+
 def inverse_wind_test(U,V,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     #Tests eq. 5.24-5.25 in Hack and Jakob, trying to get the initial winds from the initial vorticity and divergence.
     deltam=rfl.fwd_fft_trunc(deltaic0,I,M)
@@ -184,52 +211,62 @@ def inverse_wind_test(U,V,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     #plotting
     plt.contourf(lambdas, mus, U-Unew)
     plt.colorbar()
-    plt.title('U error')
+    plt.title('U error, alpha='+str(a1))
     plt.show()
     
     #plotting
     plt.contourf(lambdas, mus, U)
     plt.colorbar()
-    plt.title('U IC')
+    plt.title('U IC, alpha='+str(a1))
     plt.show()
     
     plt.contourf(lambdas, mus, Unew)
     plt.colorbar()
-    plt.title('U Transform')
+    plt.title('U Transform, alpha='+str(a1))
     plt.show()
+    
+    # plt.contourf(lambdas, mus, etaic0)
+    # plt.colorbar()
+    # plt.title('eta, alpha='+str(a1))
+    # plt.show()
+    
+    # plt.contourf(lambdas, mus, etaic0-flatlon)
+    # plt.colorbar()
+    # plt.title('eta - coriolis, alpha='+str(a1))
+    # plt.show()
     
         
-    plt.contourf(np.arange(M+1), np.arange(M+1), deltamnD)
-    plt.colorbar()
-    plt.title('deltamn diagnostic')
-    plt.show()
-    
-    plt.contourf(np.arange(M+1), np.arange(M+1), deltamn)
-    plt.colorbar()
-    plt.title('deltamn original')
-    plt.show()
-    
-    plt.contourf(np.arange(M+1), np.arange(M+1), deltamn-deltamnD)
-    plt.colorbar()
-    plt.title('deltamn difference')
-    plt.show()
-    
-    
-    # plt.contourf(lambdas, mus, V-Vnew)
+    # plt.contourf(np.arange(M+1), np.arange(M+1), deltamnD)
     # plt.colorbar()
-    # plt.title('V error')
+    # plt.title('deltamn diagnostic')
     # plt.show()
     
-    # #plotting
-    # plt.contourf(lambdas, mus, V)
+    # plt.contourf(np.arange(M+1), np.arange(M+1), deltamn)
     # plt.colorbar()
-    # plt.title('V IC')
+    # plt.title('deltamn original')
     # plt.show()
     
-    # plt.contourf(lambdas, mus, Vnew)
+    # plt.contourf(np.arange(M+1), np.arange(M+1), deltamn-deltamnD)
     # plt.colorbar()
-    # plt.title('V Transform')
+    # plt.title('deltamn difference')
     # plt.show()
+    
+    
+    plt.contourf(lambdas, mus, V-Vnew)
+    plt.colorbar()
+    plt.title('V error')
+    plt.show()
+    
+    #plotting
+    plt.contourf(lambdas, mus, V)
+    plt.colorbar()
+    plt.title('V IC')
+    plt.show()
+    
+    plt.contourf(lambdas, mus, Vnew)
+    plt.colorbar()
+    plt.title('V Transform')
+    plt.show()
     
     return Unew, Vnew, etamnD, etamn
 
@@ -258,46 +295,46 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
    
     return neweta,newdelta,etamn,deltamn
 
-#Unew,Vnew=wind_test(Uic,Vic,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
+Unew,Vnew=wind_test(Uic,Vic,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
 
 
 Unew,Vnew,etamnD, etamn=inverse_wind_test(Uic,Vic,etaic0,deltaic0,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
 
-#etanew, deltanew, etamnnew, deltamnnew,Unew,Vnew=vor_div_test(etaic0,deltaic0,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
+etanew, deltanew, etamnnew, deltamnnew,Unew,Vnew=vor_div_test(etaic0,deltaic0,I,J,M,N,Pmn,Hmn,w,tstepcoeff,tstepcoeffmn,mJarray,marray,dt,fmn)
            
-V=Vic
-U=Uic
+# V=Vic
+# U=Uic
 
-#plotting
-plt.contourf(lambdas, mus, U-Unew)
-plt.colorbar()
-plt.title('U error')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, U-Unew)
+# plt.colorbar()
+# plt.title('U error')
+# plt.show()
 
-#plotting
-plt.contourf(lambdas, mus, U)
-plt.colorbar()
-plt.title('U IC')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, U)
+# plt.colorbar()
+# plt.title('U IC')
+# plt.show()
 
-plt.contourf(lambdas, mus, Unew)
-plt.colorbar()
-plt.title('U Transform')
-plt.show()
+# plt.contourf(lambdas, mus, Unew)
+# plt.colorbar()
+# plt.title('U Transform')
+# plt.show()
 
-plt.contourf(lambdas, mus, V-Vnew)
-plt.colorbar()
-plt.title('V error')
-plt.show()
+# plt.contourf(lambdas, mus, V-Vnew)
+# plt.colorbar()
+# plt.title('V error')
+# plt.show()
 
-#plotting
-plt.contourf(lambdas, mus, V)
-plt.colorbar()
-plt.title('V IC')
-plt.show()
+# #plotting
+# plt.contourf(lambdas, mus, V)
+# plt.colorbar()
+# plt.title('V IC')
+# plt.show()
 
-plt.contourf(lambdas, mus, Vnew)
-plt.colorbar()
-plt.title('V Transform')
-plt.show()
-#winds to vorticity and div and compare
+# plt.contourf(lambdas, mus, Vnew)
+# plt.colorbar()
+# plt.title('V Transform')
+# plt.show()
+# #winds to vorticity and div and compare

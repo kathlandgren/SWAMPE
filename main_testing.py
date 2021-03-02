@@ -354,7 +354,7 @@ for t in range(2,tmax):
     Um=Umdata[t,:,:]
     Vm=Vmdata[t,:,:]
     
-    neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
+    neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm,fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
     # print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
     #print('Diagnostic delta - timestepping delta '+str(np.max(newdelta1-newdelta)))    
     etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
@@ -389,8 +389,11 @@ for t in range(2,tmax):
        
         print('t='+str(t))
         testing_plots.quiver_geopot_plot(newU,newV,newPhi+Phibar,lambdas,mus,t,dt,6,test,a1,minlevel,maxlevel)
-        print(np.max(Phieq-(Phibar+Phidata[0,:,:])))
-        print(np.min(Phieq-(Phibar+Phidata[0,:,:])))
+        Phidiff=Phieq-(Phibar+Phidata[t,:,:])
+        print(np.max(Phidiff))
+        print(np.min(Phidiff))
+        
+        print(np.unravel_index(Phidiff.argmax(), Phidiff.shape))
         
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()

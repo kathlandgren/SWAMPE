@@ -59,5 +59,7 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
         
         F=Ru-U/taudrag
         G=Rv-V/taudrag
-    
+    else:
+        F=Ru
+        G=Rv
     return F, G
