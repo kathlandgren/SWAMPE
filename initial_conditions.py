@@ -12,7 +12,7 @@ import scipy.special as sp
 
 #local imports
 #import params as p
-import pyshtools as pysh
+#import pyshtools as pysh
 
 
 def test1_init(a,omega,a1):

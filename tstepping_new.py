@@ -13,7 +13,7 @@ import params as p
 #import explicit_time_diff as exp
 import fft_legendre_trans as rfl
 #import exp_t_diff_new as tdiff
-import schwartztrauber as S
+#import schwartztrauber as S
 
 expflag=p.expflag
 if expflag==1:

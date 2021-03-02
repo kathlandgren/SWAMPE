@@ -11,7 +11,7 @@ import numpy as np
 #import scipy.special as sp
 #import math
 #import testing_plots
-import pyshtools as pysh
+#import pyshtools as pysh
 
 def mnMATgen(M,N):
     
