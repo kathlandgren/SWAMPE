@@ -10,7 +10,7 @@ import numpy as np
 import scipy.special as sp
 import math
 import testing_plots
-#import pyshtools as pysh
+import pyshtools as pysh
 
 
 def PmnHmn(J,M,N,mus):
@@ -46,7 +46,7 @@ def PmnHmn(J,M,N,mus):
             if m % 2 == 1:
                 if n>0:
                     Pmn[:,m,n]=-Pmn[:,m,n]
-                    Hmn[:,m,n]=-Hmn[:,m,n]
+                    Hmn[:,m,n]=-Hmn[:,m,n]              
                 
     return Pmn, Hmn
 
@@ -72,16 +72,21 @@ def PmnHmnSH(J,M,N,mus):
     Hmn=np.zeros((J,M+1,N+1))
     Pmntemp=np.zeros((J,temp_size))
     Hmntemp=np.zeros((J,temp_size))
-    for j in range (0,J-1):
+    for j in range (0,J):
 
         Pmntemp[j,:], Hmntemp[j,:] = pysh.legendre.PlmBar_d1(lmax, mus[j])
+        
         Pmntemp[j,:]=0.5*Pmntemp[j,:] #rescale by 1/2 to match our factor
         Hmntemp[j,:] = 0.5*(1-mus[j]**2)*Hmntemp[j,:]
         
     for m in range (0,M+1):
         for n in range (m,N+1):
-            Pmn[:,m,n] = Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
-            Hmn[:,m,n] = Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
+            if m==0:
+                Pmn[:,m,n] = np.sqrt(2)*Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
+                Hmn[:,m,n] = np.sqrt(2)*Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
+            else:
+                Pmn[:,m,n] = Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
+                Hmn[:,m,n] = Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
                 
     return Pmn, Hmn
 
@@ -163,6 +168,9 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     :return: transformed spectral coefficients
     :rtype: array of complex128
     """
+    
+    #legcoeff[legcoeff<10**(-17)]=0 #reset small coeffs to 0
+    
     approxXim=np.zeros((J,I),dtype=complex)
     approxXimPos=np.zeros((J,M+1),dtype=complex) 
     approxXimNeg=np.zeros((J,M),dtype=complex) 

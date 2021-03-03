@@ -9,8 +9,7 @@ This is the main 2Datmo GCM script (with updates on Legendre and stuff)
 ## Import statements
 # Import python packages
 import numpy as np
-import matplotlib.pyplot as plt
-import math
+
 
 # Import program packages
 import params as p
@@ -35,10 +34,10 @@ M = p.M
 #get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
-#K4=10**17
-
+#K4=10**25
+dt=10
 # Associated Legendre Polynomials and their derivatives
-Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+Pmn, Hmn = rfl.PmnHmnSH(J, M, N, mus)
 
 
 # Length of the run in time steps

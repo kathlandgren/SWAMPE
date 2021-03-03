@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb 23 16:15:02 2021
+Created on Wed Mar  3 12:46:59 2021
 
 @author: ek672
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,7 +13,7 @@ import params as p
 import initial_conditions as ic
 import tstepping_new as tstep
 
-M = 213
+M = 106
 # N = p.N
 # Length of the run in time steps
 tmax = p.tmax
@@ -27,7 +28,7 @@ taudrag=p.taudrag
 Phibar=p.Phibar
 omega=p.omega
 a=p.a
-a1=np.pi/2#p.a1
+a1=0.05#p.a1
 test=1
 
 
@@ -36,7 +37,8 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 dt=100 #dt/10
 
 # Associated Legendre Polynomials and their derivatives
-Pmn, Hmn = rfl.PmnHmnSH(J, M, N, mus)
+Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+PmnSH, HmnSH = rfl.PmnHmnSH(J, M, N, mus)
 
 SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
 etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
@@ -54,39 +56,24 @@ mJarray=tstep.mJarray(J,M)
 marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
 
+m=1
+n=1
 
-def transform_test(Xi,I,J,M,N,Pmn,w,mus,lambdas):
-    ## This test takes a scalar field, transforms is to spectral space and back
-    Xim=rfl.fwd_fft_trunc(Xi,I,M)
-
-     
-    Ximn=rfl.fwd_leg(Xim,J,M,N,Pmn,w)
-        
-    temp, Ximnew=rfl.invrs_leg(Ximn,I,J,M,N,Pmn)
-    
-    Xinew=rfl.invrs_fft(Ximnew,I)
-    
-    #plotting
-    plt.contourf(lambdas, mus, Xi-Xinew)
-    plt.colorbar()
-    plt.title('error')
-    plt.show()
-    
-    #plotting
-    plt.contourf(lambdas, mus, Xi)
-    plt.colorbar()
-    plt.title('IC')
-    plt.show()
-    
-    plt.contourf(lambdas, mus, Xinew)
-    plt.colorbar()
-    plt.title('Transform')
-    plt.show()
-    
-    print(np.max(Xi-Xinew))
-    
-    return Xinew
-
-
-Unew=transform_test(Uic,I,J,M,N,Pmn,w,mus,lambdas)
-
+plt.plot(mus,Pmn[:,m,n])
+plt.title('Pmn '+str(m)+', '+str(n))
+plt.show()
+plt.plot(mus,Hmn[:,m,n])
+plt.title('Hmn '+str(m)+', '+str(n))
+plt.show()
+plt.plot(mus,PmnSH[:,m,n])
+plt.title('PmnSH '+str(m)+', '+str(n))
+plt.show()
+plt.plot(mus,HmnSH[:,m,n])
+plt.title('HmnSH '+str(m)+', '+str(n))
+plt.show()
+plt.plot(mus,Pmn[:,m,n]-PmnSH[:,m,n])
+plt.title('Pmn-PmnSH  '+str(m)+', '+str(n))
+plt.show()
+plt.plot(mus,Hmn[:,m,n]-HmnSH[:,m,n])
+plt.title('Hmn-HmnSH  '+str(m)+', '+str(n))
+plt.show()

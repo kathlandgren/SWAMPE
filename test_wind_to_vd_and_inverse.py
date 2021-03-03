@@ -12,7 +12,7 @@ import params as p
 import initial_conditions as ic
 import tstepping_new as tstep
 
-M = 63
+M = 213
 # N = p.N
 # Length of the run in time steps
 tmax = p.tmax
@@ -34,7 +34,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 dt=100 #dt/10
 
 # Associated Legendre Polynomials and their derivatives
-Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+Pmn, Hmn = rfl.PmnHmnSH(J, M, N, mus)
 
 SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
 etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
