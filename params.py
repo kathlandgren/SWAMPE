@@ -38,14 +38,14 @@ tmax=1000#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=10
+test=1
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
 # 3 -- test 3 from Williamson (global steady state nonlinear zonal geostrophic flow with compact support)
 # 6 -- test 6 from Williamson (Rossby-Haurwitz wave)
 # 10 -- Hot Jupiter (PBS) 
-a1=0.08#np.pi/2 #alpha from Test 1 and 2
+a1=0.0#np.pi/2 #alpha from Test 1 and 2
 
 if test==1: # Williamson Test 1
     forcflag=0
