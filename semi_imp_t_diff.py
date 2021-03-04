@@ -35,7 +35,7 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     Phicomp4prep=np.multiply(tstepcoeff1,Dm)
     Phicomp4=rfl.fwd_leg(Phicomp4prep, J, M, N, Hmn, w)
     
-    Phicoeff5=narray*Phibar*(2*dt**2)/(2*a**2)
+    Phicoeff5=narray*(Phibar/2)*((2*dt)**2)/(a**2)
     Phicomp5prep=rfl.fwd_leg(Em,J,M,N,Pmn,w)
     Phicomp5=np.multiply(Phicoeff5,Phicomp5prep)
     
@@ -51,11 +51,11 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     
     
     
-    Phimntstep=Phicoeff0*(Phicomp1-Phicomp2-Phicomp3+Phicomp4-Phicomp5-Phicomp6-Phicomp7)
+    Phimntstep=np.multiply(Phicoeff0,(Phicomp1-Phicomp2-Phicomp3+Phicomp4-Phicomp5-Phicomp6-Phicomp7))
 
     if forcflag==1:
         Phiforcing=rfl.fwd_leg(2*dt*PhiFM, J, M, N, Pmn, w)
-        Phimntstep=Phimntstep+Phiforcing
+        Phimntstep=Phimntstep+np.multiply(Phicoeff0,Phiforcing) #added the coeff on 3/4 -- might be wrong
         
     
     if diffflag==1:
@@ -99,7 +99,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     deltacoeff0=1/(1+(Phibar/4)*narray*(2*dt)**2/a**2)
     
 
-    deltamntstep=deltacoeff0*(deltacomp1+deltacomp2+deltacomp3+deltacomp4-deltacomp5+deltacomp6)
+    deltamntstep=np.multiply(deltacoeff0,(deltacomp1+deltacomp2+deltacomp3+deltacomp4-deltacomp5+deltacomp6))
     #deltamntstep=deltacoeff0*(deltacomp1)
     if forcflag==1:
         # if taudrag==-1:
@@ -121,7 +121,8 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         
         # deltaforcing=-deltaf1+deltaf2+deltaf3-deltaf4
         deltaforcing=deltaf3+deltaf4
-        deltamntstep=deltamntstep+deltaforcing
+        #just added deltacoeff0 3/4 -- might need further fixing
+        deltamntstep=deltamntstep+np.multiply(deltacoeff0,deltaforcing)
         
     
     if diffflag==1:
@@ -134,7 +135,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
 
 def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi):
 
-    ## ETA tstep seems to work!
+    ## explicit time step in eta (5.28) in Hack and Jakob (1992)
     etacomp1=rfl.fwd_leg(etam0, J, M, N, Pmn, w)
 
     etacomp2prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Am)
@@ -143,21 +144,10 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     etacomp3prep=np.multiply(tstepcoeff1,Bm)
     etacomp3=rfl.fwd_leg(etacomp3prep, J, M, N, Hmn, w)
     
-    
-    
     etamntstep=etacomp1-etacomp2+etacomp3
-    #etamntstep=etacomp1#-etacomp2+etacomp3
     
     if forcflag==1:
-        # if taudrag==-1:
-        #     etaf1=np.zeros((M+1,N+1))
-        #     etaf2=np.zeros((M+1,N+1))
-        # else:
-        #     etaf1prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Vm)/taudrag
-        #     etaf1=rfl.fwd_leg(etaf1prep, J, M, N, Pmn, w)
-            
-        #     etaf2prep=np.multiply(tstepcoeff1,Um)/taudrag
-        #     etaf2=rfl.fwd_leg(etaf2prep, J, M, N, Hmn, w)
+        #eta forcing is explicit as in (A.53) in Hack and Jakob (1992)
         
         etaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Gm)
         etaf3=rfl.fwd_leg(etaf3prep, J, M, N, Pmn, w)
@@ -165,7 +155,7 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
         etaf4prep=np.multiply(tstepcoeff1,Fm)
         etaf4=rfl.fwd_leg(etaf4prep, J, M, N, Hmn, w)
         
-        #etaforcing=-etaf1+etaf2+etaf3+etaf4
+
         etaforcing=etaf3-etaf4
     
         etamntstep=etamntstep+etaforcing

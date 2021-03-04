@@ -37,7 +37,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 #K4=10**25
 dt=10
 # Associated Legendre Polynomials and their derivatives
-Pmn, Hmn = rfl.PmnHmnSH(J, M, N, mus)
+Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
 
 # Length of the run in time steps
@@ -337,6 +337,10 @@ for t in range(2,tmax):
     spinupdata[t-1,0] = np.min(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
     spinupdata[t-1,1] = np.max(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
     
+    if spinupdata[t-1,1]>8000:
+        print('Time stepping stopped due to wind blow up. Max RMS winds = '+str(spinupdata[t-1,1]))
+        t=tmax
+
     
     Umdata[t,:,:]=rfl.fwd_fft_trunc(newU,I,M)
     Vmdata[t,:,:]=rfl.fwd_fft_trunc(newV,I, M)
@@ -367,7 +371,7 @@ for t in range(2,tmax):
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
-    if t%1==0:
+    if t%25==0:
         print('t='+str(t))
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         

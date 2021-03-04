@@ -56,8 +56,8 @@ mJarray=tstep.mJarray(J,M)
 marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
 
-m=1
-n=1
+m=106
+n=106
 
 plt.plot(mus,Pmn[:,m,n])
 plt.title('Pmn '+str(m)+', '+str(n))

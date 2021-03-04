@@ -10,10 +10,10 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=170 #the largest Fourier wave number
+M=42 #the largest Fourier wave number
 
 #time-stepping parameters
-tmax=100#864 #number of time steps
+tmax=1000#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 
