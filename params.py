@@ -13,7 +13,7 @@ import numpy as np
 M=42 #the largest Fourier wave number
 
 #time-stepping parameters
-tmax=12000#864 #number of time steps
+tmax=500#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 

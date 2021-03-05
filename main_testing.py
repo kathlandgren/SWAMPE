@@ -261,9 +261,7 @@ Phimndata[1,:,:]=Phimndata[0,:,:]
 
 ## time-stepping inputs
 
-
-fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-fmn[0,1]=omega/np.sqrt(0.375)
+fmn=ic.coriolismn(M,omega)
 
 tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
 tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)

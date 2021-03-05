@@ -27,7 +27,7 @@ taudrag=p.taudrag
 Phibar=p.Phibar
 omega=p.omega
 a=p.a
-a1=0#p.a1
+a1=np.pi/4#p.a1
 test=1
 
 

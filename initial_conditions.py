@@ -186,3 +186,10 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
             Eic[j,i]=numerator/denominator
 
     return Aic, Bic, Cic, Dic, Eic
+
+def coriolismn(M,omega):
+    
+    fmn=np.zeros([M+1,M+1]) 
+    fmn[0,1]=omega/np.sqrt(0.375)
+    
+    return fmn
