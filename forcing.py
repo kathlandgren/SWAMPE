@@ -47,6 +47,23 @@ def Qfun(Phieq,Phi,Phibar,taurad):
     return Q
 
 
+def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
+    #note Q is different from Perez-Becker and Showman, our Q is PBS-Q*g
+    
+    #slowly ramp up
+    if t*dt<15*3600:
+        factor=t*dt/(15*3600)
+    else:
+        factor=1
+    
+
+        
+    Q=factor*(1/taurad)*(Phieq-(Phi+Phibar))
+    print(np.max(Q))
+    
+    return Q
+
+
 def Rfun(U,V,Q,Phi,Phibar, taudrag):
     Ru=np.divide(np.multiply(-U,Q),Phi+Phibar)
     Rv=np.divide(np.multiply(-V,Q),Phi+Phibar)

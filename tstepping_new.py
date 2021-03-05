@@ -33,15 +33,6 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
     
     return newetamn,newetatstep2,newdeltamn,newdeltatstep2,newPhimn,newPhitstep2,Unew,Vnew
 
-def tstepping_latlon(delta0,delta1,eta0,eta1,Phi0,Phi1, w, mus):
-    
-    # 1 means "now", 0 means the previous time step
-    
-    U1,V1 = S.A20_A21(delta1,)
-    
-    
-    return delta2, eta2, Ph2, U1, V1
-
 
 def tstepcoeffmn(M,N,a):
     """

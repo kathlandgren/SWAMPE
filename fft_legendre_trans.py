@@ -189,7 +189,7 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     approxXim[:,0:M+1]=approxXimPos
 
     approxXim[:,I-M:I]=approxXimNeg
-    return approxXimPos, approxXim
+    return approxXim
 
 def invrs_fft(approxXim,I):
     """Calculates the inverse Fourier transform function
@@ -216,11 +216,11 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     # for n in range(N+1):
     #     marray[:,n]=mtemp
         
-    test,newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
-    test,newUm2=invrs_leg(np.multiply(etamn-fmn,tstepcoeffmn), I,J, M, N, Hmn)
+    newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
+    newUm2=invrs_leg(np.multiply(etamn-fmn,tstepcoeffmn), I,J, M, N, Hmn)
     
-    test,newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,etamn-fmn),tstepcoeffmn), I,J, M, N, Pmn)
-    test,newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
+    newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,etamn-fmn),tstepcoeffmn), I,J, M, N, Pmn)
+    newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
     
     # test,newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
     # test,newUm2=invrs_leg(np.multiply(0,tstepcoeffmn), I,J, M, N, Hmn)
@@ -257,10 +257,10 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     
     deltamn=deltacomp1-deltacomp2
     
-    test,newdeltam=invrs_leg(deltamn, I,J, M, N, Pmn)
+    newdeltam=invrs_leg(deltamn, I,J, M, N, Pmn)
     newdelta=invrs_fft(newdeltam, I)
     
-    test,newetam=invrs_leg(etamn, I,J, M, N, Pmn)
+    newetam=invrs_leg(etamn, I,J, M, N, Pmn)
     neweta=invrs_fft(newetam, I)
    
     return neweta,newdelta,etamn,deltamn

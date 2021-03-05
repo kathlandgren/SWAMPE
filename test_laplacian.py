@@ -73,7 +73,7 @@ def laplacian(Xi,I,J,M,N,Pmn,w,a,narray):
     
     step3=np.multiply(-narray,step2)
     
-    test,step4=rfl.invrs_leg(step3, I,J, M, N, Pmn)
+    step4=rfl.invrs_leg(step3, I,J, M, N, Pmn)
     lapXi=rfl.invrs_fft(step4, I)
     
     return lapXi

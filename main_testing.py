@@ -21,13 +21,7 @@ import testing_plots
 import forcing
 import filters
 
-## Set parameter for type of run
-# 0: Debugging, plot at every step
-runtype = 0
-
-
-## Set global parameters
-
+##Set global parameters
 
 # Set spectral dimensions
 M = p.M
@@ -35,7 +29,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**25
-dt=1
+dt=100
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -175,7 +169,10 @@ spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
 
 #### Forcing ####
 Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
+#Q=forcing.Qfun_with_rampup(Phieq, Phiic0, Phibar,taurad,0,dt)
+
 Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
+
 #geopotential forcing to be passed to time stepping
 PhiF=Q
 
@@ -355,6 +352,7 @@ for t in range(2,tmax):
     
         
     ######## FORCING ############
+    # Q=forcing.Qfun_with_rampup(Phieq, newPhi,Phibar, taurad,t,dt)
     Q=forcing.Qfun(Phieq, newPhi,Phibar, taurad)
     #geopotential forcing to be passed to time stepping
     PhiF=Q
@@ -369,7 +367,7 @@ for t in range(2,tmax):
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
-    if t%250==0:
+    if t%5==0:
         print('t='+str(t))
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         

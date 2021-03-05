@@ -43,7 +43,7 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     if diffflag==1:
         Phimntstep=filters.diffusion(Phimntstep, sigmaPhi)    
     
-    test,newPhimtstep=rfl.invrs_leg(Phimntstep, I,J, M, N, Pmn)
+    newPhimtstep=rfl.invrs_leg(Phimntstep, I,J, M, N, Pmn)
     newPhitstep=rfl.invrs_fft(newPhimtstep, I)
 
     
@@ -91,7 +91,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     if diffflag==1:
         deltamntstep=filters.diffusion(deltamntstep, sigma)
 
-    test,newdeltamtstep=rfl.invrs_leg(deltamntstep, I,J, M, N, Pmn)
+    newdeltamtstep=rfl.invrs_leg(deltamntstep, I,J, M, N, Pmn)
     newdeltatstep=rfl.invrs_fft(newdeltamtstep, I)
     return deltamntstep,newdeltatstep
 
@@ -135,6 +135,6 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     if diffflag==1:
         etamntstep=filters.diffusion(etamntstep, sigma)
     
-    test,newetamtstep=rfl.invrs_leg(etamntstep, I,J, M, N, Pmn)
+    newetamtstep=rfl.invrs_leg(etamntstep, I,J, M, N, Pmn)
     newetatstep=rfl.invrs_fft(newetamtstep, I)
     return etamntstep,newetatstep

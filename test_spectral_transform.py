@@ -62,7 +62,7 @@ def transform_test(Xi,I,J,M,N,Pmn,w,mus,lambdas):
      
     Ximn=rfl.fwd_leg(Xim,J,M,N,Pmn,w)
         
-    temp, Ximnew=rfl.invrs_leg(Ximn,I,J,M,N,Pmn)
+    Ximnew=rfl.invrs_leg(Ximn,I,J,M,N,Pmn)
     
     Xinew=rfl.invrs_fft(Ximnew,I)
     

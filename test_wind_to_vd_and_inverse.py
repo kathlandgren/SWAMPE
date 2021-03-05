@@ -287,10 +287,10 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     
     deltamn=deltacomp1-deltacomp2
     
-    test,newdeltam=rfl.invrs_leg(deltamn, I,J, M, N, Pmn)
+    newdeltam=rfl.invrs_leg(deltamn, I,J, M, N, Pmn)
     newdelta=rfl.invrs_fft(newdeltam, I)
     
-    test,newetam=rfl.invrs_leg(etamn, I,J, M, N, Pmn)
+    newetam=rfl.invrs_leg(etamn, I,J, M, N, Pmn)
     neweta=rfl.invrs_fft(newetam, I)
    
     return neweta,newdelta,etamn,deltamn
