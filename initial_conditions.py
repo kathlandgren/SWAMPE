@@ -177,7 +177,7 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
     Cic=np.multiply(Uic,Phiic0) #C=U*\Phi
     Dic=np.multiply(Vic,Phiic0) #D=V*\Phi
     
-    Eic=np.zeros((J,I),dtype=complex)
+    Eic=np.zeros((J,I))
     #E=(U^2+V^2)/(2(1-mu^2))
     for i in range(I):
         for j in range(J):

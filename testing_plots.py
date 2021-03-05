@@ -252,7 +252,7 @@ def write_2D_gif(lambdas,mus,Xidata,tmax,frms,string):
     #kwargs_write = {'fps':1.0, 'quantizer':'nq'}
     imageio.mimsave('./'+string, [plot_for_offset_2D(i,lambdas,mus,Xidata) for i in range(tmax)], fps=frms)
     
-def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness):
+def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxlevel):
     U=U[t,:,:]
     V=V[t,:,:]
     Phi=Phi[t,:,:]
@@ -265,7 +265,19 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness):
     
     # Plot the surface.
     plt.contourf(X, Y, Phi,30)
-    cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
+    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
+    
+
+    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
+    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
+    
+    colorbar = plt.colorbar(CS)
+
+    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
+ 
+
+    #plt.colorbar(extend='both')
+    #plt.clim(0, 10**4)
     
     Xsparse=X[0::sparseness]
     Ysparse=Y[0::sparseness]
@@ -277,7 +289,11 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness):
     # ax.quiver(X,Y,U,V)
     # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
-    plt.title('t='+str(t))
+    
+    if test<3:
+        plt.title('t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
     plt.show()
     # IMPORTANT ANIMATION CODE HERE
     # Used to keep the limits constant
@@ -290,7 +306,7 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,sparseness):
     return image
 
 
-def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,tmax,frms,string,sparseness):
+def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,tmax,frms,string,sparseness,dt,test,a1,minlevel,maxlevel):
     """ Writes a .gif file using the plot_for_offset function
     :param z_max: max plot height
     :type z_max: float
@@ -308,7 +324,7 @@ def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,tmax,frms,string,sparseness
     :type string: string
     """
     #kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-    imageio.mimsave('./'+string, [quiver_for_offset_2D(Udata,Vdata,Phidata,lambdas,mus,i,sparseness) for i in range(tmax)], fps=frms)
+    imageio.mimsave('./'+string, [quiver_for_offset_2D(Udata,Vdata,Phidata,lambdas,mus,i,dt,sparseness,test,a1,minlevel,maxlevel) for i in range(tmax)], fps=frms)
 # # def gif_contour():
 # #     # Generate grid for plotting
 # #     X = lambdas
@@ -441,6 +457,36 @@ def spinup_plot(plotdata,tmax,dt,test,a1):
     plt.xlabel('time (hours)')
     plt.ticklabel_format(axis='both', style='sci')
     plt.ylabel('RMS Winds')
+    
+    plt.ticklabel_format(axis='both', style='sci')
+    
+    if test<3:
+        plt.title('test='+str(test)+', alpha='+str(a1))
+    else:
+        plt.title('test= Hot Jupiter')
+    plt.show()
+    
+def spinup_geopot_plot(geopotdata,tmax,dt,test,a1):
+    """
+
+    :param plotdata: first variable, JxM+1 
+    :type statevar1: float
+
+    
+    """
+    t = np.linspace(0, dt*tmax/3600, tmax, endpoint=True)
+    
+    geodata=np.zeros((tmax,2))
+    for i in range(tmax):
+        geodata[i,0]=np.min(geopotdata[i,:,:])
+        geodata[i,1]=np.max(geopotdata[i,:,:])
+    
+    plt.plot(t, geodata[:,0])
+    plt.plot(t, geodata[:,1])
+    
+    plt.xlabel('time (hours)')
+    plt.ticklabel_format(axis='both', style='sci')
+    plt.ylabel('Geopotential max/min')
     
     plt.ticklabel_format(axis='both', style='sci')
     
