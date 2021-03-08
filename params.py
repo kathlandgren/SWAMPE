@@ -13,7 +13,7 @@ import numpy as np
 M=42 #the largest Fourier wave number
 
 #time-stepping parameters
-tmax=1000#864 #number of time steps
+tmax=400#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -79,6 +79,8 @@ elif test==10: # PBS Hot Jupiter
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=6.8
 
+#Continuation flag
+contflag = 1
 
 #Hyperviscosity parameters
 diffflag=1
@@ -88,8 +90,8 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
-taurad=3600*24*0.01 #in Earth days
-taudrag=3600*24*0.1 #if set to -1, means infinity
+taurad=3600*24*100 #in Earth days
+taudrag=3600*24*100 #if set to -1, means infinity
 
 DPhieq=Phibar
 
