@@ -19,7 +19,8 @@ expflag=p.expflag
 if expflag==1:
     import exp_t_diff_new as tdiff
 else:
-    import semi_imp_t_diff as tdiff
+    # import semi_imp_t_diff as tdiff
+    import mod_Euler_t_diff as tdiff
 
 
 ##TODO: fix inputs into invrsUV: fmn, tstepcoeffmn
