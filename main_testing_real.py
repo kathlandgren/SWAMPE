@@ -35,7 +35,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**25
-dt=1
+dt=150
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -371,7 +371,7 @@ for t in range(2,tmax):
     Phiforcingdata[t,:,:]=PhiF
     Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
     
-    if t%25==0:
+    if t%5==0:
         print('t='+str(t))
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         

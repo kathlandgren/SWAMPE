@@ -13,7 +13,7 @@ import numpy as np
 M=42 #the largest Fourier wave number
 
 #time-stepping parameters
-tmax=1000#864 #number of time steps
+tmax=2000#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 
@@ -89,7 +89,7 @@ alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
 taurad=3600*24*0.01 #in Earth days
-taudrag=3600*24*0.1 #if set to -1, means infinity
+taudrag=3600*24*0.1#if set to -1, means infinity
 
 DPhieq=Phibar
 
