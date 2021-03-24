@@ -104,9 +104,9 @@ def spectral_params(M):
     else:
         print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
     
-    lmax=M
-    I = int(2*lmax + 1)#p.I 
-    J = int(lmax+1)#p.J
+    #lmax=M
+    # I = int(2*lmax + 1)#p.I 
+    # J = int(lmax+1)#p.J
 
     
     lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 

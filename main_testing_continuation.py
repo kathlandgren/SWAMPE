@@ -397,7 +397,7 @@ for t in range(2,tmax):
     spinupdata[t,1] = np.max(np.sqrt(Udata[t,:,:]**2 + Vdata[t,:,:]**2 ))
     
     if contflag==1:
-        if t%200==0:
+        if t%100==0:
             # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
             cont.save_output(etadata[t,:,:],'etadata')
             cont.save_output(deltadata[t,:,:],'deltadata')
