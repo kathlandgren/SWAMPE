@@ -73,7 +73,7 @@ elif test==10: # PBS Hot Jupiter
     #Physical parameters
     forcflag=1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
-    omega=3.2*(10**(-5))#7.2921159*10**(-5) #rotation rate of the planet, radians per second
+    omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
@@ -93,8 +93,8 @@ alpha=0.01 #filter coefficient to prevent aliasing
 
 #forcing parameters
 
-taurad=3600*24*100 #in Earth days
-taudrag=-1#3600*24*100#if set to -1, means infinity
+taurad=3600*24*0.1 #in Earth days
+taudrag=3600*24*10#if set to -1, means infinity
 
 
 DPhieq=Phibar

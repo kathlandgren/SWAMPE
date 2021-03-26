@@ -35,7 +35,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**25
-dt=30
+dt=50
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 
@@ -375,16 +375,12 @@ for t in range(2,tmax):
         print('t='+str(t))
         #testing_plots.physical_plot(newPhi,mus,lambdas)
         
-        #testing_plots.quiver_geopot_plot(newU,newV,newPhi,lambdas,mus,t,6)
-        # testing_plots.physical_plot(newdelta-newdelta1, mus, lambdas)
-        # testing_plots.physical_plot(neweta-neweta1,mus,lambdas)
-        # testing_plots.physical_plot(newV,mus,lambdas)
-        # testing_plots.physical_plot(G,mus,lambdas)
-        # testing_plots.physical_plot(Q,mus,lambdas)
+ 
         
         testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
-        
-        testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,3,test,a1,minlevel,maxlevel)
+        testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
+        testing_plots.zonal_wind_plot(Udata[t,:,:],mus,t,dt,test,a1)
+        testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
         
         # plt.contourf(lambdas, mus, newzeta)
         # plt.colorbar()
