@@ -14,7 +14,7 @@ M=63 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=2000#864 #number of time steps
+tmax=105#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
@@ -81,8 +81,12 @@ elif test==10: # PBS Hot Jupiter
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=6.8
 
-#Continuation flag
+#Continuation flag to load
 contflag = 1
+#continuation flag to save
+saveflag=1
+#Continuation save frequency: every savefreq time steps
+savefreq=1
 
 #Hyperviscosity parameters
 diffflag=1

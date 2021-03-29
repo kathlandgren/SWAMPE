@@ -21,8 +21,9 @@ import tstepping_new as tstep
 import testing_plots
 import forcing
 import filters
+import continuation as cont
 
-def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq):
+def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq):
     
     #get other dimensional parameters using the spectral dimension
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
@@ -77,17 +78,52 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
     
     spinupdata=np.zeros((tmax,2))
     
-    ## Set the initial conditions 
-    SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
+    ## time-stepping inputs
     
-    if test==1:
-        etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
-    elif test==2:
-        etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)   
-    elif test==10:
-        etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp)
     
-    Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
+    fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
+    fmn[0,1]=omega/np.sqrt(0.375)
+    
+    tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
+    tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
+    tstepcoeff2=tstep.tstepcoeff2(J,M,dt,a)
+    mJarray=tstep.mJarray(J,M)
+    marray=tstep.marray(M, N)
+    narray=tstep.narray(M,N)
+        
+    
+## Set the initial conditions 
+    if contflag==0:
+        SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
+        
+        if test==1:
+            etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
+        elif test==2:
+            etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)   
+        elif test==10:
+            etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp)
+        
+        Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
+    
+    elif contflag==1:
+        etaic0 = cont.load_input('etadata')
+        etaic1 = etaic0
+        deltaic0 = cont.load_input('deltadata')
+        deltaic1 = deltaic0
+        Phiic0 = cont.load_input('Phidata')
+        Phiic1 = Phiic0
+        
+
+        
+        etam0=rfl.fwd_fft_trunc(etaic0, I, M)
+        print(np.shape(etam0))
+        etamn0=rfl.fwd_leg(etam0,J,M,N,Pmn,w)
+        deltam0=rfl.fwd_fft_trunc(deltaic0, I, M)
+        deltamn0=rfl.fwd_leg(deltam0,J,M,N,Pmn,w)
+        
+        Uiccomp,Viccomp=rfl.invrsUV(deltamn0,etamn0,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+        Uic=np.real(Uiccomp)
+        Vic=np.real(Viccomp)
     Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
     
     
@@ -215,19 +251,7 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
     # Time stepping
     ####
     
-    ## time-stepping inputs
-    
-    
-    fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-    fmn[0,1]=omega/np.sqrt(0.375)
-    
-    tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
-    tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
-    tstepcoeff2=tstep.tstepcoeff2(J,M,dt,a)
-    mJarray=tstep.mJarray(J,M)
-    marray=tstep.marray(M, N)
-    narray=tstep.narray(M,N)
-    
+
     
     ## time -stepping
     
@@ -292,6 +316,16 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         
         spinupdata[t-1,0] = np.min(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
         spinupdata[t-1,1] = np.max(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
+        
+        
+        if saveflag==1:
+   
+            if t%savefreq==0:
+                # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
+                cont.save_output(etadata[t,:,:],'etadata')
+                cont.save_output(deltadata[t,:,:],'deltadata')
+                cont.save_output(Phidata[t,:,:],'Phidata')
+     
         
         if spinupdata[t-1,1]>8000:
             print('Time stepping stopped due to wind blow up. Max RMS winds = '+str(spinupdata[t-1,1]))
@@ -359,6 +393,8 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         Cmdata[t,:,:]=rfl.fwd_fft_trunc(C, I, M)
         Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
         Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
+        
+        
         
         
 

@@ -43,6 +43,13 @@ forcflag=p.forcflag
 #hyperviscosity filter flag
 diffflag=p.diffflag
 
+#continuation flag
+contflag=1#p.contflag
+#flag to save
+saveflag=p.saveflag
+#save frequency
+savefreq=p.savefreq
+
 #flag for anti-aliasing filter as in Hack and Jakob (1992) eq. (4.4)
 modalflag=p.modalflag
 # if modalflag==1:
@@ -51,4 +58,4 @@ alpha=p.alpha
 plotflag=p.plotflag
 plotfreq=p.plotfreq
 
-main.main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq)
+main.main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq)
