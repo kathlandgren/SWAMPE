@@ -10,11 +10,11 @@ This is the file containing the spectral, physical, and code parameters.
 import numpy as np
 
 # #Spectral parameters
-M=42 #the largest Fourier wave number
+M=63 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=4000#864 #number of time steps
+tmax=2000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
@@ -73,7 +73,7 @@ elif test==10: # PBS Hot Jupiter
     #Physical parameters
     forcflag=1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
-    omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
+    omega=1.64*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
@@ -91,10 +91,15 @@ diffflag=1
 modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
+#Plotting flag
+plotflag=1
+#plotting frequency, every plotfreq frames
+plotfreq=5
+
 #forcing parameters
 
 taurad=3600*24*0.1 #in Earth days
-taudrag=3600*24*10#if set to -1, means infinity
+taudrag=-1#3600*24*10#if set to -1, means infinity
 
 
 DPhieq=Phibar
