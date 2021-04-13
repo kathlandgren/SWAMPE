@@ -11,7 +11,7 @@ import main_function as main
 
 M=p.M
 
-dt1=50
+dt1=10
 # Length of the run in time steps
 tmax = p.tmax
 #surface gravity
@@ -44,7 +44,7 @@ forcflag=p.forcflag
 diffflag=p.diffflag
 
 #continuation flag
-contflag=1#p.contflag
+contflag=p.contflag
 #flag to save
 saveflag=p.saveflag
 #save frequency
@@ -59,3 +59,9 @@ plotflag=p.plotflag
 plotfreq=p.plotfreq
 
 main.main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq)
+
+
+
+
+
+
