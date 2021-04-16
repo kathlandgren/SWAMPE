@@ -14,7 +14,7 @@ M=63 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=10000#5000#864 #number of time steps
+tmax=500#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
@@ -40,7 +40,7 @@ tmax=10000#5000#864 #number of time steps
 
 
 #make these into a file that gets read later
-test=10
+test=11
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -92,14 +92,17 @@ elif test==11: #Langton hot Jupiter
     g=9.8
     k1=2*10**(-4)
     k2=4*10**(-4)
-    p=100*250*g/10 #(in Pa)
+    pressure=100*250*g/10 #(in Pa)
     R=3000
     Cp=13000 
-    sigma=5.7*10**(-8)
+    sigmaSB=5.7*10**(-8)
+    
+    minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    maxlevel=6.8
 
 #Continuation flag to load
-contflag= 1  #continuation flag to save
-saveflag=1
+contflag=0  #continuation flag to save
+saveflag=0
 #Continuation save frequency: every savefreq time steps
 savefreq=100
 
@@ -111,9 +114,9 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #Plotting flag
-plotflag=0
+plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=75
+plotfreq=5
 
 #forcing parameters
 

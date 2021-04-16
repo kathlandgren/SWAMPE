@@ -15,7 +15,7 @@ import testing_plots
 
 
 ## PHI tstep
-def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi):
+def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test):
     #use the "1" for state variables (the latest one)
     #tstepcoeff1=tstepcoeff1/2
     #tstepcoeff2=tstepcoeff2/2
@@ -51,19 +51,21 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     if forcflag==1:
         # Phiforcing=rfl.fwd_leg(2*dt*PhiFM, J, M, N, Pmn, w)
         # Phimntstep=Phimntstep+Phiforcing
-
-        deltaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Fm)
-        deltaf3=rfl.fwd_leg(deltaf3prep, J, M, N, Pmn, w)
-        
-        deltaf4prep=np.multiply(tstepcoeff1,Gm)
-        deltaf4=rfl.fwd_leg(deltaf4prep, J, M, N, Hmn, w)
-        
-        deltaforcing=deltaf3+deltaf4
-
-        Phiforcing=rfl.fwd_leg((dt)*PhiFM, J, M, N, Pmn, w)
-
-        Phimntstep=Phimntstep+Phiforcing-(dt)*Phibar*deltaforcing   
-        
+        if test==10:
+            deltaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Fm)
+            deltaf3=rfl.fwd_leg(deltaf3prep, J, M, N, Pmn, w)
+            
+            deltaf4prep=np.multiply(tstepcoeff1,Gm)
+            deltaf4=rfl.fwd_leg(deltaf4prep, J, M, N, Hmn, w)
+            
+            deltaforcing=deltaf3+deltaf4
+    
+            Phiforcing=rfl.fwd_leg((dt)*PhiFM, J, M, N, Pmn, w)
+    
+            Phimntstep=Phimntstep+Phiforcing-(dt)*Phibar*deltaforcing   
+            
+         elif test==11:
+            Phimntstep=Phimntstep+Phiforcing 
     
     if diffflag==1:
         Phimntstep=filters.diffusion(Phimntstep, sigmaPhi) 
@@ -76,7 +78,7 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     
     return Phimntstep,newPhitstep
 
-def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi):
+def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test):
    # tstepcoeff1=tstepcoeff1/2
    # tstepcoeff2=tstepcoeff2/2
     
@@ -116,20 +118,21 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4+deltacomp5+np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2
 
     if forcflag==1:
+        if test==10:
         
-        deltaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Fm)
-        deltaf3=rfl.fwd_leg(deltaf3prep, J, M, N, Pmn, w)
-        
-        deltaf4prep=np.multiply(tstepcoeff1,Gm)
-        deltaf4=rfl.fwd_leg(deltaf4prep, J, M, N, Hmn, w)
-        
-        # deltaforcing=-deltaf1+deltaf2+deltaf3-deltaf4
-        deltaforcing=deltaf3+deltaf4
-
-        Phiforcing=np.multiply(narray,rfl.fwd_leg((dt)*PhiFM, J, M, N, Pmn, w))/a**2
-
-        deltamntstep=deltamntstep+deltaforcing+Phiforcing
-        
+            deltaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Fm)
+            deltaf3=rfl.fwd_leg(deltaf3prep, J, M, N, Pmn, w)
+            
+            deltaf4prep=np.multiply(tstepcoeff1,Gm)
+            deltaf4=rfl.fwd_leg(deltaf4prep, J, M, N, Hmn, w)
+            
+            # deltaforcing=-deltaf1+deltaf2+deltaf3-deltaf4
+            deltaforcing=deltaf3+deltaf4
+    
+            Phiforcing=np.multiply(narray,rfl.fwd_leg((dt)*PhiFM, J, M, N, Pmn, w))/a**2
+    
+            deltamntstep=deltamntstep+deltaforcing+Phiforcing
+            
 
     
     if diffflag==1:
@@ -140,7 +143,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     return deltamntstep,newdeltatstep
 
 
-def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi):
+def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test):
     #tstepcoeff1=tstepcoeff1/2
     
     etacomp1=rfl.fwd_leg(etam0, J, M, N, Pmn, w)
@@ -157,18 +160,20 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     #etamntstep=etacomp1#-etacomp2+etacomp3
     
     if forcflag==1:
-        #eta forcing is explicit as in (A.53) in Hack and Jakob (1992)
         
-        etaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Gm)
-        etaf3=rfl.fwd_leg(etaf3prep, J, M, N, Pmn, w)
-        
-        etaf4prep=np.multiply(tstepcoeff1,Fm)
-        etaf4=rfl.fwd_leg(etaf4prep, J, M, N, Hmn, w)
-        
-
-        etaforcing=etaf3-etaf4
+        if test==10:
+            #eta forcing is explicit as in (A.53) in Hack and Jakob (1992)
+            
+            etaf3prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Gm)
+            etaf3=rfl.fwd_leg(etaf3prep, J, M, N, Pmn, w)
+            
+            etaf4prep=np.multiply(tstepcoeff1,Fm)
+            etaf4=rfl.fwd_leg(etaf4prep, J, M, N, Hmn, w)
+            
     
-        etamntstep=etamntstep+etaforcing
+            etaforcing=etaf3-etaf4
+        
+            etamntstep=etamntstep+etaforcing
 
     
     if diffflag==1:

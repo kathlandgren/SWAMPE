@@ -38,7 +38,7 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
 #     Q=(1/taurad)*(heq-(Phi+Phibar)/g)
 #     #Q=(1/taurad)*(heq-(Phi)/g)
 #     return Q
-def DoubleGrayPhiEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
+def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
     
     TeqMat=((Phibar/R)**4)*np.ones((J,I))
 
@@ -56,6 +56,7 @@ def DoubleGrayPhiEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
 
 def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     outer_coeff=sigma*k2*R/Cp
+
     Q=outer_coeff*(TeqMat-((Phidata+Phibar)/R)**4)
     
     return Q

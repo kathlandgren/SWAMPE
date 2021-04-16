@@ -100,7 +100,7 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
         elif test==2:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)   
-        elif test==10:
+        elif test==10 or test==11:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp)
         
         Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
@@ -116,7 +116,6 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
 
         
         etam0=rfl.fwd_fft_trunc(etaic0, I, M)
-        print(np.shape(etam0))
         etamn0=rfl.fwd_leg(etam0,J,M,N,Pmn,w)
         deltam0=rfl.fwd_fft_trunc(deltaic0, I, M)
         deltamn0=rfl.fwd_leg(deltam0,J,M,N,Pmn,w)
@@ -166,20 +165,47 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
     
     
     #### Forcing ####
-    Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
-    Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
-    #geopotential forcing to be passed to time stepping
-    PhiF=Q
     
-    Phiforcingdata[0,:,:]=PhiF
-    Phiforcingdata[1,:,:]=PhiF
-    
-    
-    F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
-    Fdata[0,:,:]=F
-    Fdata[1,:,:]=Fdata[0,:,:]
-    Gdata[0,:,:]=G
-    Gdata[1,:,:]=Gdata[0,:,:]
+    if test==10:
+        Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
+        Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
+        #geopotential forcing to be passed to time stepping
+        PhiF=Q
+        
+        Phiforcingdata[0,:,:]=PhiF
+        Phiforcingdata[1,:,:]=PhiF
+        
+        
+        F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
+        Fdata[0,:,:]=F
+        Fdata[1,:,:]=Fdata[0,:,:]
+        Gdata[0,:,:]=G
+        Gdata[1,:,:]=Gdata[0,:,:]
+    elif test==11:
+        #make these optional arguments
+        k1=p.k1
+        k2=p.k2
+        pressure=p.pressure
+        R=p.R
+        Cp=p.Cp
+        sigmaSB=p.sigmaSB
+        
+        
+        Teq=forcing.DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,pressure,g,R,Cp,sigmaSB)
+
+        Q=forcing.DoubleGrayPhiForcing(Teq,Phiic0,Phibar,k2,sigmaSB,Cp,R)
+        #geopotential forcing to be passed to time stepping
+        PhiF=Q
+        
+        Phiforcingdata[0,:,:]=PhiF
+        Phiforcingdata[1,:,:]=PhiF
+        
+        
+        F,G=0,0#forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
+        Fdata[0,:,:]=F
+        Fdata[1,:,:]=Fdata[0,:,:]
+        Gdata[0,:,:]=G
+        Gdata[1,:,:]=Gdata[0,:,:]
         
     
     
@@ -284,7 +310,7 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
     
         PhiFM=Phiforcingmdata[t-1,:,:]    
         
-        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi)
+        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test)
         
         
         #write new data
@@ -347,19 +373,35 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         
             
         ######## FORCING ############
-        Q=forcing.Qfun(Phieq, np.real(newPhi),Phibar, taurad)
-        #geopotential forcing to be passed to time stepping
-        PhiF=Q
-        F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
-        
-        Fdata[t,:,:]=F
-        Gdata[t,:,:]=G
-        
-        Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
-        Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
-        
-        Phiforcingdata[t,:,:]=PhiF
-        Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+        if test==10:
+            
+            Q=forcing.Qfun(Phieq, np.real(newPhi),Phibar, taurad)
+            #geopotential forcing to be passed to time stepping
+            PhiF=Q
+            F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
+            
+            Fdata[t,:,:]=F
+            Gdata[t,:,:]=G
+            
+            Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
+            Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            
+            Phiforcingdata[t,:,:]=PhiF
+            Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+        elif test==11:
+            
+            Q=forcing.DoubleGrayPhiForcing(Teq,Phiic0,Phibar,k2,sigmaSB,Cp,R)
+            #geopotential forcing to be passed to time stepping
+            PhiF=Q
+
+            Fdata[t,:,:]=0
+            Gdata[t,:,:]=0
+            
+            Fmdata[t,:,:]=0#rfl.fwd_fft_trunc(F, I, M)
+            Gmdata[t,:,:]=0#rfl.fwd_fft_trunc(G, I, M)
+            
+            Phiforcingdata[t,:,:]=PhiF
+            Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
         
         if t%int(tmax/10)==0:
             print('t='+str(t)+', '+str(t*100/tmax)+'% complete')
