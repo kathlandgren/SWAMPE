@@ -10,7 +10,7 @@ import numpy as np
 import scipy.special as sp
 import math
 import testing_plots
-import pyshtools as pysh
+#import pyshtools as pysh
 
 
 def PmnHmn(J,M,N,mus):
@@ -50,45 +50,45 @@ def PmnHmn(J,M,N,mus):
                 
     return Pmn, Hmn
 
-def PmnHmnSH(J,M,N,mus):
-    """Calculates the values of associated Legendre polynomials and their 
-     derivatives evaluated at Gaussian latitudes (mus) up to wavenumber M 
+# def PmnHmnSH(J,M,N,mus):
+#     """Calculates the values of associated Legendre polynomials and their 
+#      derivatives evaluated at Gaussian latitudes (mus) up to wavenumber M 
         
-        :param J: number of latitudes
-        :type J: int
-        :param M: highest wavenumber
-        :type M: int
-        :param N: highest degree of the Legendre functions for m=0
-        :type N: int
-        :param mus: Gaussian latitudes
-        :type mus: array of float64
+#         :param J: number of latitudes
+#         :type J: int
+#         :param M: highest wavenumber
+#         :type M: int
+#         :param N: highest degree of the Legendre functions for m=0
+#         :type N: int
+#         :param mus: Gaussian latitudes
+#         :type mus: array of float64
         
-        :return: Pmn array  (assoc. legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2))
-        :rtype: array of float64
-        """
-    lmax = M
-    temp_size = int((lmax+1)*(lmax+2)/2)
-    Pmn=np.zeros((J,M+1,N+1))
-    Hmn=np.zeros((J,M+1,N+1))
-    Pmntemp=np.zeros((J,temp_size))
-    Hmntemp=np.zeros((J,temp_size))
-    for j in range (0,J):
+#         :return: Pmn array  (assoc. legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2))
+#         :rtype: array of float64
+#         """
+#     lmax = M
+#     temp_size = int((lmax+1)*(lmax+2)/2)
+#     Pmn=np.zeros((J,M+1,N+1))
+#     Hmn=np.zeros((J,M+1,N+1))
+#     Pmntemp=np.zeros((J,temp_size))
+#     Hmntemp=np.zeros((J,temp_size))
+#     for j in range (0,J):
 
-        Pmntemp[j,:], Hmntemp[j,:] = pysh.legendre.PlmBar_d1(lmax, mus[j])
+#         Pmntemp[j,:], Hmntemp[j,:] = pysh.legendre.PlmBar_d1(lmax, mus[j])
         
-        Pmntemp[j,:]=0.5*Pmntemp[j,:] #rescale by 1/2 to match our factor
-        Hmntemp[j,:] = 0.5*(1-mus[j]**2)*Hmntemp[j,:]
+#         Pmntemp[j,:]=0.5*Pmntemp[j,:] #rescale by 1/2 to match our factor
+#         Hmntemp[j,:] = 0.5*(1-mus[j]**2)*Hmntemp[j,:]
         
-    for m in range (0,M+1):
-        for n in range (m,N+1):
-            if m==0:
-                Pmn[:,m,n] = np.sqrt(2)*Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
-                Hmn[:,m,n] = np.sqrt(2)*Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
-            else:
-                Pmn[:,m,n] = Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
-                Hmn[:,m,n] = Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
+#     for m in range (0,M+1):
+#         for n in range (m,N+1):
+#             if m==0:
+#                 Pmn[:,m,n] = np.sqrt(2)*Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
+#                 Hmn[:,m,n] = np.sqrt(2)*Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
+#             else:
+#                 Pmn[:,m,n] = Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
+#                 Hmn[:,m,n] = Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
                 
-    return Pmn, Hmn
+#     return Pmn, Hmn
 
 
 def fwd_leg(data,J,M,N,Pmn,w):

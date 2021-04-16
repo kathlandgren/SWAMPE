@@ -35,7 +35,7 @@ M = p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
 #K4=10**25
-dt=50
+dt=30
 # Associated Legendre Polynomials and their derivatives
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
 

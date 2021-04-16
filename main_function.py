@@ -361,10 +361,13 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         Phiforcingdata[t,:,:]=PhiF
         Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
         
+        if t%int(tmax/10)==0:
+            print('t='+str(t)+', '+str(t*100/tmax)+'% complete')
+        
         if plotflag==1:
             
             if t%plotfreq==0:
-                print('t='+str(t))
+                
                 #testing_plots.physical_plot(newPhi,mus,lambdas)
                 
          
