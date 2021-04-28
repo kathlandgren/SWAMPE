@@ -14,7 +14,7 @@ M=63 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=500#5000#864 #number of time steps
+tmax=2000#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
@@ -90,7 +90,7 @@ elif test==11: #Langton hot Jupiter
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     DPhieq=Phibar
     g=9.8
-    k1=2*10**(-4)
+    k1=2*10**(-4) #2 is used in Langton and Laughlin
     k2=4*10**(-4)
     pressure=100*250*g/10 #(in Pa)
     R=3000
@@ -98,11 +98,11 @@ elif test==11: #Langton hot Jupiter
     sigmaSB=5.7*10**(-8)
     
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
-    maxlevel=6.8
+    maxlevel=7
 
 #Continuation flag to load
-contflag=0  #continuation flag to save
-saveflag=0
+contflag=1  #continuation flag to save
+saveflag=1
 #Continuation save frequency: every savefreq time steps
 savefreq=100
 
@@ -116,7 +116,7 @@ alpha=0.01 #filter coefficient to prevent aliasing
 #Plotting flag
 plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=5
+plotfreq=75
 
 #forcing parameters
 

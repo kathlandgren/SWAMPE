@@ -43,7 +43,6 @@ def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
     TeqMat=((Phibar/R)**4)*np.ones((J,I))
 
     x=np.exp(-k1*p/g)
-    print(x)
     
     for i in range(I):
         for j in range(J):
@@ -82,7 +81,6 @@ def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
 
         
     Q=factor*(1/taurad)*(Phieq-(Phi+Phibar))
-    print(np.max(Q))
     
     return Q
 
