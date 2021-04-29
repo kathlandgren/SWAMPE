@@ -27,8 +27,10 @@ def test1_init(a,omega,a1):
 
 def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     """Initializes the state variables
+    
     :param I: number of longitudes
     :type I: int
+    
     :param J: number of latitudes
     :type J: int 
 
