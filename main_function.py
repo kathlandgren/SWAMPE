@@ -4,7 +4,7 @@ Created on Mon Mar 29 16:03:08 2021
 
 @author: ek672
 
-This is the file that turns main into a function
+This is the main SWAMP-E function. It calls the timestepping function.
 """
 
 ## Import statements

@@ -525,4 +525,24 @@ def zonal_wind_plot(plotdata,mus,t,dt,test,a1):
         plt.title('t='+str(dt*t/3600)+' hours, test= Hot Jupiter')
     plt.show()
     
+def geopot_to_temp(Phi,R):
+    """
+    Calculates the temperature from the geopotential under the ideal gas law assumptions.
+    Parameters
+    ----------
+    Phi : TYPE
+        DESCRIPTION.
+    R : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    T : TYPE
+        Temperature field of the same size as Phi.
+
+    """
+    T=Phi/R
+    
+    return T
+    
     
