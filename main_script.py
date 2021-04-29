@@ -58,7 +58,20 @@ alpha=p.alpha
 plotflag=p.plotflag
 plotfreq=p.plotfreq
 
-main.main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq)
+#make these optional arguments
+k1=p.k1
+# k2=p.k2
+pressure=p.pressure
+R=p.R
+Cp=p.Cp
+sigmaSB=p.sigmaSB
+
+k2vec=[2*10**(-4),2*10**(-3),1*10**(-2),2*10**(-2)]
+for i in range(len(k2vec)):
+    k2=k2vec[i]
+    print(k2)
+    
+    main.main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq,k1,k2,pressure,Cp,R,sigmaSB)
 
 
 

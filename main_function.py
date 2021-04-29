@@ -23,7 +23,7 @@ import forcing
 import filters
 import continuation as cont
 
-def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq):
+def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq,k1,k2,pressure,Cp,R,sigmaSB):
     
     #get other dimensional parameters using the spectral dimension
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
@@ -183,12 +183,12 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         Gdata[1,:,:]=Gdata[0,:,:]
     elif test==11:
         #make these optional arguments
-        k1=p.k1
-        k2=p.k2
-        pressure=p.pressure
-        R=p.R
-        Cp=p.Cp
-        sigmaSB=p.sigmaSB
+        # k1=p.k1
+        # k2=p.k2
+        # pressure=p.pressure
+        # R=p.R
+        # Cp=p.Cp
+        # sigmaSB=p.sigmaSB
         
         
         Teq=forcing.DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,pressure,g,R,Cp,sigmaSB)
@@ -347,10 +347,18 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         if saveflag==1:
    
             if t%savefreq==0:
+                
+                if test==11:
+                    cont.save_output(etadata[t,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
+                    cont.save_output(deltadata[t,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
+                    cont.save_output(Phidata[t,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
+                else:
                 # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
-                cont.save_output(etadata[t,:,:],'etadata')
-                cont.save_output(deltadata[t,:,:],'deltadata')
-                cont.save_output(Phidata[t,:,:],'Phidata')
+                    cont.save_output(etadata[t,:,:],'etadata')
+                    cont.save_output(deltadata[t,:,:],'deltadata')
+                    cont.save_output(Phidata[t,:,:],'Phidata')
+                    
+                
      
         
         if spinupdata[t-1,1]>8000:
