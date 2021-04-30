@@ -10,10 +10,6 @@ This file contains the initial conditions for the simulation
 import numpy as np
 import scipy.special as sp
 
-#local imports
-#import params as p
-#import pyshtools as pysh
-
 
 def test1_init(a,omega,a1):
     """
@@ -53,16 +49,41 @@ def test1_init(a,omega,a1):
     return SU0, sina, cosa, etaamp, Phiamp
 
 def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
-    """Initializes the state variables
-    
-    :param I: number of longitudes
-    :type I: int
-    
-    :param J: number of latitudes
-    :type J: int 
+    """
+    Initializes state variables.
 
-    :return: J by I data arrays for eta0, eta1, delta0, delta1, and phi0, phi1
-    :rtype: arrays of float64
+    Parameters
+    ----------
+    I : int
+        number of longitudes.
+    J : int
+        number of latitudes.
+    mus : array of float64
+        Array of Gaussian latitudes of length J.
+    lambdas : array of float64
+        Uniformly spaced longitudes of length I.
+    test : int
+        The number of the regime being tested.
+    etaamp : float64
+        Amplitude of absolute vorticity.
+    *args : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    etaic0 : array of float64
+        Initial condition for absolute vorticity, (J,I).
+    etaic1 : array of float64
+        Second initial condition for absolute vorticity, (J,I).
+    deltaic0 : array of float64
+        Initial condition for divergence, (J,I).
+    deltaic1 : array of float64
+        Second initial condition for divergence, (J,I).
+    Phiic0 : array of float64
+        Initial condition for geopotential, (J,I).
+    Phiic1 : array of float64
+        Second initial condition for geopotential, (J,I).
+
     """
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
@@ -96,8 +117,6 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
             for j in range(J):
                 etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
                 
-                
-               
     etaic1=etaic0 #need two time steps to initialize
     deltaic1=deltaic0
 
@@ -200,7 +219,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     lambdas : arrat of float64
         Array of uniformly spaces longitudes of length I.
     test : int
-        The number of the regime being testedm.
+        The number of the regime being tested.
 
     Returns
     -------
