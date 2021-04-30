@@ -16,6 +16,33 @@ import scipy.special as sp
 
 
 def test1_init(a,omega,a1):
+    """
+    Initializes the parameters from Test 1 in Williamson et al. (1992),
+    Advection of Cosine Bell over the Pole
+
+    Parameters
+    ----------
+    a : float64
+        Planetary radius, in meters.
+    omega : float64
+        Planetary rotation rate, in radians per second.
+    a1 : float64
+        Angle of advection, in radians.
+
+    Returns
+    -------
+    SU0 : float64
+        Amplitude parameter from Test 1 in Williamson et al. (1992)
+    sina : float64
+        sine of the angle of advection.
+    cosa : float64
+        cosine of the angle of advection.
+    etaamp : float64
+        Amplitude of absolute vorticity.
+    Phiamp : float64
+        Amplitude of geopotential.
+
+    """
     #Parameters for Test 1 in Williamson et al. (1992)
     SU0=2.0*np.pi*a/(3600.0*24*12) 
     sina=np.sin(a1) #sine of the angle of advection
@@ -78,6 +105,34 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     return etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1
 
 def spectral_params(M):
+    """
+    Initializes the spectral parameters corresponding to the spectral resolution M
+
+    Parameters
+    ----------
+    M : int
+        Spectral truncation.
+
+    Returns
+    -------
+    N : int
+        DESCRIPTION.
+    I : int
+        number of longitudes.
+    J : int
+        number of latitudes.
+    dt : float64
+        length of time step.
+    K4 : float64
+        hyperviscosity parameter from Gelb and Gleeson.
+    lambdas : array of float64
+        Uniformly spaced longitudes of length I.
+    mus : array of float64
+        Array of Gaussian latitudes of length J.
+    w : array of float 64
+        Gaussian weights of length J.
+
+    """
     N=M
     #set dimensions according to Jakob and Hack (1993), Tables 1, 2, and 3
     if M==42:
@@ -145,7 +200,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     lambdas : arrat of float64
         Array of uniformly spaces longitudes of length I.
     test : int
-        The number of the regime being tested.
+        The number of the regime being testedm.
 
     Returns
     -------
