@@ -14,7 +14,7 @@ M=63 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=100#5000#864 #number of time steps
+tmax=15000#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
