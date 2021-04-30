@@ -33,11 +33,11 @@ narray=tstep.narray(M,N)
     
 
 
-etaic0 = cont.load_input('etadata')
+etaic0 = cont.load_input('etadata-k1-0p0002-k2-0p002')
 etaic1 = etaic0
-deltaic0 = cont.load_input('deltadata')
+deltaic0 = cont.load_input('deltadata-k1-0p0002-k2-0p002')
 deltaic1 = deltaic0
-Phiic0 = cont.load_input('Phidata')
+Phiic0 = cont.load_input('Phidata-k1-0p0002-k2-0p002')
 Phiic1 = Phiic0
         
 etam0=rfl.fwd_fft_trunc(etaic0, I, M)

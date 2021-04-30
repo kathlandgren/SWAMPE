@@ -349,9 +349,12 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
             if t%savefreq==0:
                 
                 if test==11:
-                    cont.save_output(etadata[t,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
-                    cont.save_output(deltadata[t,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
-                    cont.save_output(Phidata[t,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
+                    # cont.save_output(etadata[t,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
+                    # cont.save_output(deltadata[t,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
+                    # cont.save_output(Phidata[t,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
+                    cont.flatten_and_save(etadata,'etadata-k1-'+str(k1)+'-k2-'+str(k2))
+                    cont.flatten_and_save(deltadata,'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
+                    cont.flatten_and_save(Phidata,'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
                 else:
                 # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
                     cont.save_output(etadata[t,:,:],'etadata')
