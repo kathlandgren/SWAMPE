@@ -125,14 +125,34 @@ def spectral_params(M):
     return N,I,J,dt,K4,lambdas,mus,w
 
 def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
-    """Initializes the velocity components
-    :param I: number of longitudes
-    :type I: int
-    :param J: number of latitudes
-    :type J: int 
+    """
+    
 
-    :return: J by I data arrays for Uic and Vic
-    :rtype: array of float64
+    Parameters
+    ----------
+    I : int
+        number of latitudes.
+    J : int
+        number of longitudes.
+    SU0 : float
+        Amplitude parameter from Test 1 in Williamson et al. (1992)
+    cosa : float
+        cosine of the angle of advection.
+    sina : float
+        sine of the angle of advection.
+    mus : array of float64
+        Array of Gaussian latitudes of length J
+    lambdas : arrat of float64
+        Array of uniformly spaces longitudes of length I.
+    test : int
+        The number of the regime being tested.
+
+    Returns
+    -------
+    Uic : array of float64
+        initial condition for the latitudinal velocity component.
+    Vic : array of float64
+        initial condition for the meridional velocity component.
     """
     Uic=np.full((J,I),0.0) #initialize
     Vic=np.full((J,I),0.0)
@@ -162,14 +182,19 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
 
 def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
     """Initializes the state auxiliary variables
+    
     :param Uic: zonal velocity component
     :type Uic: array of complex128
+    
     :param Vic: meridional velocity component
     :type Vic: array of complex128
+    
     :param etaic0: initial eta
     :type etaic0:  array of complex128
+    
     :param Phiic0: initial Phi
     :type Phiic0:  array of complex128
+    
     :param mustile: reshaped mu array to fit the dimensions
     :type mustile:  array of complex128
 
@@ -192,6 +217,22 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
     return Aic, Bic, Cic, Dic, Eic
 
 def coriolismn(M,omega):
+    """
+    Initializes the Coriolis force in spectral space
+    
+    Parameters
+    ----------
+    M : int
+        Spectral dimension.
+    omega : float
+        Planetary rotation rate, in radians per second.
+
+    Returns
+    -------
+    fmn : array of float64
+        The Coriolis force in spectral space of dimension (M+1, M+1).
+
+    """
     
     fmn=np.zeros([M+1,M+1]) 
     fmn[0,1]=omega/np.sqrt(0.375)
