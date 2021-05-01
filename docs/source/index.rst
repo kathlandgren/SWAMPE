@@ -11,6 +11,8 @@ Welcome to SWAMP-E's documentation!
    
    initial_conditions
 
+   forcing
+
 Indices and tables
 ==================
 

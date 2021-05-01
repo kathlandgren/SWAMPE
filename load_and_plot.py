@@ -32,14 +32,14 @@ narray=tstep.narray(M,N)
     
     
 
-etadata=cont.load_and_restore('etadata-k1-0.0002-k2-0.0002',I)
-etaic0 = etadata[-1,:,:]
+etadata=cont.load_and_restore('etadata-k1-0.0002-k2-0.002',I)
+etaic0 = etadata[80,:,:]
 etaic1 = etaic0
-deltadata = cont.load_and_restore('deltadata-k1-0.0002-k2-0.0002',I)
-deltaic0=deltadata[-1,:,:]
+deltadata = cont.load_and_restore('deltadata-k1-0.0002-k2-0.002',I)
+deltaic0=deltadata[80,:,:]
 deltaic1 = deltaic0
-Phidata = cont.load_and_restore('Phidata-k1-0.0002-k2-0.0002',I)
-Phiic0=Phidata[-1,:,:]
+Phidata = cont.load_and_restore('Phidata-k1-0.0002-k2-0.002',I)
+Phiic0=Phidata[80,:,:]
 Phiic1 = Phiic0
         
 etam0=rfl.fwd_fft_trunc(etaic0, I, M)

@@ -105,7 +105,7 @@ contflag=0
 #continuation flag to save
 saveflag=1
 #Continuation save frequency: every savefreq time steps
-savefreq=100
+savefreq=150
 
 #Hyperviscosity parameters
 diffflag=1

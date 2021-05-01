@@ -4,8 +4,7 @@ Created on Wed Jun  3 18:29:42 2020
 
 @author: ek672
 
-This file contains the initial conditions for the simulation
-"""
+This file contains the initial conditions for the simulation"""
 
 import numpy as np
 import scipy.special as sp
@@ -18,25 +17,32 @@ def test1_init(a,omega,a1):
 
     Parameters
     ----------
-    a : float64
+    :param a: 
         Planetary radius, in meters.
-    omega : float64
+    :type a: float64
+    
+    :param omega: 
         Planetary rotation rate, in radians per second.
-    a1 : float64
+    :type omega: float64
+    
+    :param a1:
         Angle of advection, in radians.
+    :type a1: float64
 
     Returns
     -------
-    SU0 : float64
-        Amplitude parameter from Test 1 in Williamson et al. (1992)
-    sina : float64
-        sine of the angle of advection.
-    cosa : float64
-        cosine of the angle of advection.
-    etaamp : float64
-        Amplitude of absolute vorticity.
-    Phiamp : float64
-        Amplitude of geopotential.
+    :return:
+        - SU0 
+            Amplitude parameter from Test 1 in Williamson et al. (1992)
+        - sina 
+            sine of the angle of advection.
+        - cosa 
+            cosine of the angle of advection.
+        - etaamp 
+            Amplitude of absolute vorticity.
+        - Phiamp 
+            Amplitude of geopotential.
+    :rtype: float64
 
     """
     #Parameters for Test 1 in Williamson et al. (1992)
@@ -54,36 +60,38 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
 
     Parameters
     ----------
-    I : int
+    :param I:
         number of longitudes.
-    J : int
+    :type I: int
+    :param J:
         number of latitudes.
-    mus : array of float64
+    :type J: int
+    :param mus:
         Array of Gaussian latitudes of length J.
-    lambdas : array of float64
+    :type mus: array of float64
+    :param lambdas: 
         Uniformly spaced longitudes of length I.
-    test : int
+    :type lambdas: array of float64
+    :param test:
         The number of the regime being tested.
-    etaamp : float64
+    :type test: int
+    :param etaamp:
         Amplitude of absolute vorticity.
+    :type etaamp: float64
     *args : TYPE
         DESCRIPTION.
 
     Returns
     -------
-    etaic0 : array of float64
-        Initial condition for absolute vorticity, (J,I).
-    etaic1 : array of float64
-        Second initial condition for absolute vorticity, (J,I).
-    deltaic0 : array of float64
-        Initial condition for divergence, (J,I).
-    deltaic1 : array of float64
-        Second initial condition for divergence, (J,I).
-    Phiic0 : array of float64
-        Initial condition for geopotential, (J,I).
-    Phiic1 : array of float64
-        Second initial condition for geopotential, (J,I).
+    :return: 
+        - etaic0 - Initial condition for absolute vorticity, (J,I).
+        - etaic1 - Second initial condition for absolute vorticity, (J,I).
+        - deltaic0 - Initial condition for divergence, (J,I).
+        - deltaic1 - Second initial condition for divergence, (J,I).
+        - Phiic0 - Initial condition for geopotential, (J,I).
+        - Phiic1 - Second initial condition for geopotential, (J,I).
 
+    :rtype: tuple of arrays of float64
     """
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
@@ -204,29 +212,37 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
 
     Parameters
     ----------
-    I : int
-        number of latitudes.
-    J : int
-        number of longitudes.
-    SU0 : float
-        Amplitude parameter from Test 1 in Williamson et al. (1992)
-    cosa : float
-        cosine of the angle of advection.
-    sina : float
-        sine of the angle of advection.
-    mus : array of float64
-        Array of Gaussian latitudes of length J
-    lambdas : arrat of float64
-        Array of uniformly spaces longitudes of length I.
-    test : int
-        The number of the regime being tested.
+    :param I: number of latitudes.
+    :type I:  int
+
+    :param J: number of longitudes.
+    :type J:  int
+    
+    :param SU0: Amplitude parameter from Test 1 in Williamson et al. (1992)
+    :type SU0: float64
+
+    :param cosa: cosine of the angle of advection.
+    :type cosa: float64
+
+    :param sina: sine of the angle of advection.
+    :type sina: float64
+
+    :param mus: Array of Gaussian latitudes of length J
+    :type mus: array of float64
+        
+    :param lambdas: Array of uniformly spaces longitudes of length I.
+    :type lambdas: array of float64
+        
+    :param test: The number of the regime being tested.
+    :type test: int
+        
 
     Returns
     -------
-    Uic : array of float64
-        initial condition for the latitudinal velocity component.
-    Vic : array of float64
-        initial condition for the meridional velocity component.
+    :return: 
+       - Uic - (J,I) array - the initial condition for the latitudinal velocity component,
+       - Vic - (J,I) array - the initial condition for the meridional velocity component.
+    :rtype: array of float64
     """
     Uic=np.full((J,I),0.0) #initialize
     Vic=np.full((J,I),0.0)
@@ -292,19 +308,21 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
 
 def coriolismn(M,omega):
     """
-    Initializes the Coriolis force in spectral space
+    Initializes the Coriolis force in spectral space.
     
     Parameters
     ----------
-    M : int
-        Spectral dimension.
-    omega : float
-        Planetary rotation rate, in radians per second.
+    
+    :param M: Spectral dimension.
+    :type M: int
+    
+    :param omega: Planetary rotation rate, in radians per second.
+    :type omega:  float64
 
     Returns
     -------
-    fmn : array of float64
-        The Coriolis force in spectral space of dimension (M+1, M+1).
+    :return: fmn The Coriolis force in spectral space of dimension (M+1, M+1).
+    :rtype:  array of float64
 
     """
     
