@@ -89,7 +89,7 @@ def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
             #assume substellar point is (0,0)
             if  -np.pi/2<lambdas[i]<np.pi/2:
                 
-                TeqMat[j,i]=(k1/k2)*(((DPhieq+Phibar)/R)**4*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))+k2*(Phibar/R)**4)
+                TeqMat[j,i]=(k1/k2)*(((DPhieq+Phibar)/R)**4*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))))+(Phibar/R)**4
                 #PhieqMat[j,i]=PhieqMat[j,i]+k1*DPhieq*(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))        
 
     return TeqMat
@@ -124,9 +124,7 @@ def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
         factor=t*dt/(15*3600)
     else:
         factor=1
-    
 
-        
     Q=factor*(1/taurad)*(Phieq-(Phi+Phibar))
     
     return Q
@@ -150,5 +148,4 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
         F=Ru
         G=Rv
         
-    
     return F, G

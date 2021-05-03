@@ -91,7 +91,7 @@ elif test==11: #Langton hot Jupiter
     DPhieq=Phibar
     g=9.8
     k1=2*10**(-4) #2 is used in Langton and Laughlin
-    k2=4*10**(-4)
+    k2=0.01#4*10**(-4)
     pressure=100*250*g/10 #(in Pa)
     R=3000
     Cp=13000 
