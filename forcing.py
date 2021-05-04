@@ -3,28 +3,17 @@
 Created on Thu Sep 10 15:28:45 2020
 
 @author: ek672
+
+This module contains the functions used for the evaluation of forcing.
 """
 
 import numpy as np 
 
 
-# def heqfun(Phibar,Dheq,lambdas,mus,I,J,g):
-#     heqMat=Phibar*np.ones((J,I))/g #H
-#     #heqMat=np.zeros((J,I))
-    
-#     for i in range(I):
-#         for j in range(J):
-#             #assume substellar point is (0,0)
-#             if -np.pi/2<lambdas[i]<np.pi/2:
-#                 heqMat[j,i]=heqMat[j,i]+Dheq*np.cos(lambdas[i])*(1-mus[j]**2)
-            
-#     return heqMat
-
-
 
 def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     """
-    
+    Evaluates the equilibrium geopotential from Perez-Becker and Showman.
 
     Parameters
     ----------
@@ -56,8 +45,7 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
 
     Returns
     -------
-    :return:  
-        PhieqMat, the equilibrium geopotential, array (J,I)
+    :return PhieqMat:  the equilibrium geopotential, array (J,I)
     :rtype: array of float64
 
     """
@@ -79,7 +67,62 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
 #     #Q=(1/taurad)*(heq-(Phi)/g)
 #     return Q
 def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
+    """
+    Evaluates the equilibrium temperature from Langton and Laughlin (2008).
     
+    Parameters
+    ----------
+    :param Phibar: 
+        Mean geopotential
+    :type Phibar: float64
+    :param DPhieq: 
+        The difference between mean geopotential and the maximum geopotential
+    :type DPhieq: float64
+    
+    :param lambdas: 
+        Uniformly spaced longitudes of length I.
+    :type lambdas: array of float64 
+    
+    :param mus:
+        Array of Gaussian latitudes of length J.
+    :type mus: array of float64
+    
+    :param I: number of longitudes    
+    :type I: int
+    
+    :param J:
+        number of latitudes.
+    :type J: int
+    
+    :param k1: visible opacity
+    :type k1: float64
+    
+    :param k2: infra-red opacity
+    :type k2: float64
+    
+    :param p: pressure
+    :type p: float64
+    
+    :param g:
+        Surface gravity, m/s^2.
+    :type g: float64
+    
+    :param R: specific gas constant
+    :type R: float64
+        
+    :param Cp: heat capacity at constant pressure
+    :type Cp: float64
+    
+    :param sigma: Stefan-Boltmann constant
+    :type sigma: float64
+    
+    Returns
+    -------
+    :return TeqMat:  the equilibrium temperature, array (J,I)
+    :rtype: array of float64
+    
+    """
+
     TeqMat=((Phibar/R)**4)*np.ones((J,I))
 
     x=np.exp(-k1*p/g)
@@ -95,21 +138,75 @@ def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
     return TeqMat
 
 def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
+    
+    """
+    Evaluates the radiative forcing on the geopotential using the double-gray 
+    scheme. Corresponds to the radiative forcing from Langton and Laughlin
+    (2008), converted to geopotential from temperature using the ideal gas law
+    relationship.
+
+
+    Parameters
+    ----------
+    :param TeqMat: Equilibrium temperature, (J,I)
+    :type TeqMat: array of float64
+    
+    :param Phidata: Geopotential with the mean subtracted, (J,I)
+    :type Phidata: array of float64
+    
+    :param Phibar: Mean geopotential
+    :type Phibar: float64
+    
+    :param k2: infra-red opacity
+    :type k2: float64
+
+    :param sigma: Stefan-Boltzmann constant, W/(m^2 K^4)
+    :type sigma: float64
+
+    Returns
+    -------
+    :return Q: Geopotential forcing, (J,I)
+    :rtype: array of float64
+
+    """
     outer_coeff=(sigma*k2*R/Cp)
     #sci_comp_step=(TeqMat-((Phidata+Phibar)/R)**4)/10**11
     A=(TeqMat-((Phidata+Phibar)/R)**4)
     Q=outer_coeff*A
-    #Q=Q*1.0
-    #Q=outer_coeff*sci_comp_step
-    #logQ=np.log(outer_coeff)+np.log((TeqMat-((Phidata+Phibar)/R)**4))
-    #Q=np.exp(logQ)
-    #Q=Q*10**11
+
 
     return Q
     
     
 
 def Qfun(Phieq,Phi,Phibar,taurad):
+    """
+    Evaluates the radiative forcing on the geopotential. Corresponds to the 
+    Q from Perez-Becker and Showman, but has an extra factor of g as we are 
+    evaluating the geopotential, and they are evaluating the geopotential 
+    height. 
+
+    Parameters
+    ----------
+    :param Phieq: Equilibrium geopotential, (J,I)
+    :type Phieq: array of float64
+    
+    :param Phi: Geopotential with the mean subtracted, (J,I)
+    :type Phi: array of float64
+    
+    :param Phibar: Mean geopotential
+    :type Phibar: float64
+    
+    :param taurad: radiative time scale, s
+    :type taurad: float64
+
+
+    Returns
+    -------
+    :return Q: Geopotential forcing, (J,I)
+    :rtype: array of float64
+
+    """
     #note Q is different from Perez-Becker and Showman, our Q is PBS-Q*g
     Q=(1/taurad)*(Phieq-(Phi+Phibar))
 
@@ -117,6 +214,38 @@ def Qfun(Phieq,Phi,Phibar,taurad):
 
 
 def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
+    
+    """
+    Evaluates the radiative forcing on the geopotential, but slowly ramps up 
+    the forcing to improve stability for short radiative timescales.
+
+    Parameters
+    ----------
+    :param Phieq: Equilibrium geopotential, (J,I)
+    :type Phieq: array of float64
+    
+    :param Phi: Geopotential with the mean subtracted, (J,I)
+    :type Phi: array of float64
+    
+    :param Phibar: Mean geopotential
+    :type Phibar: float64
+    
+    :param taurad: radiative time scale, s
+    :type taurad: float64
+    
+    :param t: number of current timestep
+    :type t: int
+    
+    :param dt: timestep length
+    :type dt: float64
+
+
+    Returns
+    -------
+    :return Q: Geopotential forcing, (J,I)
+    :rtype: array of float64
+
+    """
     #note Q is different from Perez-Becker and Showman, our Q is PBS-Q*g
     
     #slowly ramp up
@@ -131,6 +260,42 @@ def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
 
 
 def Rfun(U,V,Q,Phi,Phibar, taudrag):
+    """
+    Evaluates the first and second component of the vector that expresses the 
+    velocity forcing in Perez-Becker and Showman. The divergence and vorticity (F,G) 
+    correspond to the forcing on the state variables delta and zeta, respectively.
+
+    Parameters
+    ----------
+    :param U: zonal velocity component, (J,I)
+    :type U: array of float64
+    
+    :param V: meridional velocity component, (J,I)
+    :type V: array of float64
+    
+    :param Q: radiative forcing of geopotential, (J,I)
+    :type Q: array of float64
+    
+    :param Phi: geopotential with the mean subtracted, (J,I)
+    :type Phi: array of float64
+    
+    :param Phibar: mean geopotential
+    :type Phibar: float64
+    
+    :param taudrag: drag timescale,in seconds
+    :type taudrag: float64
+
+
+    Returns
+    -------
+     :return:
+        - F 
+                First component of the velocity forcing vector
+        - G 
+                Second component of the velocity forcing vector
+
+    :rtype: array of float64
+    """
     Ru=np.divide(np.multiply(-U,Q),Phi+Phibar)
     Rv=np.divide(np.multiply(-V,Q),Phi+Phibar)
     

@@ -435,9 +435,11 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
     
     if test<3:
-        plt.title('t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
-    else:
-        plt.title('t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+        plt.title('Geopotential for t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+    elif test==10:
+        plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+    elif test==11:
+        plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Do')
     plt.show()
     
 
@@ -544,5 +546,50 @@ def geopot_to_temp(Phi,R):
     T=Phi/R
     
     return T
+    
+
+   
+def quiver_temp_plot(U,V,Phi,R,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxlevel):
+    
+    
+    T=geopot_to_temp(Phi,R)
+    X = lambdas*180/np.pi
+    Y = np.arcsin(mus)*180/np.pi
+    #X, Y = np.meshgrid(X, Y)
+    
+    # Plot the surface.
+
+    plt.contourf(X, Y, (Phi))
+    #plt.colorbar(extend='both')
+
+    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
+    CS = plt.contourf(X, Y, T, levels=levels, cmap=cm.jet, extend='both')
+    
+    colorbar = plt.colorbar(CS)
+
+    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
+ 
+
+    #plt.colorbar(extend='both')
+    #plt.clim(0, 10**4)
+    
+    Xsparse=X[0::sparseness]
+    Ysparse=Y[0::sparseness]
+    #norm=np.sqrt(np.multiply(U,U)+np.multiply(V,V))
+    Usparse=U[0::sparseness,0::sparseness]
+    Vsparse=V[0::sparseness,0::sparseness]
+    # plt.quiver(x, y[skip], u[skip], v[skip], color='black', headwidth=1, scale = 10, headlength=4)
+    
+    # ax.quiver(X,Y,U,V)
+    # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
+    plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
+    
+    if test<3:
+        plt.title('Temperature for t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+    elif test==10:
+        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+    elif test==11:
+        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Do')
+    plt.show()
     
     

@@ -13,6 +13,10 @@ Welcome to SWAMP-E's documentation!
 
    forcing
 
+   fft_legendre_trans
+
+   continuation
+
 Indices and tables
 ==================
 

@@ -33,13 +33,13 @@ narray=tstep.narray(M,N)
 tindex=5
 ttoprint=tindex*p.savefreq
 
-etadata=cont.load_and_restore('etadata-k1-0.0002-k2-0.01',I)
+etadata=cont.load_and_restore('etadata-k1-0.0002-k2-0.02',I)
 etaic0 = etadata[tindex,:,:]
 etaic1 = etaic0
-deltadata = cont.load_and_restore('deltadata-k1-0.0002-k2-0.01',I)
+deltadata = cont.load_and_restore('deltadata-k1-0.0002-k2-0.02',I)
 deltaic0=deltadata[tindex,:,:]
 deltaic1 = deltaic0
-Phidata = cont.load_and_restore('Phidata-k1-0.0002-k2-0.01',I)
+Phidata = cont.load_and_restore('Phidata-k1-0.0002-k2-0.02',I)
 Phiic0=Phidata[tindex,:,:]
 Phiic1 = Phiic0
         
@@ -59,4 +59,4 @@ Vic=np.real(Viccomp)
 #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
 # testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
 testing_plots.zonal_wind_plot(Uic,mus,ttoprint,10,p.test,p.a1)
-testing_plots.quiver_geopot_plot(Uic,Vic,Phiic0+p.Phibar,lambdas,mus,ttoprint,10,5,p.test,p.a1,5,7)
+testing_plots.quiver_geopot_plot(Uic,Vic,Phiic0+p.Phibar,lambdas,mus,ttoprint,10,5,p.test,p.a1,6,p.maxlevel)

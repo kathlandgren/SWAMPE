@@ -66,8 +66,9 @@ R=p.R
 Cp=p.Cp
 sigmaSB=p.sigmaSB
 
-k2vec=[0.0002,0.002,1*10**(-2),2*10**(-2)]
+#k2vec=[0.0002,0.002,1*10**(-2),2*10**(-2)]
 #k2vec=[1*10**(-2),2*10**(-2)]
+k2vec=[2*10**(-2)]
 for i in range(len(k2vec)):
     k2=k2vec[i]
     print(k2)
