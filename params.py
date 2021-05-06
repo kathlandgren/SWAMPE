@@ -87,8 +87,8 @@ elif test==11: #Langton hot Jupiter
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
     omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
-    Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
-    DPhieq=Phibar
+    Phibar=1.5*(10**6)#4*(10**6) #Geopotential height based on T=500K (Phi=RT)
+    DPhieq=2.31*(10**6) #Estimated at 0.3 AU from the Sun #Phibar 
     g=9.8
     k1=2*10**(-4) #2 is used in Langton and Laughlin
     k2=4*10**(-4)
@@ -97,7 +97,7 @@ elif test==11: #Langton hot Jupiter
     Cp=13000 
     sigmaSB=5.7*10**(-8)
     
-    minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    minlevel=6.17 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=7
 
 #Continuation flag to load
@@ -117,7 +117,7 @@ alpha=0.01 #filter coefficient to prevent aliasing
 #Plotting flag
 plotflag=0
 #plotting frequency, every plotfreq frames
-plotfreq=75
+plotfreq=20
 
 #forcing parameters
 
