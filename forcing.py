@@ -173,10 +173,6 @@ def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     #sci_comp_step=(TeqMat-((Phidata+Phibar)/R)**4)/10**11
     A=(TeqMat-((Phidata+Phibar)/R)**4)
     Q=outer_coeff*A
-    
-    print(np.min(Q))
-
-
     return Q
     
     
