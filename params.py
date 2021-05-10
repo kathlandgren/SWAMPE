@@ -88,7 +88,7 @@ elif test==11: #Langton hot Jupiter
     omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=1.5*(10**6)#4*(10**6) #Geopotential height based on T=500K (Phi=RT)
-    DPhieq=2.31*(10**6) #Estimated at 0.3 AU from the Sun #Phibar 
+    DPhieq=2*Phibar#2.31*(10**6) #Estimated at 0.3 AU from the Sun #Phibar 
     g=9.8
     k1=2*10**(-4) #2 is used in Langton and Laughlin
     k2=4*10**(-4)

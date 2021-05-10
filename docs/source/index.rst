@@ -17,6 +17,10 @@ Welcome to SWAMP-E's documentation!
 
    continuation
 
+   filters
+
+   tstepping_new
+
 Indices and tables
 ==================
 

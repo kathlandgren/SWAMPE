@@ -20,6 +20,7 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     :param Phibar: 
         Mean geopotential
     :type Phibar: float64
+    
     :param DPhieq: 
         The difference between mean geopotential and the maximum geopotential
     :type DPhieq: float64

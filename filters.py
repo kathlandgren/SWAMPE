@@ -33,18 +33,41 @@ def diffusion(Ximn,sigma):
     :return newXimn: filtered spectral coefficient
     :rtype: array of float64
     """
-
     
     newXimn=np.multiply(Ximn,sigma)
     return newXimn
 
 
 def sigma(M,N,K4,a,dt):
+    
+    """Computes the coefficient for the diffusion Filter described in Gelb and
+    Gleeson (eq. 12) for vorticity and divergence.
+
+
+    Parameters
+    ----------
+    :param M: spectral dimension
+    :type M: int
+    
+    :param N: highest degree of associated Legendre polynomials
+    :type N: int
+ 
+    :param K4: hyperviscosity coefficient
+    :type K4: float64
+    
+    :param a: planetary radius, m
+    :type a: float64
+        
+    :param dt: time step,s
+    :type dt: float64
+    
+    Returns
+    -------
+    :return sigma: coefficient for the diffusion filter for geopotential
+    :rtype: array of float64
+
+    """
     sigma=np.zeros((M+1,N+1))
-    # nvec=np.arange(N+1)
-    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
-    # sigmacoeff=(1+2*dt*K4*coeff/a**4)
-    # sigmas=np.divide(1,sigmacoeff)
     
     nvec=np.arange(N+1)
     coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
@@ -52,7 +75,7 @@ def sigma(M,N,K4,a,dt):
     sigmacoeff1=2*const*coeff
     sigmacoeff=(1+sigmacoeff1)
     
-    #sigmacoeff=(1+2*p.dt*p.K4*coeff/p.a**4)
+
     sigmas=np.divide(1,sigmacoeff)
     
     for m in range(M+1):
@@ -61,6 +84,33 @@ def sigma(M,N,K4,a,dt):
     return sigma
 
 def sigmaPhi(M,N,K4,a,dt):
+
+    """Computes the coefficient for the diffusion Filter described in Gelb and
+    Gleeson (eq. 12) for geopotential.
+
+    Parameters
+    ----------
+    :param M: spectral dimension
+    :type M: int
+    
+    :param N: highest degree of associated Legendre polynomials
+    :type N: int
+ 
+    :param K4: hyperviscosity coefficient
+    :type K4: float64
+    
+    :param a: planetary radius, m
+    :type a: float64
+        
+    :param dt: time step,s
+    :type dt: float64
+    
+    Returns
+    -------
+    :return sigma: coefficient for the diffusion filter for geopotential
+    :rtype: array of float64
+
+    """
     sigma=np.zeros((M+1,N+1))
     nvec=np.arange(N+1)
     coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))

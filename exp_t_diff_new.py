@@ -5,20 +5,12 @@ Created on Wed Aug  5 14:35:48 2020
 @author: ek672
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Aug  4 17:02:12 2020
-
-@author: ek672
-"""
-
 import numpy as np
-import matplotlib.pyplot as plt
+
 #local imports
-import params as p
 import fft_legendre_trans as rfl
 import filters
-import testing_plots
+
 
 
 ## PHI tstep
@@ -98,7 +90,6 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
 
 def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi):
 
-    ## ETA tstep seems to work!
     etacomp1=rfl.fwd_leg(etam0, J, M, N, Pmn, w)
 
     etacomp2prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Am)

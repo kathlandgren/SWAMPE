@@ -59,14 +59,15 @@ plotflag=p.plotflag
 plotfreq=p.plotfreq
 
 #make these optional arguments
-k1=p.k1
+#k1=p.k1
 # k2=p.k2
 pressure=p.pressure
 R=p.R
 Cp=p.Cp
 sigmaSB=p.sigmaSB
 
-k2vec=[0.0002,0.002,1*10**(-2),2*10**(-2)]
+k1=0.02
+k2vec=[0.002]
 #k2vec=[1*10**(-2),2*10**(-2)]
 #k2vec=[0.0002]
 for i in range(len(k2vec)):
