@@ -17,7 +17,7 @@ On the other hand, complex three-dimensional (3D) models can capture variation i
 They are frequently based on primitive equations (e.g. \cite{menou2009atmospheric},
 \cite{kataria2016atmospheric}, \cite{parmentier20133d}) or on the Navier-Stokes equations 
 (e.g. \cite{cooper2006dynamics}, \cite{dobbs2013three}) and can be used to understand a variety of radiative,
-chemical, and dynamical processes. 3D models such as  \textit{ROCKE-3D} \cite{rocke3d} can be tuned to
+chemical, and dynamical processes. 3D models such as \textit{ROCKE-3D} \cite{rocke3d} can be tuned to
 a variety of exoplanets. However, 3D models tend to be computationally expensive, sometimes taking months
 to explore the parameter space. 
 
