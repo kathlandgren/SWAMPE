@@ -13,7 +13,7 @@ import numpy as np
 
 
 # Import program packages
-import params as p
+#import params as p
 #import reshapefuns
 import initial_conditions as ic
 import fft_legendre_trans as rfl
@@ -23,13 +23,17 @@ import forcing
 import filters
 import continuation as cont
 
-def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq,k1,k2,pressure,Cp,R,sigmaSB):
+    
+def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8)):    
+    print(DPhieq)
+    #positional: M, dt, tmax, Phibar, g, omega, a, test
+    #optional: taurad, taudrag, DPhieq, a1, minlevel, maxlevel, forcflag, diffflag, modalflag, alpha, plotflag, plotfreq, contflag, saveflag, savefreq, k1, k2, pressure, Cp, R, sigmaSB 
     
     #get other dimensional parameters using the spectral dimension
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
     
     
-    dt=dt1
+    # dt=dt1
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
@@ -451,6 +455,8 @@ def main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, max
         Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
         Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
         
+        
+
         
         
         

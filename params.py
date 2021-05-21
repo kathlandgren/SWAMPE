@@ -14,7 +14,7 @@ M=63 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=15000#5000#864 #number of time steps
+tmax=15#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
@@ -77,6 +77,7 @@ elif test==10: # PBS Hot Jupiter
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
     g=9.8
+    DPhieq=4*(10**6)
     
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=6.8
@@ -89,6 +90,7 @@ elif test==11: #Langton hot Jupiter
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=1.5*(10**6)#4*(10**6) #Geopotential height based on T=500K (Phi=RT)
     DPhieq=2*Phibar#2.31*(10**6) #Estimated at 0.3 AU from the Sun #Phibar 
+
     g=9.8
     k1=2*10**(-4) #2 is used in Langton and Laughlin
     k2=4*10**(-4)
@@ -123,7 +125,3 @@ plotfreq=20
 
 taurad=3600*24*10 #in Earth days
 taudrag=-1#3600*24*10#if set to -1, means infinity
-
-
-DPhieq=Phibar
-
