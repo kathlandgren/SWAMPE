@@ -9,7 +9,8 @@ This module contains the functions used for the evaluation of forcing.
 
 import numpy as np 
 
-
+import testing_plots
+import scipy.special as sp
 
 def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     """
@@ -173,7 +174,21 @@ def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     outer_coeff=(sigma*k2*R/Cp)
     #sci_comp_step=(TeqMat-((Phidata+Phibar)/R)**4)/10**11
     A=(TeqMat-((Phidata+Phibar)/R)**4)
+    # print(np.min(TeqMat))
+    # print(np.min(((Phidata+Phibar)/R)**4))
     Q=outer_coeff*A
+    # print('Max Q is '+str(np.max(Q)))
+    
+    
+    
+    I=192
+    J=96
+    
+    lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
+    [mus,w]=sp.roots_legendre(J)
+    # testing_plots.physical_plot(TeqMat,mus,lambdas)
+    # testing_plots.physical_plot(((Phidata+Phibar)/R)**4,mus,lambdas)
+    # testing_plots.physical_plot(Q,mus,lambdas)
     return Q
     
     

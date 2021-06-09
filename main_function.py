@@ -25,12 +25,86 @@ import continuation as cont
 
     
 def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8)):    
-    print(DPhieq)
+    """
+    Parameters
+    ----------
+    :param M: spectral resolution
+    :type M: int
+    
+    :param dt: length of time step, in seconds
+    :type dt: float64
+    
+    :param tmax: number of time steps to run
+    :type tmax: int
+    
+    :param Phibar: mean geopotential, m^2/s^2
+    :type Phibar: float64
+
+    :param omega: planetary rotation rate, radians
+    :type omega: float64
+    
+    :param a: planetary radius, m
+    :type a: float64
+    
+    :param test: TYPE
+        DESCRIPTION.
+    g : TYPE, optional
+        DESCRIPTION. The default is 9.8.
+    forcflag : TYPE, optional
+        DESCRIPTION. The default is 1.
+    taurad : TYPE, optional
+        DESCRIPTION. The default is 86400.
+    taudrag : TYPE, optional
+        DESCRIPTION. The default is 86400.
+    DPhieq : TYPE, optional
+        DESCRIPTION. The default is 4*(10**6).
+    a1 : TYPE, optional
+        DESCRIPTION. The default is 0.05.
+    plotflag : TYPE, optional
+        DESCRIPTION. The default is 1.
+    plotfreq : TYPE, optional
+        DESCRIPTION. The default is 5.
+    minlevel : TYPE, optional
+        DESCRIPTION. The default is 6.
+    maxlevel : TYPE, optional
+        DESCRIPTION. The default is 7.
+    diffflag : TYPE, optional
+        DESCRIPTION. The default is 1.
+    modalflag : TYPE, optional
+        DESCRIPTION. The default is 1.
+    alpha : TYPE, optional
+        DESCRIPTION. The default is 0.01.
+    contflag : TYPE, optional
+        DESCRIPTION. The default is 0.
+    saveflag : TYPE, optional
+        DESCRIPTION. The default is 1.
+    savefreq : TYPE, optional
+        DESCRIPTION. The default is 150.
+    k1 : TYPE, optional
+        DESCRIPTION. The default is 2*10**(-4).
+    k2 : TYPE, optional
+        DESCRIPTION. The default is 4*10**(-4).
+    pressure : TYPE, optional
+        DESCRIPTION. The default is 100*250*9.8/10.
+    R : TYPE, optional
+        DESCRIPTION. The default is 3000.
+    Cp : TYPE, optional
+        DESCRIPTION. The default is 13000.
+    sigmaSB : TYPE, optional
+        DESCRIPTION. The default is 5.7*10**(-8).
+
+    Returns
+    -------
+    None.
+
+    """
+
+
     #positional: M, dt, tmax, Phibar, g, omega, a, test
     #optional: taurad, taudrag, DPhieq, a1, minlevel, maxlevel, forcflag, diffflag, modalflag, alpha, plotflag, plotfreq, contflag, saveflag, savefreq, k1, k2, pressure, Cp, R, sigmaSB 
     
     #get other dimensional parameters using the spectral dimension
-    N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
+    N,I,J,otherdt,K4,lambdas,mus,w=ic.spectral_params(M)
     
     
     # dt=dt1
@@ -193,7 +267,6 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         # R=p.R
         # Cp=p.Cp
         # sigmaSB=p.sigmaSB
-        
         
         Teq=forcing.DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,pressure,g,R,Cp,sigmaSB)
 
@@ -404,11 +477,13 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             
             Phiforcingdata[t,:,:]=PhiF
             Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
-        elif test==11:
             
-            Q=forcing.DoubleGrayPhiForcing(Teq,Phiic0,Phibar,k2,sigmaSB,Cp,R)
+        elif test==11:
+            Q=forcing.DoubleGrayPhiForcing(Teq,np.real(newPhi),Phibar,k2,sigmaSB,Cp,R)
             #geopotential forcing to be passed to time stepping
             PhiF=Q
+            
+
 
             Fdata[t,:,:]=0
             Gdata[t,:,:]=0
@@ -418,6 +493,8 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             
             Phiforcingdata[t,:,:]=PhiF
             Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+            
+            
         
         if t%int(tmax/10)==0:
             print('t='+str(t)+', '+str(t*100/tmax)+'% complete')
@@ -457,7 +534,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         
         
 
-        
+
         
         
 
