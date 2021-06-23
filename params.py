@@ -14,7 +14,7 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=15#5000#864 #number of time steps
+tmax=45000#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
@@ -110,7 +110,7 @@ saveflag=1
 savefreq=150
 
 #Hyperviscosity parameters
-diffflag=1
+diffflag=0
 
 #Modal Splitting Fiter 
 modalflag=1

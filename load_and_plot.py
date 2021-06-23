@@ -30,7 +30,7 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
     
 
-tindex=3
+tindex=292
 ttoprint=tindex*p.savefreq
 
 etadata=cont.load_and_restore('data\Showman2015\etadata-k1-0.0002-k2-0.0004',I)
@@ -59,5 +59,5 @@ Vic=np.real(Viccomp)
 #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
 # testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
 testing_plots.zonal_wind_plot(Uic,mus,ttoprint,10,p.test,p.a1)
-testing_plots.quiver_geopot_plot(Uic,Vic,Phiic0+p.Phibar,lambdas,mus,ttoprint,10,5,p.test,p.a1,6.1,6.28)
-testing_plots.quiver_temp_plot(Uic,Vic,Phiic0+p.Phibar,p.R,lambdas,mus,ttoprint,10,5,p.test,p.a1,1000,1100)
+testing_plots.quiver_geopot_plot(Uic,Vic,Phiic0+p.Phibar,lambdas,mus,ttoprint,10,5,p.test,p.a1,6.1,6.4)
+testing_plots.quiver_temp_plot(Uic,Vic,Phiic0+p.Phibar,p.R,lambdas,mus,ttoprint,10,5,p.test,p.a1,700,1400)
