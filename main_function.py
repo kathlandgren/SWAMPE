@@ -537,7 +537,6 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
         Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
 
-        print(dt)
         
         
 

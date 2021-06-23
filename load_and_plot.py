@@ -30,16 +30,16 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
     
 
-tindex=99
+tindex=3
 ttoprint=tindex*p.savefreq
 
-etadata=cont.load_and_restore('etadata-k1-0.0002-k2-0.0016',I)
+etadata=cont.load_and_restore('data\Showman2015\etadata-k1-0.0002-k2-0.0004',I)
 etaic0 = etadata[tindex,:,:]
 etaic1 = etaic0
-deltadata = cont.load_and_restore('deltadata-k1-0.0002-k2-0.0016',I)
+deltadata = cont.load_and_restore('data\Showman2015\deltadata-k1-0.0002-k2-0.0004',I)
 deltaic0=deltadata[tindex,:,:]
 deltaic1 = deltaic0
-Phidata = cont.load_and_restore('Phidata-k1-0.0002-k2-0.0016',I)
+Phidata = cont.load_and_restore('data\Showman2015\Phidata-k1-0.0002-k2-0.0004',I)
 Phiic0=Phidata[tindex,:,:]
 Phiic1 = Phiic0
         
@@ -60,4 +60,4 @@ Vic=np.real(Viccomp)
 # testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
 testing_plots.zonal_wind_plot(Uic,mus,ttoprint,10,p.test,p.a1)
 testing_plots.quiver_geopot_plot(Uic,Vic,Phiic0+p.Phibar,lambdas,mus,ttoprint,10,5,p.test,p.a1,6.1,6.28)
-testing_plots.quiver_temp_plot(Uic,Vic,Phiic0+p.Phibar,p.R,lambdas,mus,ttoprint,10,5,p.test,p.a1,1180,2000)
+testing_plots.quiver_temp_plot(Uic,Vic,Phiic0+p.Phibar,p.R,lambdas,mus,ttoprint,10,5,p.test,p.a1,1000,1100)
