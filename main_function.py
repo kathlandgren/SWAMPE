@@ -110,9 +110,14 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # dt=dt1
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    
+    # sigma=filters.sigma(M,N,K4,a, dt)
+    # sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
         
-    sigma=filters.sigma(M,N,K4,a,dt)
-    sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+    sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
+    sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
+    
+
         
     ## Initialize data arrays 
     etadata=np.zeros((tmax,J,I))

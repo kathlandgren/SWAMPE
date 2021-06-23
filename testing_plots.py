@@ -589,7 +589,39 @@ def quiver_temp_plot(U,V,Phi,R,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     elif test==10:
         plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
     elif test==11:
-        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Do')
+        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Double gray')
     plt.show()
     
+    
+def temp_plot(T,lambdas,mus,t,dt,test,a1,minlevel,maxlevel):
+    
+    
+    #T=geopot_to_temp(Phi,R)
+    X = lambdas*180/np.pi
+    Y = np.arcsin(mus)*180/np.pi
+    X, Y = np.meshgrid(X, Y)
+    
+    # Plot the surface.
+
+    plt.contourf(X, Y, (T))
+    #plt.colorbar(extend='both')
+
+    levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
+    CS = plt.contourf(X, Y, T, levels=levels, cmap=cm.jet, extend='both')
+    
+    colorbar = plt.colorbar(CS)
+
+    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
+ 
+
+
+    
+    if test<3:
+        plt.title('Temperature for t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+    elif test==10:
+        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+    elif test==11:
+        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Double Gray')
+    plt.show()
+        
     

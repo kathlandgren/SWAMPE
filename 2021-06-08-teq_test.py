@@ -10,7 +10,8 @@ import initial_conditions as ic
 import forcing
 import params as p
 import testing_plots
-
+import numpy as np
+from astropy import constants as const
 
 ## define necessary dimensiony things
 
@@ -23,7 +24,7 @@ g=p.g
 Phibar=p.Phibar
 DPhieq=Phibar
 
-DGDPhieq=Phibar#2.5*Phibar
+#DGDPhieq=Phibar#2.5*Phibar
 
 R=p.R
 k1=0.0002
@@ -32,6 +33,21 @@ pressure=p.pressure
 Cp=p.Cp
 sigmaSB=p.sigmaSB
 
+# distance=0.05*const.au.to_value()
+#L_star= (10**0.25)*(const.L_sun.to_value()) # HD 209458
+#DGPhibar=1450*R #Teq from Sing et al from exoplanet archive
+
+distance=0.03*const.au.to_value()#0.02*const.au.to_value() # WASP 18
+L_star=  1.29*(10**26)#(10**0.39)*(const.L_sun.to_value()) 
+DGPhibar=1000*3700#Phibar# 2400*R #Teq from Salz et al 2015 from exoplanet archive
+
+
+DGDPhiEq=((L_star)/(4*np.pi*(distance**2)))/sigmaSB #2000000# 924637 
+
+def insolation(Lstar,distance,sigmaSB):
+    insolation=((L_star)/(4*np.pi*(distance**2)))/sigmaSB
+    
+    return insolation
 
 ## PBS Teq
 PhiEq=forcing.Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g)
@@ -41,7 +57,7 @@ PBSTeq=testing_plots.geopot_to_temp(PhiEq, R)
 
 ## Langton Teq
 
-DGTeq_exp=forcing.DoubleGrayTEqfun(Phibar,DGDPhieq,lambdas,mus,I,J,k1,k2,pressure,g,R,Cp,sigmaSB)
+DGTeq_exp=forcing.DoubleGrayTEqfun(DGPhibar,DGDPhiEq,lambdas,mus,I,J,k1,k2,pressure,g,R,Cp,sigmaSB)
 DGTeq=DGTeq_exp**0.25
 
 ##Plot
@@ -53,11 +69,11 @@ dt=1
 a1=p.a1
 
 testing_plots.temp_plot(PBSTeq,lambdas,mus,t,dt,10,a1,minlevel,maxlevel)
-testing_plots.temp_plot(DGTeq,lambdas,mus,t,dt,test,a1,minlevel,maxlevel)
-testing_plots.temp_plot(PBSTeq-DGTeq,lambdas,mus,t,dt,test,a1,0,400)
+testing_plots.temp_plot(DGTeq,lambdas,mus,t,dt,test,a1,700,1400)
+testing_plots.temp_plot(np.abs(PBSTeq-DGTeq),lambdas,mus,t,dt,test,a1,0,400)
 # testing_plots.physical_plot(PBSTeq, mus, lambdas)
 # testing_plots.physical_plot(DGTeq, mus, lambdas)
 
-testing_plots.physical_plot(PBSTeq-DGTeq, mus, lambdas)
+testing_plots.physical_plot(DGTeq, mus, lambdas)
    
 

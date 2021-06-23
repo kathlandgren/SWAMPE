@@ -63,12 +63,16 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     return PhieqMat
 
 
+def insolation(L_star,distance,sigmaSB):
+    insolation=((L_star)/(4*np.pi*(distance**2)))/sigmaSB
+    
+    return insolation
 
 # def Qfun(heq,Phi,Phibar,taurad,g):
 #     Q=(1/taurad)*(heq-(Phi+Phibar)/g)
 #     #Q=(1/taurad)*(heq-(Phi)/g)
 #     return Q
-def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
+def DoubleGrayTEqfun(Phibar,insolation,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
     """
     Evaluates the equilibrium temperature from Langton and Laughlin (2008).
     
@@ -129,12 +133,20 @@ def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
 
     x=np.exp(-k1*p/g)
     
+    #insolation=DPhieq#(DPhieq/R)**4
+    ratio=(k1/k2)
+    
     for i in range(I):
         for j in range(J):
             #assume substellar point is (0,0)
             if  -np.pi/2<lambdas[i]<np.pi/2:
                 
-                TeqMat[j,i]=TeqMat[j,i]+(k1/k2)*(((DPhieq/R)**4)*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))))#+(Phibar/R)**4
+                ss_angle_sec=(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))
+                
+                day_forcing=ratio*(insolation*(x**ss_angle_sec))
+                
+                TeqMat[j,i]=TeqMat[j,i]+day_forcing
+                #TeqMat[j,i]=TeqMat[j,i]+(k1/k2)*(((DPhieq/R)**4)*(x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))))#+(Phibar/R)**4
                 #PhieqMat[j,i]=PhieqMat[j,i]+k1*DPhieq*(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))        
 
     return TeqMat
@@ -181,11 +193,11 @@ def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     
     
     
-    I=192
-    J=96
+    # I=192
+    # J=96
     
-    lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
-    [mus,w]=sp.roots_legendre(J)
+    # lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
+    # [mus,w]=sp.roots_legendre(J)
     # testing_plots.physical_plot(TeqMat,mus,lambdas)
     # testing_plots.physical_plot(((Phidata+Phibar)/R)**4,mus,lambdas)
     # testing_plots.physical_plot(Q,mus,lambdas)
