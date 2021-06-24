@@ -69,7 +69,7 @@ dt=1
 a1=p.a1
 
 testing_plots.temp_plot(PBSTeq,lambdas,mus,t,dt,10,a1,minlevel,maxlevel)
-testing_plots.temp_plot(DGTeq,lambdas,mus,t,dt,test,a1,700,1400)
+testing_plots.temp_plot(DGTeq,lambdas,mus,t,dt,test,a1,700,1600)
 testing_plots.temp_plot(np.abs(PBSTeq-DGTeq),lambdas,mus,t,dt,test,a1,0,400)
 # testing_plots.physical_plot(PBSTeq, mus, lambdas)
 # testing_plots.physical_plot(DGTeq, mus, lambdas)

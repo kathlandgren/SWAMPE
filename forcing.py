@@ -149,7 +149,7 @@ def DoubleGrayTEqfun(Phibar,insolation,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
                 #TeqMat[j,i]=TeqMat[j,i]+(k1/k2)*(((DPhieq/R)**4)*(x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))))#+(Phibar/R)**4
                 #PhieqMat[j,i]=PhieqMat[j,i]+k1*DPhieq*(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))        
 
-    return TeqMat
+    return 1.5*TeqMat
 
 def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     
