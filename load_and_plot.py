@@ -30,7 +30,7 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
     
 
-tindex=291
+tindex=290
 ttoprint=tindex*p.savefreq
 
 etadata=cont.load_and_restore('data\Showman2015\etadata-k1-0.0002-k2-0.0004',I)
