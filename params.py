@@ -124,4 +124,4 @@ plotfreq=5
 #forcing parameters
 
 taurad=3600*24*1 #in Earth days
-taudrag=3600*24*100#if set to -1, means infinity
+taudrag=-1#3600*24*100#if set to -1, means infinity

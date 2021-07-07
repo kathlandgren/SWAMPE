@@ -141,15 +141,27 @@ def DoubleGrayTEqfun(Phibar,insolation,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
             #assume substellar point is (0,0)
             if  -np.pi/2<lambdas[i]<np.pi/2:
                 
-                ss_angle_sec=(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))
                 
-                day_forcing=ratio*(insolation*(x**ss_angle_sec))
+                ## implementation of Langton formulation
+                # ss_angle_sec=(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))
+                
+                # day_forcing=ratio*(insolation*(x**ss_angle_sec))
+                
+                # TeqMat[j,i]=TeqMat[j,i]+day_forcing
+                
+                
+                ## cosine bell experiment
+                
+                ss_angle=(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))
+                
+                day_forcing=ratio*insolation*(x*ss_angle)
                 
                 TeqMat[j,i]=TeqMat[j,i]+day_forcing
+                
                 #TeqMat[j,i]=TeqMat[j,i]+(k1/k2)*(((DPhieq/R)**4)*(x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))))#+(Phibar/R)**4
                 #PhieqMat[j,i]=PhieqMat[j,i]+k1*DPhieq*(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))        
 
-    return 1.5*TeqMat
+    return TeqMat
 
 def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     
