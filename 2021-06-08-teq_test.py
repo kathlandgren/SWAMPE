@@ -53,7 +53,7 @@ def insolation(Lstar,distance,sigmaSB):
     return insolation
 
 ## load Phidata
-tindex=50
+tindex=68
 Phidata = cont.load_and_restore('data\Showman2015\Phidata-k1-0.0002-k2-0.0004',I)
 Phiic0=Phidata[tindex,:,:]
 
@@ -89,5 +89,7 @@ a1=p.a1
 testing_plots.physical_plot(PBSPhi_forcing, mus, lambdas)
 testing_plots.physical_plot(DGPhi_forcing, mus, lambdas)
 testing_plots.physical_plot(Phiic0, mus, lambdas)
+
+testing_plots.temp_plot(PBSPhi_forcing,lambdas,mus,t,dt,10,a1,0,50)
    
 

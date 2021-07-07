@@ -13,7 +13,7 @@ import initial_conditions as ic
 import fft_legendre_trans as rfl
 import tstepping_new as tstep
 
-M=p.M    
+M=p.M  
 #get other dimensional parameters using the spectral dimension
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
@@ -30,7 +30,7 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
     
 
-tindex=160
+tindex=120
 ttoprint=tindex*p.savefreq
 
 etadata=cont.load_and_restore('data\Showman2015\etadata-k1-0.0002-k2-0.0004',I)
@@ -53,6 +53,8 @@ Uic=np.real(Uiccomp)
 Vic=np.real(Viccomp)
 
 
+spinupdata = np.max(np.sqrt(Uic[:,:]**2 + Vic[:,:]**2))
+print(spinupdata)
 
 
 #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
