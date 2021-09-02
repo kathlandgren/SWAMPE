@@ -439,7 +439,7 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     elif test==10:
         plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
     elif test==11:
-        plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Do')
+        plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Double Gray')
     plt.show()
     
 
@@ -514,7 +514,6 @@ def zonal_wind_plot(plotdata,mus,t,dt,test,a1):
     Y = np.arcsin(mus)*180/np.pi #generate latitude
     
     plt.plot(Ubar, Y)
-
     
     plt.xlabel('mean U, m/s')
     plt.ticklabel_format(axis='both', style='sci')
@@ -543,11 +542,8 @@ def geopot_to_temp(Phi,R):
         Temperature field of the same size as Phi.
 
     """
-    T=Phi/R
-    
+    T=Phi/R    
     return T
-    
-
    
 def quiver_temp_plot(U,V,Phi,R,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxlevel):
     

@@ -10,7 +10,7 @@ This is the main SWAMP-E function. It calls the timestepping function.
 ## Import statements
 # Import python packages
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 # Import program packages
 #import params as p
@@ -25,6 +25,7 @@ import continuation as cont
 
     
 def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8)):    
+ 
     """
     Parameters
     ----------
@@ -111,11 +112,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
     
-    # sigma=filters.sigma(M,N,K4,a, dt)
-    # sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+    sigma=filters.sigma(M,N,K4,a, dt)
+    sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
         
-    sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
-    sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
+    #sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
+    #sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
     
 
         
@@ -163,7 +164,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     ## time-stepping inputs
     
-    
+    #coriolis
     fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
     fmn[0,1]=omega/np.sqrt(0.375)
     
@@ -251,7 +252,9 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     if test==10:
         Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
+        
         Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
+        
         #geopotential forcing to be passed to time stepping
         PhiF=Q
         
@@ -432,6 +435,19 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                         cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
                         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
                         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
+                elif test==10:
+                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        
+                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
+                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
+                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(omega))
+                        
+                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                    
                 else:
                 # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
                     cont.save_output(etadata[t,:,:],'etadata')
@@ -466,6 +482,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             Q=forcing.Qfun(Phieq, np.real(newPhi),Phibar, taurad)
             #geopotential forcing to be passed to time stepping
             PhiF=Q
+            #print(np.max(Q))
             F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
             
             Fdata[t,:,:]=F
@@ -511,6 +528,13 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 testing_plots.zonal_wind_plot(Udata[t,:,:],mus,t,dt,test,a1)
                 testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
                 
+               
+                
+                plt.plot(lambdas*180/np.pi,Udata[t,31,:])
+                plt.title('Equatorial winds')
+                plt.show()
+
+                testing_plots.physical_plot(Q, mus, lambdas)
                 # plt.contourf(lambdas, mus, newzeta)
                 # plt.colorbar()
                 # plt.title('zeta IC')
@@ -531,7 +555,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
         Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
 
-        
+
         
 
 

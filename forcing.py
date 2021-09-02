@@ -333,9 +333,15 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
                 Second component of the velocity forcing vector
 
     :rtype: array of float64
+
     """
-    Ru=np.divide(np.multiply(-U,Q),Phi+Phibar)
-    Rv=np.divide(np.multiply(-V,Q),Phi+Phibar)
+    
+    Qtest=Q.copy()
+    Qtest[Q<0]=0
+    # Ru=np.divide(np.multiply(-U,Q),Phi+Phibar)
+    # Rv=np.divide(np.multiply(-V,Q),Phi+Phibar)
+    Ru=np.divide(np.multiply(-U,Qtest),Phi+Phibar)
+    Rv=np.divide(np.multiply(-V,Qtest),Phi+Phibar)
     
     #reset to 0 if losing mass
     Ru[Q<0]=0
@@ -343,7 +349,6 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
     
      #if taudrag is infinity, only have the R component from Perez-Becker and Showman    
     if taudrag!=-1:
-        
         F=Ru-(U/taudrag)
         G=Rv-(V/taudrag)
         

@@ -14,33 +14,12 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=2000#5000#864 #number of time steps
+tmax=45000#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
-
-# #make these into a file that gets read later
-# test=1
-# ##specifies the testing regime: 
-# #1 -- test 1 (advection)
-# # 2 -- Hot Jupiter (PBS) 
-# a1=np.pi/2-0.05 #alpha from test 1
-
-# if test==1: 
-#     omega=7.2921159*10**(-5) #rotation rate of the planet, radians per second
-#     a=6.37122*10**(6)  #radius of the planet, meters
-#     Phibar=1*(10**3) #Geopotential height
-#     g=9.8 #gravity of the planet in m/s^2
-# elif test==2:
-#     #Physical parameters
-#     omega=3.2*(10**(-5))#7.2921159*10**(-5) #rotation rate of the planet, radians per second
-#     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
-#     Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
-#     g=9.8
-
-
 #make these into a file that gets read later
-test=11
+test=10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -74,15 +53,15 @@ elif test==10: # PBS Hot Jupiter
     #Physical parameters
     forcflag=1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
-    omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
+    omega=1.6*10**(-5)#7.2921159*10**(-5)#3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
-    Phibar=4*(10**6) #1*(10**3) #Geopotential height #maybe 10*6 instead>
-    g=9.8
-    DPhieq=4*(10**6)
+    Phibar=4*(10**6) #1*(10**3) #Geopotential height 
+    g=10 #m/s
+    DPhieq=0.001*Phibar#4*(10**6) #m^2/s^2
     
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=6.8
-elif test==11: #Langton hot Jupiter
+elif test==11: #Langton hot Jupiter -- for DOuble Gray Forcing
     #Physical parameters
     forcflag=1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
@@ -105,12 +84,12 @@ elif test==11: #Langton hot Jupiter
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=0
+saveflag=1
 #Continuation save frequency: every savefreq time steps
-savefreq=150
+savefreq=180
 
 #Hyperviscosity parameters
-diffflag=0
+diffflag=1
 
 #Modal Splitting Fiter 
 modalflag=1
@@ -119,9 +98,9 @@ alpha=0.01 #filter coefficient to prevent aliasing
 #Plotting flag
 plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=5
+plotfreq=50
 
 #forcing parameters
 
-taurad=3600*24*1 #in Earth days
-taudrag=-1#3600*24*100#if set to -1, means infinity
+taurad=int(3600*24*.1) #in Earth days
+taudrag=3600*24*100#if set to -1, means infinity
