@@ -31,7 +31,7 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
     
 
-tindex=216
+tindex=4
 ttoprint=tindex*p.savefreq
 
 dt=200
@@ -47,13 +47,13 @@ dt=200
 
 
 
-etadata=cont.load_and_restore('data\coriolis\etadata-omega-1p6e-05',I)
+etadata=cont.load_and_restore('data\coriolis\etadata-omega-1p6-hyper',I)
 eta0 = etadata[tindex,:,:]
 eta1 = eta0
-deltadata = cont.load_and_restore('data\coriolis\deltadata-omega-1p6e-05',I)
+deltadata = cont.load_and_restore('data\coriolis\deltadata-omega-1p6-hyper',I)
 delta0=deltadata[tindex,:,:]
 delta1 = delta0
-Phidata = cont.load_and_restore('data\coriolis\Phidata-omega-1p6e-05',I)
+Phidata = cont.load_and_restore('data\coriolis\Phidata-omega-1p6-hyper',I)
 Phi0=Phidata[tindex,:,:]
 Phi1 = Phi0
 

@@ -283,6 +283,12 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,etamn-fmn),tstepcoeffmn), I,J, M, N, Pmn)
     newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
     
+    # newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
+    # newUm2=invrs_leg(np.multiply(etamn,tstepcoeffmn), I,J, M, N, Hmn)
+    
+    # newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,etamn),tstepcoeffmn), I,J, M, N, Pmn)
+    # newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
+    
     # test,newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
     # test,newUm2=invrs_leg(np.multiply(0,tstepcoeffmn), I,J, M, N, Hmn)
 

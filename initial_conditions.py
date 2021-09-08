@@ -119,6 +119,12 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 etaic0[j,i]=etaamp*(latlonarg)
 
                 Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)#/g
+                
+    elif test==9:
+        for i in range(I):
+            for j in range(J):
+                Phiic0[j,i]=0#15000*(1-(mus[j])**2) 
+                etaic0[j,i]=2*3.2*10**(-5)*mus[j]
     
     elif test==10 or test==11:
         for i in range(I):

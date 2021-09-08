@@ -250,6 +250,12 @@ def Qfun(Phieq,Phi,Phibar,taurad):
 
     return Q
 
+def Phieq_basic_state(I,J,mus,Phibar):
+    PhieqMat=Phibar*np.ones((J,I))
+    for i in range(I):
+            for j in range(J):
+                PhieqMat[j,i]=PhieqMat[j,i]+15000*(1-(mus[j])**2)
+    return PhieqMat
 
 def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
     

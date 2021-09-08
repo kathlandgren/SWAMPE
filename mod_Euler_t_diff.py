@@ -7,6 +7,7 @@ Created on Wed Mar 17 10:48:34 2021
 
 
 import numpy as np
+import scipy.special as sp
 import matplotlib.pyplot as plt
 #local imports
 import params as p
@@ -90,8 +91,17 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
 
     deltacomp3=rfl.fwd_leg(deltacomp3prep, J, M, N, Hmn, w)
     
-
-    deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
+    if test==9:
+        Phis=np.zeros((J,I))
+        [mus,w]=sp.roots_legendre(J)
+        for i in range(I):
+            for j in range(J):
+                Phis[j,:]=15000*(1-(mus[j])**2)
+            
+        Phism=rfl.fwd_fft_trunc(Phis, I, M) 
+        deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
+    else:
+        deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
     deltacomp4=rfl.fwd_leg(deltacomp4prep, J, M, N, Pmn, w)
     
     deltacomp4=np.multiply(narray,deltacomp4)

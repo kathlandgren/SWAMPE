@@ -14,12 +14,12 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=45000#5000#864 #number of time steps
+tmax=1000#5000#864 #number of time steps
 
 # dt=900 #time step length, in seconds
 
 #make these into a file that gets read later
-test=10
+test=9
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -49,14 +49,28 @@ elif test==2: # Williamson Test 2
     
     minlevel=3 #the log values for the colorbar plotting.
     maxlevel=5
+    
+elif test==9: # Kraucunas and Hartman 2006 basic state
+    #Physical parameters
+    forcflag=1
+    expflag=0 #1 means explicit, anything else means semi-implicit scheme
+    omega=7.2921159*10**(-5)#3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
+    a=6.37122*10**(6)#8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
+    Phibar=1#4*(10**6) #1*(10**3) #Geopotential height 
+    g=9.8 #m/s
+    DPhieq=1500#4*(10**6) #m^2/s^2
+    
+    minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    maxlevel=6.8
+    
 elif test==10: # PBS Hot Jupiter
     #Physical parameters
     forcflag=1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
-    omega=1.6*10**(-5)#7.2921159*10**(-5)#3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
+    omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height 
-    g=10 #m/s
+    g=9.8 #m/s
     DPhieq=0.001*Phibar#4*(10**6) #m^2/s^2
     
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
@@ -84,7 +98,7 @@ elif test==11: #Langton hot Jupiter -- for DOuble Gray Forcing
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=1
+saveflag=0
 #Continuation save frequency: every savefreq time steps
 savefreq=180
 
@@ -102,5 +116,5 @@ plotfreq=50
 
 #forcing parameters
 
-taurad=int(3600*24*.1) #in Earth days
-taudrag=3600*24*100#if set to -1, means infinity
+taurad=int(3600*24*10) #in Earth days
+taudrag=int(3600*24*10)#if set to -1, means infinity

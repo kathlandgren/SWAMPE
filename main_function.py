@@ -112,11 +112,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
     
-    sigma=filters.sigma(M,N,K4,a, dt)
-    sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+    # sigma=filters.sigma(M,N,K4,a, dt)
+    # sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
         
-    #sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
-    #sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
+    sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
+    sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
     
 
         
@@ -184,7 +184,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
         elif test==2:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)   
-        elif test==10 or test==11:
+        elif test==9 or test==10 or test==11:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,test,etaamp)
         
         Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
@@ -249,8 +249,29 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     
     #### Forcing ####
+    if test==9:
+        
+        Phieq=forcing.Phieq_basic_state(I,J,mus,Phibar)
+        
+        Q=forcing.Qfun(Phibar+2000, Phiic0,Phibar, taurad)
+
+        #geopotential forcing to be passed to time stepping
+        PhiF=Q
+        #print(np.max(Q))
+        F,G=forcing.Rfun(Uic, Vic, -1*np.ones((J,I)), Phiic0,Phibar,taudrag)
+        
+        Phiforcingdata[0,:,:]=PhiF
+        Phiforcingdata[1,:,:]=PhiF
+        
+        
+        F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
+        Fdata[0,:,:]=F
+        Fdata[1,:,:]=Fdata[0,:,:]
+        Gdata[0,:,:]=G
+        Gdata[1,:,:]=Gdata[0,:,:]
     
-    if test==10:
+    
+    elif test==10:
         Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
         
         Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
@@ -468,7 +489,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Um=Umdata[t,:,:]
         Vm=Vmdata[t,:,:]
         
-        neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
+        #neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
         #print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
         
         etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
@@ -477,7 +498,25 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         
             
         ######## FORCING ############
-        if test==10:
+        if test==9:
+            
+            Q=forcing.Qfun(Phibar+2000, np.real(newPhi),Phibar, taurad)
+            #geopotential forcing to be passed to time stepping
+            PhiF=Q
+            #print(np.max(Q))
+            F,G=forcing.Rfun(np.real(newU), np.real(newV), -1*np.ones((J,I)), np.real(newPhi),Phibar,taudrag)
+            
+            Fdata[t,:,:]=F
+            Gdata[t,:,:]=G
+            
+            Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
+            Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            
+            Phiforcingdata[t,:,:]=PhiF
+            Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+            
+        
+        elif test==10:
             
             Q=forcing.Qfun(Phieq, np.real(newPhi),Phibar, taurad)
             #geopotential forcing to be passed to time stepping
@@ -525,16 +564,20 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 
                 testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
                 testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
-                testing_plots.zonal_wind_plot(Udata[t,:,:],mus,t,dt,test,a1)
-                testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
-                
-               
-                
-                plt.plot(lambdas*180/np.pi,Udata[t,31,:])
-                plt.title('Equatorial winds')
-                plt.show()
 
-                testing_plots.physical_plot(Q, mus, lambdas)
+                testing_plots.zonal_wind_plot(Udata[t,:,:],mus,t,dt,test,a1)
+               # testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
+                
+                
+                #plt.plot(np.arcsin(mus)*180/np.pi,Phiic0[:,3])
+                
+               # plt.show()
+                # plt.plot(lambdas*180/np.pi,Udata[t,31,:])
+                # plt.title('Equatorial winds')
+                # plt.show()
+
+                #testing_plots.physical_plot(Q, mus, lambdas)             
+               # testing_plots.physical_plot(Phidata[t,:,:], mus, lambdas)
                 # plt.contourf(lambdas, mus, newzeta)
                 # plt.colorbar()
                 # plt.title('zeta IC')
