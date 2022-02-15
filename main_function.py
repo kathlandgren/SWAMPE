@@ -11,6 +11,8 @@ This is the main SWAMP-E function. It calls the timestepping function.
 # Import python packages
 import numpy as np
 import matplotlib.pyplot as plt
+import mpmath as mp
+
 
 # Import program packages
 #import params as p
@@ -23,7 +25,12 @@ import forcing
 import filters
 import continuation as cont
 
-    
+
+import pickle
+
+#define precision
+#mp.dps = 50
+
 def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8)):    
  
     """
@@ -162,9 +169,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     spinupdata=np.zeros((tmax,2))
     
+    
     ## time-stepping inputs
     
     #coriolis
+
     fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
     fmn[0,1]=omega/np.sqrt(0.375)
     
@@ -176,7 +185,24 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     narray=tstep.narray(M,N)
         
     
-## Set the initial conditions 
+
+    # f=np.zeros([J,I])
+    
+    # if test==2:
+    #     for i in range(I):
+    #         for j in range(J):
+    #             f[j,i]=2*omega*(-np.cos(lambdas[i])*np.cos(np.arcsin(mus[j]))*sina+mus[j]*cosa)
+    # else:
+    #     for i in range(I):
+    #         for j in range(J):
+    #             f[j,i]=2*omega*mus[j]
+    # fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
+
+
+    # fm=rfl.fwd_fft_trunc(f, I, M)
+    # fmn=rfl.fwd_leg(fm, J, M, N, Pmn, w)
+    # #fmn[0,1]=omega/np.sqrt(0.375)
+
     if contflag==0:
         SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
         
@@ -410,7 +436,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
         PhiFM=Phiforcingmdata[t-1,:,:]    
         
-        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test)
+        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
         
         
         #write new data

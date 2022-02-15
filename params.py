@@ -8,18 +8,22 @@ This is the file containing the spectral, physical, and code parameters.
 """
 
 import numpy as np
+import mpmath as mp
+
+mp.dps = 50
 
 # #Spectral parameters
 M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=1000#5000#864 #number of time steps
+tmax=3000#5000#864 #number of time steps
+
 
 # dt=900 #time step length, in seconds
 
 #make these into a file that gets read later
-test=9
+test=10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -71,11 +75,18 @@ elif test==10: # PBS Hot Jupiter
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height 
     g=9.8 #m/s
-    DPhieq=0.001*Phibar#4*(10**6) #m^2/s^2
+    DPhieq=0.5*Phibar#4*(10**6) #m^2/s^2
     
-    minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
-    maxlevel=6.8
-elif test==11: #Langton hot Jupiter -- for DOuble Gray Forcing
+    minlevel=np.log10(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    maxlevel=np.log10(5.5*10**6)#6.8
+elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
+    DPhieq=0.01*Phibar#4*(10**6) #m^2/s^2
+    
+    #minlevel=np.log10(Phibar) #should be good #the log values for the colorbar plotting.
+    #maxlevel=np.log10(2*Phibar)
+    minlevel=np.log10(3.99*10**6)
+    maxlevel=np.log10(4.01*10**6)
+elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
     #Physical parameters
     forcflag=1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
@@ -116,5 +127,7 @@ plotfreq=50
 
 #forcing parameters
 
-taurad=int(3600*24*10) #in Earth days
+
+taurad=int(3600*24*0.1) #in Earth days
 taudrag=int(3600*24*10)#if set to -1, means infinity
+
