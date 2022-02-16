@@ -11,7 +11,7 @@ import main_function as main
 
 M=p.M
 
-dt1=200
+dt1=50
 # Length of the run in time steps
 tmax = p.tmax
 #surface gravity

@@ -9,7 +9,6 @@ This file contains the initial conditions for the simulation"""
 import numpy as np
 import scipy.special as sp
 
-
 def test1_init(a,omega,a1):
     """
     Initializes the parameters from Test 1 in Williamson et al. (1992),

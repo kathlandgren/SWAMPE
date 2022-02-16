@@ -11,8 +11,6 @@ This is the main SWAMP-E function. It calls the timestepping function.
 # Import python packages
 import numpy as np
 import matplotlib.pyplot as plt
-import mpmath as mp
-
 
 # Import program packages
 #import params as p
@@ -483,17 +481,21 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
                         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
                 elif test==10:
-                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
-                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
-                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
                         
-                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
-                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
-                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(omega))
+                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
+                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
+                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(omega))
                         
                         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
                         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
                         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                        
+                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-'+str(int(3600/t*dt)))
+                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-'+str(int(3600/t*dt)))
+                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(int(3600/t*dt)))
                     
                 else:
                 # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
