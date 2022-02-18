@@ -73,7 +73,7 @@ elif test==10: # PBS Hot Jupiter
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height 
     g=9.8 #m/s
-    DPhieq=0.01*Phibar#4*(10**6) #m^2/s^2
+    DPhieq=0.5*Phibar#4*(10**6) #m^2/s^2
     
     minlevel=np.log10(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=np.log10(5.5*10**6)#6.8
@@ -126,6 +126,6 @@ plotfreq=50
 #forcing parameters
 
 
-taurad=int(3600*24*1) #in Earth days
-taudrag=int(3600*24*1)#if set to -1, means infinity
+taurad=int(3600*24*0.1) #in Earth days
+taudrag=int(3600*24*10)#if set to -1, means infinity
 

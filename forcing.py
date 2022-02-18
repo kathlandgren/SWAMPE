@@ -58,7 +58,7 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
         for j in range(J):
             #assume substellar point is (0,0)
 
-           # if  -np.pi/2<lambdas[i]<np.pi/2:
+            #if  -np.pi/2<lambdas[i]<np.pi/2:
             PhieqMat[j,i]=PhieqMat[j,i]+DPhieq*np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))     
     
     return PhieqMat

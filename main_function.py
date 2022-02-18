@@ -117,11 +117,12 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
     
-    # sigma=filters.sigma(M,N,K4,a, dt)
-    # sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+    sigma=filters.sigma(M,N,K4,a, dt)
+    sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
         
-    sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
-    sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
+    ##Earth sigma
+    #sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
+    #sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
     
 
         
@@ -481,9 +482,9 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
                         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
                 elif test==10:
-                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
-                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
-                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad))
+                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt))
+                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt))
+                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt))
                         
                         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
                         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
