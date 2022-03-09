@@ -37,7 +37,7 @@ narray=tstep.narray(M,N)
 tindex=970
 ttoprint=tindex*p.savefreq
 
-dt=200
+dt=180
 # etadata=cont.load_and_restore('data\Showman2015\cos_bell_experiment\etadata-k1-0.0002-k2-0.0004',I)
 # eta0 = etadata[tindex,:,:]
 # eta1 = eta0
@@ -66,10 +66,10 @@ dt=200
 # Phi1 = Phi0
 
 
-etadata=cont.load_and_restore('etadata-taudrag--1-taurad-864000-dt-200',I)
+etadata=cont.load_and_restore('etadata-taudrag-86400000-taurad-8640-dt-180-hd6',I)
 # eta0 = etadata[tindex,:,:]
 # eta1 = eta0
-deltadata = cont.load_and_restore('deltadata-taudrag--1-taurad-864000-dt-200',I)
+deltadata = cont.load_and_restore('deltadata-taudrag-86400000-taurad-8640-dt-180-hd6',I)
 # delta0=deltadata[tindex,:,:]
 # delta1 = delta0
 # Phidata = cont.load_and_restore('data\coriolis\Phidata-taudrag-8640000-taurad-8640',I)

@@ -6,6 +6,7 @@ Created on Wed Mar  3 20:01:55 2021
 @author: Home
 """
 import numpy as np
+import pickle
 
 def save_output(output,name):
     """
@@ -100,3 +101,15 @@ def load_and_restore(name,I):
     
     return data
     
+
+
+def write_pickle(filename,data):
+    outfile = open(filename,'wb')
+    pickle.dump(data,outfile)
+    outfile.close()
+    
+def read_pickle(filename):
+    infile = open(filename,'rb')
+    var = pickle.load(infile)
+    infile.close()
+    return var

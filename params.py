@@ -15,13 +15,13 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=70000#5000#864 #number of time steps
+tmax=2000#5000#864 #number of time steps
 
 
 # dt=900 #time step length, in seconds
 
 #make these into a file that gets read later
-test=10
+test=9#10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -58,7 +58,7 @@ elif test==9: # Kraucunas and Hartman 2006 basic state
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
     omega=7.2921159*10**(-5)#3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=6.37122*10**(6)#8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
-    Phibar=1#4*(10**6) #1*(10**3) #Geopotential height 
+    Phibar=1*(10**3)#4*(10**6) #1* #Geopotential height 
     g=9.8 #m/s
     DPhieq=1500#4*(10**6) #m^2/s^2
     
@@ -67,7 +67,7 @@ elif test==9: # Kraucunas and Hartman 2006 basic state
     
 elif test==10: # PBS Hot Jupiter
     #Physical parameters
-    forcflag=1
+    forcflag=1#1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
     omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
@@ -107,9 +107,9 @@ elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=1
+saveflag=0
 #Continuation save frequency: every savefreq time steps
-savefreq=72
+savefreq=72 #72=1 hour for 50 s tstep
 
 #Hyperviscosity parameters
 diffflag=1
@@ -119,13 +119,14 @@ modalflag=1
 alpha=0.01 #filter coefficient to prevent aliasing
 
 #Plotting flag
-plotflag=0
+plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=50
+plotfreq=10
 
 #forcing parameters
 
 
 taurad=int(3600*24*0.1) #in Earth days
-taudrag=int(3600*24*10)#if set to -1, means infinity
+taudrag=int(3600*24*1000)#if set to -1, means infinity
+
 

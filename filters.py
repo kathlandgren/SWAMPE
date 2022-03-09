@@ -40,7 +40,7 @@ def diffusion(Ximn,sigma):
 
 def sigma(M,N,K4,a,dt):
     
-    """Computes the coefficient for the diffusion Filter described in Gelb and
+    """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
     Gleeson (eq. 12) for vorticity and divergence.
 
 
@@ -67,14 +67,27 @@ def sigma(M,N,K4,a,dt):
     :rtype: array of float64
 
     """
+    # sigma=np.zeros((M+1,N+1))
+    
+    # nvec=np.arange(N+1)
+    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
+    # const=K4*dt/a**4
+    # sigmacoeff1=2*const*coeff
+    # sigmacoeff=(1+sigmacoeff1)
+    
+
+    # sigmas=np.divide(1,sigmacoeff)
+    
+    
+    #order of operations following Hack and Jakob code
     sigma=np.zeros((M+1,N+1))
     
     nvec=np.arange(N+1)
-    coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
-    const=K4*dt/a**4
-    sigmacoeff1=2*const*coeff
-    sigmacoeff=(1+sigmacoeff1)
-    
+    ncoeff=np.multiply(np.multiply(nvec,nvec)/a**2,np.multiply(nvec+1,nvec+1)/a**2)
+    factor1=4/a**4
+    factor2=2*dt*K4
+
+    sigmacoeff=(1+factor2*(ncoeff-factor1))
 
     sigmas=np.divide(1,sigmacoeff)
     
@@ -85,7 +98,7 @@ def sigma(M,N,K4,a,dt):
 
 def sigmaPhi(M,N,K4,a,dt):
 
-    """Computes the coefficient for the diffusion Filter described in Gelb and
+    """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
     Gleeson (eq. 12) for geopotential.
 
     Parameters
@@ -111,17 +124,136 @@ def sigmaPhi(M,N,K4,a,dt):
     :rtype: array of float64
 
     """
-    sigma=np.zeros((M+1,N+1))
-    nvec=np.arange(N+1)
-    coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))
+    # sigma=np.zeros((M+1,N+1))
+    # nvec=np.arange(N+1)
+    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))
     
-    const=K4*dt/a**4
-    sigmacoeff1=2*const*coeff
-    sigmacoeff=(1+sigmacoeff1)
+    # const=K4*dt/a**4
+    # sigmacoeff1=2*const*coeff
+    # sigmacoeff=(1+sigmacoeff1)
+    
+    sigma=np.zeros((M+1,N+1))
+    
+    nvec=np.arange(N+1)
+    ncoeff=np.multiply(np.multiply(nvec,nvec)/a**2,np.multiply(nvec+1,nvec+1)/a**2)
+    factor2=2*dt*K4
+
+    sigmacoeff=(1+factor2*(ncoeff))
     
     sigmas=np.divide(1,sigmacoeff)
     for m in range(M+1):
         sigma[m,:]=sigmas
     
     return sigma
+
+
+def sigma6(M,N,K4,a,dt):
     
+    """Computes the coefficient for the sixth degree diffusion filter 
+    for vorticity and divergence.
+
+
+    Parameters
+    ----------
+    :param M: spectral dimension
+    :type M: int
+    
+    :param N: highest degree of associated Legendre polynomials
+    :type N: int
+ 
+    :param K4: hyperviscosity coefficient
+    :type K4: float64
+    
+    :param a: planetary radius, m
+    :type a: float64
+        
+    :param dt: time step,s
+    :type dt: float64
+    
+    Returns
+    -------
+    :return sigma: coefficient for the diffusion filter for geopotential
+    :rtype: array of float64
+
+    """
+    # sigma=np.zeros((M+1,N+1))
+    
+    # nvec=np.arange(N+1)
+    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
+    # const=K4*dt/a**4
+    # sigmacoeff1=2*const*coeff
+    # sigmacoeff=(1+sigmacoeff1)
+    
+
+    # sigmas=np.divide(1,sigmacoeff)
+    
+    
+    #order of operations following Hack and Jakob code
+    sigma=np.zeros((M+1,N+1))
+    
+    nvec=np.arange(N+1)
+    ncoeff=np.multiply(np.multiply(np.multiply(nvec,nvec),nvec)/a**3,np.multiply(np.multiply(nvec+1,nvec+1),nvec+1)/a**3)
+    factor1=8/a**6
+    factor2=2*dt*K4
+
+    sigmacoeff=(1+factor2*(ncoeff-factor1))
+
+    sigmas=np.divide(1,sigmacoeff)
+    
+    for m in range(M+1):
+        sigma[m,:]=sigmas
+    
+    return sigma
+    
+
+
+def sigma6Phi(M,N,K4,a,dt):
+
+    """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
+    Gleeson (eq. 12) for geopotential.
+
+    Parameters
+    ----------
+    :param M: spectral dimension
+    :type M: int
+    
+    :param N: highest degree of associated Legendre polynomials
+    :type N: int
+ 
+    :param K4: hyperviscosity coefficient
+    :type K4: float64
+    
+    :param a: planetary radius, m
+    :type a: float64
+        
+    :param dt: time step,s
+    :type dt: float64
+    
+    Returns
+    -------
+    :return sigma: coefficient for the diffusion filter for geopotential
+    :rtype: array of float64
+
+    """
+    # sigma=np.zeros((M+1,N+1))
+    # nvec=np.arange(N+1)
+    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))
+    
+    # const=K4*dt/a**4
+    # sigmacoeff1=2*const*coeff
+    # sigmacoeff=(1+sigmacoeff1)
+    
+    sigma=np.zeros((M+1,N+1))
+    
+    nvec=np.arange(N+1)
+    ncoeff=np.multiply(np.multiply(np.multiply(nvec,nvec),nvec)/a**3,np.multiply(np.multiply(nvec+1,nvec+1),nvec+1)/a**3)
+
+    factor2=2*dt*K4
+
+    sigmacoeff=(1+factor2*(ncoeff))
+    
+    sigmas=np.divide(1,sigmacoeff)
+    for m in range(M+1):
+        sigma[m,:]=sigmas
+    
+    return sigma

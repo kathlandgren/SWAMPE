@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep 25 15:44:34 2021
-
 @author: ezets
 """
 
@@ -23,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=350
+tindex=81
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0
@@ -79,7 +78,7 @@ dt=50
 
 #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
 # testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
-testing_plots.zonal_wind_plot(Ucomp,mus,ttoprint,50,p.test,p.a1)
+testing_plots.zonal_wind_plot(Ucomp,mus,ttoprint,dt,p.test,p.a1)
 #testing_plots.zonal_wind_plot(Upic,mus,ttoprint,200,p.test,p.a1)
 #testing_plots.zonal_wind_plot(V,mus,ttoprint,10,p.test,p.a1)
 # Vbar=np.mean(V,axis=1)
@@ -97,7 +96,7 @@ testing_plots.zonal_wind_plot(Ucomp,mus,ttoprint,50,p.test,p.a1)
 
 testing_plots.physical_plot(eta0, mus, lambdas)
 testing_plots.physical_plot(delta0, mus, lambdas)
-testing_plots.quiver_geopot_plot(U,V,Phi0+p.Phibar,lambdas,mus,ttoprint,50,5,p.test,p.a1,np.log10(4*10**6-4*10**4),np.log10(4*10**6+4*10**4))
+testing_plots.quiver_geopot_plot(U,V,Phi0+p.Phibar,lambdas,mus,ttoprint,dt,5,p.test,p.a1,np.log10(4*10**6-4*10**4),np.log10(4*10**6+4*10**4))
 #testing_plots.quiver_temp_plot(U,V,Phi0+p.Phibar,3000,lambdas,mus,ttoprint,200,5,p.test,p.a1,1300,1350)
 
 

@@ -117,12 +117,12 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
     
-    sigma=filters.sigma(M,N,K4,a, dt)
-    sigmaPhi=filters.sigmaPhi(M, N, K4, a, dt)
+    # sigma=filters.sigma6(M,N,K4,a, dt)
+    # sigmaPhi=filters.sigma6Phi(M, N, K4, a, dt)
         
-    ##Earth sigma
-    #sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
-    #sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
+    #Earth sigma
+    sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
+    sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
     
 
         
@@ -215,13 +215,16 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
     
     elif contflag==1:
-        etaic0 = cont.load_input('etadata')
+
+        #etaic0 = cont.load_input('etadata')
+        etaic0=cont.read_pickle('eta-2')
         etaic1 = etaic0
-        deltaic0 = cont.load_input('deltadata')
+        #deltaic0 = cont.load_input('deltadata')
+        deltaic0=cont.read_pickle('delta-2')
         deltaic1 = deltaic0
-        Phiic0 = cont.load_input('Phidata')
+        #Phiic0 = cont.load_input('Phidata')
+        Phiic0=cont.read_pickle('Phi-2')
         Phiic1 = Phiic0
-        
 
         
         etam0=rfl.fwd_fft_trunc(etaic0, I, M)
@@ -473,38 +476,43 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
    
             if t%savefreq==0:
                 
-                if test==11:
-                    if t>0:
-                        # cont.save_output(etadata[t,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
-                        # cont.save_output(deltadata[t,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
-                        # cont.save_output(Phidata[t,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
-                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
-                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
-                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
-                elif test==10:
-                        cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt))
-                        cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt))
-                        cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt))
+                # if test==11:
+                #     if t>0:
+                #         # cont.save_output(etadata[t,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
+                #         # cont.save_output(deltadata[t,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
+                #         # cont.save_output(Phidata[t,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
+                #         cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
+                #         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
+                #         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
+                # elif test==10:
+                #         cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt)+'-hd6')
+                #         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt)+'-hd6')
+                #         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt)+'-hd6')
                         
-                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
-                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
-                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(omega))
+                #         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
+                #         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
+                #         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(omega))
                         
-                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
-                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
-                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                #         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                #         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
+                #         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
                         
-                        # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-'+str(int(3600/t*dt)))
-                        # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-'+str(int(3600/t*dt)))
-                        # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(int(3600/t*dt)))
+                #         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-'+str(int(3600/t*dt)))
+                #         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-'+str(int(3600/t*dt)))
+                #         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(int(3600/t*dt)))
                     
-                else:
-                # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
-                    cont.save_output(etadata[t,:,:],'etadata')
-                    cont.save_output(deltadata[t,:,:],'deltadata')
-                    cont.save_output(Phidata[t,:,:],'Phidata')
+                # else:
+                # # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
+                #     cont.save_output(etadata[t,:,:],'etadata')
+                #     cont.save_output(deltadata[t,:,:],'deltadata')
+                #     cont.save_output(Phidata[t,:,:],'Phidata')
                     
-                
+                timestamp=str(int(dt*t/3600))
+                cont.write_pickle('eta-'+timestamp, neweta)
+                cont.write_pickle('delta-'+timestamp, newdelta)     
+                cont.write_pickle('Phi-'+timestamp, np.real(newPhi))    
+                cont.write_pickle('U-'+timestamp, np.real(newU))    
+                cont.write_pickle('V-'+timestamp, np.real(newV)) 
      
         
         if spinupdata[t-1,1]>8000:
@@ -626,15 +634,3 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Cmdata[t,:,:]=rfl.fwd_fft_trunc(C, I, M)
         Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
         Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
-
-
-        
-
-
-        
-        
-
-
-
-
-
