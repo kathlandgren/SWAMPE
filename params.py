@@ -15,13 +15,13 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=2000#5000#864 #number of time steps
+tmax=200#5000#864 #number of time steps
 
 
 # dt=900 #time step length, in seconds
 
 #make these into a file that gets read later
-test=9#10
+test=10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -107,9 +107,9 @@ elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=0
+saveflag=1
 #Continuation save frequency: every savefreq time steps
-savefreq=72 #72=1 hour for 50 s tstep
+savefreq=50 #in seconds
 
 #Hyperviscosity parameters
 diffflag=1
@@ -127,6 +127,6 @@ plotfreq=10
 
 
 taurad=int(3600*24*0.1) #in Earth days
-taudrag=int(3600*24*1000)#if set to -1, means infinity
+taudrag=int(3600*24*10)#if set to -1, means infinity
 
 

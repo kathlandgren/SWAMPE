@@ -22,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=81
+tindex=2
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0

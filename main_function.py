@@ -474,7 +474,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         
         if saveflag==1:
    
-            if t%savefreq==0:
+            if dt*t%savefreq==0:
                 
                 # if test==11:
                 #     if t>0:
@@ -603,7 +603,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
 
                 testing_plots.zonal_wind_plot(Udata[t,:,:],mus,t,dt,test,a1)
-               # testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
+                testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
                 
                 
                 #plt.plot(np.arcsin(mus)*180/np.pi,Phiic0[:,3])

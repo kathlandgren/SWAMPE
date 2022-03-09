@@ -123,12 +123,13 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
         for i in range(I):
             for j in range(J):
                 Phiic0[j,i]=0#15000*(1-(mus[j])**2) 
-                etaic0[j,i]=2*3.2*10**(-5)*mus[j]
+                etaic0[j,i]=mus[j]#2*3.2*10**(-5)*mus[j]
     
     elif test==10 or test==11:
+
         for i in range(I):
             for j in range(J):
-                etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*(1)+(mus[j])*(1))
+                etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*(0)+(mus[j])*(1))
                 
     etaic1=etaic0 #need two time steps to initialize
     deltaic1=deltaic0
