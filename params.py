@@ -21,7 +21,7 @@ tmax=200#5000#864 #number of time steps
 # dt=900 #time step length, in seconds
 
 #make these into a file that gets read later
-test=10
+test=10#10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -64,10 +64,12 @@ elif test==9: # Kraucunas and Hartman 2006 basic state
     
     minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=6.8
+    minlevel=np.log10(0.9*10**3)
+    maxlevel=np.log10(2.5*10**3)
     
 elif test==10: # PBS Hot Jupiter
     #Physical parameters
-    forcflag=1#1
+    forcflag=0#1
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
     omega=3.2*10**(-5) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
