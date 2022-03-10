@@ -127,45 +127,85 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
 
         
     ## Initialize data arrays 
-    etadata=np.zeros((tmax,J,I))
-    deltadata=np.zeros((tmax,J,I))
-    Phidata=np.zeros((tmax,J,I))
+    # etadata=np.zeros((tmax,J,I))
+    # deltadata=np.zeros((tmax,J,I))
+    # Phidata=np.zeros((tmax,J,I))
     
-    etamdata=np.zeros((tmax,J,M+1),dtype=complex)
-    deltamdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Phimdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # etamdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # deltamdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Phimdata=np.zeros((tmax,J,M+1),dtype=complex)
     
-    etamndata=np.zeros((tmax,M+1,N+1),dtype=complex)
-    deltamndata=np.zeros((tmax,M+1,N+1),dtype=complex)
-    Phimndata=np.zeros((tmax,M+1,N+1),dtype=complex)
+    # etamndata=np.zeros((tmax,M+1,N+1),dtype=complex)
+    # deltamndata=np.zeros((tmax,M+1,N+1),dtype=complex)
+    # Phimndata=np.zeros((tmax,M+1,N+1),dtype=complex)
     
-    Udata=np.zeros((tmax,J,I))
-    Vdata=np.zeros((tmax,J,I))
+    # Udata=np.zeros((tmax,J,I))
+    # Vdata=np.zeros((tmax,J,I))
     
-    Umdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Vmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Umdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Vmdata=np.zeros((tmax,J,M+1),dtype=complex)
     
-    Adata=np.zeros((tmax,J,I))
-    Bdata=np.zeros((tmax,J,I))
-    Cdata=np.zeros((tmax,J,I))
-    Ddata=np.zeros((tmax,J,I))
-    Edata=np.zeros((tmax,J,I))
+    # Adata=np.zeros((tmax,J,I))
+    # Bdata=np.zeros((tmax,J,I))
+    # Cdata=np.zeros((tmax,J,I))
+    # Ddata=np.zeros((tmax,J,I))
+    # Edata=np.zeros((tmax,J,I))
     
-    Amdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Bmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Cmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Dmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Emdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Amdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Bmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Cmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Dmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Emdata=np.zeros((tmax,J,M+1),dtype=complex)
     
-    Fdata=np.zeros((tmax,J,I))
-    Gdata=np.zeros((tmax,J,I))
+    # Fdata=np.zeros((tmax,J,I))
+    # Gdata=np.zeros((tmax,J,I))
     
-    Fmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    Gmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Fmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Gmdata=np.zeros((tmax,J,M+1),dtype=complex)
     
-    Phiforcingdata=np.zeros((tmax,J,I))
-    Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
+    # Phiforcingdata=np.zeros((tmax,J,I))
+    # Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
     
+    etadata=np.zeros((3,J,I))
+    deltadata=np.zeros((3,J,I))
+    Phidata=np.zeros((3,J,I))
+    
+    etamdata=np.zeros((3,J,M+1),dtype=complex)
+    deltamdata=np.zeros((3,J,M+1),dtype=complex)
+    Phimdata=np.zeros((3,J,M+1),dtype=complex)
+    
+    etamndata=np.zeros((3,M+1,N+1),dtype=complex)
+    deltamndata=np.zeros((3,M+1,N+1),dtype=complex)
+    Phimndata=np.zeros((3,M+1,N+1),dtype=complex)
+    
+    Udata=np.zeros((3,J,I))
+    Vdata=np.zeros((3,J,I))
+    
+    Umdata=np.zeros((3,J,M+1),dtype=complex)
+    Vmdata=np.zeros((3,J,M+1),dtype=complex)
+    
+    Adata=np.zeros((3,J,I))
+    Bdata=np.zeros((3,J,I))
+    Cdata=np.zeros((3,J,I))
+    Ddata=np.zeros((3,J,I))
+    Edata=np.zeros((3,J,I))
+    
+    Amdata=np.zeros((3,J,M+1),dtype=complex)
+    Bmdata=np.zeros((3,J,M+1),dtype=complex)
+    Cmdata=np.zeros((3,J,M+1),dtype=complex)
+    Dmdata=np.zeros((3,J,M+1),dtype=complex)
+    Emdata=np.zeros((3,J,M+1),dtype=complex)
+    
+    Fdata=np.zeros((3,J,I))
+    Gdata=np.zeros((3,J,I))
+    
+    Fmdata=np.zeros((3,J,M+1),dtype=complex)
+    Gmdata=np.zeros((3,J,M+1),dtype=complex)
+    
+    Phiforcingdata=np.zeros((3,J,I))
+    Phiforcingmdata=np.zeros((3,J,M+1),dtype=complex)
+    
+    #left unchanged: long array
     spinupdata=np.zeros((tmax,2))
     
     
@@ -341,10 +381,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     #Forward Fourier and Legendre transform
     ####
     
-    ## FFT
-    
-    
-        
+    ## FFT    
     
     Amdata[0,:,:]=rfl.fwd_fft_trunc(Aic, I, M)
     Amdata[1,:,:]=Amdata[0,:,:]
@@ -412,51 +449,51 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     for t in range(2,tmax):
         # print('t='+str(t))
         
-        etam0=etamdata[t-2,:,:]
-        etam1=etamdata[t-1,:,:]
+        etam0=etamdata[0,:,:]
+        etam1=etamdata[1,:,:]
         
-        deltam0=deltamdata[t-2,:,:]
-        deltam1=deltamdata[t-1,:,:]
+        deltam0=deltamdata[0,:,:]
+        deltam1=deltamdata[1,:,:]
         
-        Phim0=Phimdata[t-2,:,:]
-        Phim1=Phimdata[t-1,:,:]
+        Phim0=Phimdata[0,:,:]
+        Phim1=Phimdata[1,:,:]
         
-        Am=Amdata[t-1,:,:]
-        Bm=Bmdata[t-1,:,:]
-        Cm=Cmdata[t-1,:,:]    
-        Dm=Dmdata[t-1,:,:]
-        Em=Emdata[t-1,:,:]
+        Am=Amdata[1,:,:]
+        Bm=Bmdata[1,:,:]
+        Cm=Cmdata[1,:,:]    
+        Dm=Dmdata[1,:,:]
+        Em=Emdata[1,:,:]
         
         
         #forcing 
-        Um=Umdata[t-1,:,:]
-        Vm=Vmdata[t-1,:,:]
+        Um=Umdata[1,:,:]
+        Vm=Vmdata[1,:,:]
         
-        Fm=Fmdata[t-1,:,:]
-        Gm=Gmdata[t-1,:,:]
+        Fm=Fmdata[1,:,:]
+        Gm=Gmdata[1,:,:]
         
     
-        PhiFM=Phiforcingmdata[t-1,:,:]    
+        PhiFM=Phiforcingmdata[1,:,:]    
         
         newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
         
         
         #write new data
-        etamndata[t,:,:]=newetamn
-        deltamndata[t,:,:]=newdeltamn
-        Phimndata[t,:,:]=newPhimn
+        etamndata[2,:,:]=newetamn
+        deltamndata[2,:,:]=newdeltamn
+        Phimndata[2,:,:]=newPhimn
             
-        etadata[t,:,:]=np.real(neweta)
-        deltadata[t,:,:]=np.real(newdelta)
-        Phidata[t,:,:]=np.real(newPhi)
+        etadata[2,:,:]=np.real(neweta)
+        deltadata[2,:,:]=np.real(newdelta)
+        Phidata[2,:,:]=np.real(newPhi)
         
             
         if modalflag==1:
             if t>2:
     
-                Phidata[t-1,:,:]=filters.modal_splitting(Phidata[t-2:t+1,:,:],alpha)
-                etadata[t-1,:,:]=filters.modal_splitting(etadata[t-2:t+1,:,:],alpha)
-                deltadata[t-1,:,:]=filters.modal_splitting(deltadata[t-2:t+1,:,:],alpha)
+                Phidata[1,:,:]=filters.modal_splitting(Phidata,alpha)
+                etadata[1,:,:]=filters.modal_splitting(etadata,alpha)
+                deltadata[1,:,:]=filters.modal_splitting(deltadata,alpha)
         
     
         if test==1:
@@ -465,11 +502,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     
         
-        Udata[t,:,:]=np.real(newU)
-        Vdata[t,:,:]=np.real(newV)
+        Udata[2,:,:]=np.real(newU)
+        Vdata[2,:,:]=np.real(newV)
         
-        spinupdata[t-1,0] = np.min(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
-        spinupdata[t-1,1] = np.max(np.sqrt(Udata[t-1,:,:]**2 + Vdata[t-1,:,:]**2 ))
+        spinupdata[t-1,0] = np.min(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
+        spinupdata[t-1,1] = np.max(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
         
         
         if saveflag==1:
@@ -513,6 +550,8 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 cont.write_pickle('Phi-'+timestamp, np.real(newPhi))    
                 cont.write_pickle('U-'+timestamp, np.real(newU))    
                 cont.write_pickle('V-'+timestamp, np.real(newV)) 
+                
+                cont.write_pickle('spinup-winds', spinupdata) 
      
         
         if spinupdata[t-1,1]>8000:
@@ -520,18 +559,18 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             t=tmax
     
         
-        Umdata[t,:,:]=rfl.fwd_fft_trunc(newU,I,M)
-        Vmdata[t,:,:]=rfl.fwd_fft_trunc(newV,I, M)
+        Umdata[2,:,:]=rfl.fwd_fft_trunc(newU,I,M)
+        Vmdata[2,:,:]=rfl.fwd_fft_trunc(newV,I, M)
         
-        Um=Umdata[t,:,:]
-        Vm=Vmdata[t,:,:]
+        Um=Umdata[2,:,:]
+        Vm=Vmdata[2,:,:]
         
         #neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
         #print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
         
-        etamdata[t,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
-        deltamdata[t,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
-        Phimdata[t,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
+        etamdata[2,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
+        deltamdata[2,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
+        Phimdata[2,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
         
             
         ######## FORCING ############
@@ -543,14 +582,14 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             #print(np.max(Q))
             F,G=forcing.Rfun(np.real(newU), np.real(newV), -1*np.ones((J,I)), np.real(newPhi),Phibar,taudrag)
             
-            Fdata[t,:,:]=F
-            Gdata[t,:,:]=G
+            Fdata[2,:,:]=F
+            Gdata[2,:,:]=G
             
-            Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
-            Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            Fmdata[2,:,:]=rfl.fwd_fft_trunc(F, I, M)
+            Gmdata[2,:,:]=rfl.fwd_fft_trunc(G, I, M)
             
-            Phiforcingdata[t,:,:]=PhiF
-            Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+            Phiforcingdata[2,:,:]=PhiF
+            Phiforcingmdata[2,:,:]=rfl.fwd_fft_trunc(PhiF, I, M)  
             
         
         elif test==10:
@@ -561,14 +600,14 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             #print(np.max(Q))
             F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
             
-            Fdata[t,:,:]=F
-            Gdata[t,:,:]=G
+            Fdata[2,:,:]=F
+            Gdata[2,:,:]=G
             
-            Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
-            Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            Fmdata[2,:,:]=rfl.fwd_fft_trunc(F, I, M)
+            Gmdata[2,:,:]=rfl.fwd_fft_trunc(G, I, M)
             
-            Phiforcingdata[t,:,:]=PhiF
-            Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+            Phiforcingdata[2,:,:]=PhiF
+            Phiforcingmdata[2,:,:]=rfl.fwd_fft_trunc(PhiF, I, M)  
             
         elif test==11:
             Q=forcing.DoubleGrayPhiForcing(Teq,np.real(newPhi),Phibar,k2,sigmaSB,Cp,R)
@@ -577,14 +616,14 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
 
 
-            Fdata[t,:,:]=F#0
-            Gdata[t,:,:]=G#0
+            Fdata[2,:,:]=F#0
+            Gdata[2,:,:]=G#0
             
-            Fmdata[t,:,:]=rfl.fwd_fft_trunc(F, I, M)
-            Gmdata[t,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            Fmdata[2,:,:]=rfl.fwd_fft_trunc(F, I, M)
+            Gmdata[2,:,:]=rfl.fwd_fft_trunc(G, I, M)
             
-            Phiforcingdata[t,:,:]=PhiF
-            Phiforcingmdata[t,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[t,:,:], I, M)  
+            Phiforcingdata[2,:,:]=PhiF
+            Phiforcingmdata[2,:,:]=rfl.fwd_fft_trunc(PhiF, I, M)  
             
             
         
@@ -595,15 +634,13 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             
             if t%plotfreq==0:
                 
-                #testing_plots.physical_plot(newPhi,mus,lambdas)
-                
-         
+ 
                 
                 testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
-                testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
+                #testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
 
-                testing_plots.zonal_wind_plot(Udata[t,:,:],mus,t,dt,test,a1)
-                testing_plots.quiver_geopot_plot(Udata[t,:,:],Vdata[t,:,:],Phidata[t,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
+                testing_plots.zonal_wind_plot(Udata[2,:,:],mus,t,dt,test,a1)
+                testing_plots.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
                 
                 
                 #plt.plot(np.arcsin(mus)*180/np.pi,Phiic0[:,3])
@@ -623,14 +660,45 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         
         A,B,C,D,E = ic.ABCDE_init(np.real(newU),np.real(newV),np.real(neweta),np.real(newPhi),mus,I,J)
         
-        Adata[t,:,:]=A
-        Bdata[t,:,:]=B
-        Cdata[t,:,:]=C
-        Ddata[t,:,:]=D
-        Edata[t,:,:]=E
+        Adata[2,:,:]=A
+        Bdata[2,:,:]=B
+        Cdata[2,:,:]=C
+        Ddata[2,:,:]=D
+        Edata[2,:,:]=E
         
-        Amdata[t,:,:]=rfl.fwd_fft_trunc(A, I, M)
-        Bmdata[t,:,:]=rfl.fwd_fft_trunc(B, I, M)
-        Cmdata[t,:,:]=rfl.fwd_fft_trunc(C, I, M)
-        Dmdata[t,:,:]=rfl.fwd_fft_trunc(D, I, M)
-        Emdata[t,:,:]=rfl.fwd_fft_trunc(E, I, M)
+        Amdata[2,:,:]=rfl.fwd_fft_trunc(A, I, M)
+        Bmdata[2,:,:]=rfl.fwd_fft_trunc(B, I, M)
+        Cmdata[2,:,:]=rfl.fwd_fft_trunc(C, I, M)
+        Dmdata[2,:,:]=rfl.fwd_fft_trunc(D, I, M)
+        Emdata[2,:,:]=rfl.fwd_fft_trunc(E, I, M)
+        
+        #rotate all arrays 
+
+        etadata[0:2,:,:]=etadata[1:3,:,:]
+        deltadata[0:2,:,:]=deltadata[1:3,:,:]
+        Phidata[0:2,:,:]=Phidata[1:3,:,:]
+        
+        Udata[0:2,:,:]=Udata[1:3,:,:]
+        Vdata[0:2,:,:]=Vdata[1:3,:,:]
+
+        Adata[0:2,:,:]=Adata[1:3,:,:]
+        Bdata[0:2,:,:]=Bdata[1:3,:,:]
+        Cdata[0:2,:,:]=Cdata[1:3,:,:]
+        Ddata[0:2,:,:]=Ddata[1:3,:,:]
+        Edata[0:2,:,:]=Edata[1:3,:,:]      
+        
+        Amdata[0:2,:,:]=Amdata[1:3,:,:]
+        Bmdata[0:2,:,:]=Bmdata[1:3,:,:]
+        Cmdata[0:2,:,:]=Cmdata[1:3,:,:]
+        Dmdata[0:2,:,:]=Dmdata[1:3,:,:]
+        Emdata[0:2,:,:]=Emdata[1:3,:,:]   
+        
+        
+        Fdata[0:2,:,:]=Fdata[1:3,:,:]
+        Gdata[0:2,:,:]=Gdata[1:3,:,:]
+            
+        Fmdata[0:2,:,:]=Fmdata[1:3,:,:]
+        Gmdata[0:2,:,:]=Gmdata[1:3,:,:]
+            
+        Phiforcingdata[0:2,:,:]=Phiforcingdata[1:3,:,:]
+        Phiforcingmdata[0:2,:,:]= Phiforcingmdata[1:3,:,:]
