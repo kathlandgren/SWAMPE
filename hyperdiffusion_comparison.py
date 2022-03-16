@@ -30,7 +30,7 @@ a=p.a
 
 N,I,J,otherdt,K4,lambdas,mus,w=ic.spectral_params(M)
 K4=0.5*10**(16)
-K6=1.24*10**30
+K6=1.24*10**33#1.24*10**30
 
 #K6=10**34 #empirically the same as KEarth, I guess
 

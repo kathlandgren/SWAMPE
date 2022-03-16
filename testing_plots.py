@@ -269,9 +269,9 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,ma
     
 
     levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
-    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
+   # CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
     
-    colorbar = plt.colorbar(CS)
+   # colorbar = plt.colorbar(CS)
 
     #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
  
@@ -620,4 +620,23 @@ def temp_plot(T,lambdas,mus,t,dt,test,a1,minlevel,maxlevel):
         plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Double Gray')
     plt.show()
         
+    
+  
+def RMS_winds(a,I,J,lambdas,mus,U,V):
+    
+    phis=np.arcsin(mus)
+    deltalambda=lambdas[2]-lambdas[1]
+    deltaphi=phis[2]-phis[1]
+    weighted_comps=np.zeros((J,I))
+    area_planet=4*np.pi*a**2
+    for j in range(J):
+        for i in range(I):
+            area_comp=a**2*(np.sin(phis[j]+np.pi/2))**2*deltaphi*deltalambda
+            integrand=((U[j,i]/np.cos(phis[j]))**2+(V[j,i]/np.cos(phis[j]))**2)
+            #integrand=(U[j,i]**2+V[j,i]**2)
+            
+            weighted_comps[j,i]=area_comp*integrand/area_planet
+            
+    rmswinds=np.sqrt(np.sum(weighted_comps))
+    return rmswinds
     

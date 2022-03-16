@@ -15,7 +15,7 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=70000#5000#864 #number of time steps
+tmax=40000#5000#864 #number of time steps
 
 
 # dt=900 #time step length, in seconds
@@ -75,7 +75,7 @@ elif test==10: # PBS Hot Jupiter
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
     Phibar=4*(10**6) #1*(10**3) #Geopotential height 
     g=9.8 #m/s
-    DPhieq=0.5*Phibar#4*(10**6) #m^2/s^2
+    DPhieq=0.1*Phibar#4*(10**6) #m^2/s^2
     
     minlevel=np.log10(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=np.log10(5.5*10**6)#6.8
@@ -109,7 +109,7 @@ elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=1
+saveflag=0
 #Continuation save frequency: every savefreq time steps
 savefreq=36000 #in seconds
 
@@ -118,15 +118,15 @@ diffflag=1
 
 #Modal Splitting Fiter 
 modalflag=1
-alpha=0.01 #filter coefficient to prevent aliasing
+alpha=0.01 #asselin filter coefficient to prevent aliasing
 
 #Plotting flag
-plotflag=0
+plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=10
+plotfreq=100
 
 #forcing parameters
 taurad=int(3600*24*0.1) #in Earth day seconds
-taudrag=int(3600*24*10)#if set to -1, means infinity
+taudrag=int(3600*24*1000)#if set to -1, means infinity
 
 

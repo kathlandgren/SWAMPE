@@ -22,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=2
+tindex=1990
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0
@@ -32,7 +32,11 @@ delta1 = delta0
 Phi0=cont.read_pickle('Phi-'+str(tindex))
 Phi1 = Phi0
 
+U=cont.read_pickle('U-'+str(tindex))
 
+V=cont.read_pickle('V-'+str(tindex))
+
+rmswinds=cont.read_pickle('spinup-winds')
 
 etam0=rfl.fwd_fft_trunc(eta0, I, M)
 etamn0=rfl.fwd_leg(etam0,J,M,N,Pmn,w)
@@ -60,14 +64,14 @@ marray=tstep.marray(M, N)
 narray=tstep.narray(M,N)
     
 
-Ucomp,Vcomp=rfl.invrsUV(deltamn0,etamn0,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
-U=np.real(Ucomp)
-V=np.real(Vcomp)
+# Ucomp,Vcomp=rfl.invrsUV(deltamn0,etamn0,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+# U=np.real(Ucomp)
+# V=np.real(Vcomp)
 
 
-ttoprint=tindex*p.savefreq
+ttoprint=int(tindex*p.savefreq/100)
 
-dt=50
+dt=10
 
 
 
@@ -78,7 +82,7 @@ dt=50
 
 #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
 # testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
-testing_plots.zonal_wind_plot(Ucomp,mus,ttoprint,dt,p.test,p.a1)
+testing_plots.zonal_wind_plot(U,mus,ttoprint,dt,p.test,p.a1)
 #testing_plots.zonal_wind_plot(Upic,mus,ttoprint,200,p.test,p.a1)
 #testing_plots.zonal_wind_plot(V,mus,ttoprint,10,p.test,p.a1)
 # Vbar=np.mean(V,axis=1)
@@ -96,13 +100,18 @@ testing_plots.zonal_wind_plot(Ucomp,mus,ttoprint,dt,p.test,p.a1)
 
 testing_plots.physical_plot(eta0, mus, lambdas)
 testing_plots.physical_plot(delta0, mus, lambdas)
-testing_plots.quiver_geopot_plot(U,V,Phi0+p.Phibar,lambdas,mus,ttoprint,dt,5,p.test,p.a1,np.log10(4*10**6-4*10**4),np.log10(4*10**6+4*10**4))
+testing_plots.quiver_geopot_plot(U,V,Phi0+p.Phibar,lambdas,mus,ttoprint,dt,5,p.test,p.a1,p.minlevel,p.maxlevel)
 #testing_plots.quiver_temp_plot(U,V,Phi0+p.Phibar,3000,lambdas,mus,ttoprint,200,5,p.test,p.a1,1300,1350)
 
-
-
+plt.plot(np.arange(40000)*180/3600,rmswinds[:,1])
+plt.xlabel('time, hours')
+plt.ylabel('RMS winds, m/s')
+plt.title('RMS winds for HJ')
 # testing_plots.physical_plot(eta0-etapic, mus, lambdas)
 # testing_plots.physical_plot(delta0-deltapic, mus, lambdas)
 # testing_plots.physical_plot(Phi0-Phipic, mus, lambdas)
 # testing_plots.physical_plot(U-Upic, mus, lambdas)
 # testing_plots.physical_plot(V-Vpic, mus, lambdas)
+
+rms_winds=testing_plots.RMS_winds(p.a, I, J, lambdas, mus, U, V)
+print('RMS winds are '+str(rms_winds))

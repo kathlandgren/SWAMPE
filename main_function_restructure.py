@@ -117,12 +117,13 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
     
-    # sigma=filters.sigma6(M,N,K4,a, dt)
-    # sigmaPhi=filters.sigma6Phi(M, N, K4, a, dt)
+    K6=1.24*10**33 #added 3 orders of magnitude for the reduced resolution
+    sigma=filters.sigma6(M,N,K6,a, dt)
+    sigmaPhi=filters.sigma6Phi(M, N, K6, a, dt)
         
     #Earth sigma
-    sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
-    sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
+    # sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
+    # sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
     
 
         
@@ -313,7 +314,9 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     # Spin Up calculations
     spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
-    spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
+    #spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
+    
+    spinupdata[0,1]=testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[0,:,:], Vdata[0,:,:])
     
     
     #### Forcing ####
@@ -677,6 +680,10 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         etadata[0:2,:,:]=etadata[1:3,:,:]
         deltadata[0:2,:,:]=deltadata[1:3,:,:]
         Phidata[0:2,:,:]=Phidata[1:3,:,:]
+
+        etamdata[0:2,:,:]=etamdata[1:3,:,:]
+        deltamdata[0:2,:,:]=deltamdata[1:3,:,:]
+        Phimdata[0:2,:,:]=Phimdata[1:3,:,:]
         
         Udata[0:2,:,:]=Udata[1:3,:,:]
         Vdata[0:2,:,:]=Vdata[1:3,:,:]
