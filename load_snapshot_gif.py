@@ -21,8 +21,8 @@ M=p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
-tmin=1900
-tmax=2000
+tmin=0
+tmax=350
 trange=np.arange(tmin,tmax)
 spacing=10
 tspaced=trange[::spacing]
@@ -47,13 +47,13 @@ for k in range(num_snapshot):
     
 sparseness=6
 frms=5
-string='test-snap.gif'
+string='overshoot.gif'
 test=10
 a1=0
 minlevel=p.minlevel
 maxlevel=p.maxlevel    
 dt=36000
-testing_plots.write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,10,frms,string,sparseness,dt,test,a1,minlevel,maxlevel)
+testing_plots.write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,len(tspaced),frms,string,sparseness,dt,test,a1,minlevel,maxlevel)
 # tindex=1990
 # #etaic0 = cont.load_input('etadata')
 # eta0=cont.read_pickle('eta-'+str(tindex))

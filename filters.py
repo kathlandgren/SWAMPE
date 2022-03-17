@@ -18,7 +18,7 @@ def modal_splitting(Xidataslice,alpha):
     :return newxi: filtered data slice 
     :rtype: array of float64
     """
-    newxi=Xidataslice[1,:,:]+alpha*(Xidataslice[0]-2*Xidataslice[1]+Xidataslice[2])
+    newxi=Xidataslice[1,:,:]+alpha*(Xidataslice[0,:,:]-2*Xidataslice[1,:,:]+Xidataslice[2,:,:])
     return newxi
 
 def diffusion(Ximn,sigma):

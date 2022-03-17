@@ -15,7 +15,7 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=40000#5000#864 #number of time steps
+tmax=200#5000#864 #number of time steps
 
 
 # dt=900 #time step length, in seconds
@@ -118,12 +118,12 @@ diffflag=1
 
 #Modal Splitting Fiter 
 modalflag=1
-alpha=0.01 #asselin filter coefficient to prevent aliasing
+alpha=0.05#0.01 #asselin filter coefficient to prevent aliasing
 
 #Plotting flag
 plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=100
+plotfreq=10
 
 #forcing parameters
 taurad=int(3600*24*0.1) #in Earth day seconds

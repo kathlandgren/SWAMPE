@@ -209,7 +209,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     #left unchanged: long array
     spinupdata=np.zeros((tmax,2))
     
-    
+    geopotdata=np.zeros((tmax,2))
     ## time-stepping inputs
     
     #coriolis
@@ -317,6 +317,12 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     #spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
     
     spinupdata[0,1]=testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[0,:,:], Vdata[0,:,:])
+    
+    
+    #geopotential calculations
+    
+    geopotdata[0,0]=np.min(Phidata[0,:,:])
+    geopotdata[0,1]=np.max(Phidata[0,:,:])
     
     
     #### Forcing ####
@@ -493,10 +499,14 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             
         if modalflag==1:
             if t>2:
-    
+
+                temp=np.zeros((J,I))
+                temp[:,:]=Phidata[1,:,:]
                 Phidata[1,:,:]=filters.modal_splitting(Phidata,alpha)
                 etadata[1,:,:]=filters.modal_splitting(etadata,alpha)
                 deltadata[1,:,:]=filters.modal_splitting(deltadata,alpha)
+                #print(np.max(temp-Phidata[1,:,:]))
+
         
     
         if test==1:
@@ -509,8 +519,8 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Vdata[2,:,:]=np.real(newV)
         
         spinupdata[t-1,0] = np.min(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
-        spinupdata[t-1,1] = np.max(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
-        
+        #spinupdata[t-1,1] = np.max(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
+        spinupdata[t-1,1] = testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[1,:,:], Vdata[1,:,:])
         
         if saveflag==1:
    
@@ -555,6 +565,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 cont.write_pickle('V-'+timestamp, np.real(newV)) 
                 
                 cont.write_pickle('spinup-winds', spinupdata) 
+                cont.write_pickle('spinup-geopot', geopotdata) 
      
         
         if spinupdata[t-1,1]>8000:
