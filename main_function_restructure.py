@@ -522,6 +522,13 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         #spinupdata[t-1,1] = np.max(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
         spinupdata[t-1,1] = testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[1,:,:], Vdata[1,:,:])
         
+            
+        #geopotential save
+        
+        geopotdata[t-1,0]=np.min(Phidata[1,:,:])
+        geopotdata[t-1,1]=np.max(Phidata[1,:,:])
+        
+        
         if saveflag==1:
    
             if dt*t%savefreq==0:

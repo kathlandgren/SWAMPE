@@ -291,9 +291,9 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,ma
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
     
     if test<3:
-         plt.title('t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+         plt.title('t='+str(t)+' hours, test='+str(test)+', alpha='+str(a1))
     else:
-         plt.title('t='+str(round(t*dt/3600,1))+' hours, test= Hot Jupiter')
+         plt.title('t='+str(t)+' hours, test= Hot Jupiter')
     plt.show()
     # IMPORTANT ANIMATION CODE HERE
     # Used to keep the limits constant
@@ -435,11 +435,11 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
     
     if test<3:
-        plt.title('Geopotential for t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+        plt.title('Geopotential for t='+str(t)+' hours, test='+str(test)+', alpha='+str(a1))
     elif test==10:
-        plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+        plt.title('Geopotential for t='+str(t)+' hours, test= Hot Jupiter')
     elif test==11:
-        plt.title('Geopotential for t='+str(t*dt/3600)+' hours, test= Double Gray')
+        plt.title('Geopotential for t='+str(t)+' hours, test= Double Gray')
     plt.show()
     
 
@@ -521,9 +521,9 @@ def zonal_wind_plot(plotdata,mus,t,dt,test,a1):
     plt.ticklabel_format(axis='both', style='sci')
     
     if test<3:
-        plt.title('t='+str(dt*t/3600)+' hours, test='+str(test)+', alpha='+str(a1))
+        plt.title('t='+str(t)+' hours, test='+str(test)+', alpha='+str(a1))
     else:
-        plt.title('t='+str(dt*t/3600)+' hours, test= Hot Jupiter')
+        plt.title('t='+str(t)+' hours, test= Hot Jupiter')
     plt.show()
     
 def geopot_to_temp(Phi,R):
@@ -581,11 +581,11 @@ def quiver_temp_plot(U,V,Phi,R,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
     
     if test<3:
-        plt.title('Temperature for t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+        plt.title('Temperature for t='+str(t)+' hours, test='+str(test)+', alpha='+str(a1))
     elif test==10:
-        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+        plt.title('Temperature for t='+str(t)+' hours, test= Hot Jupiter')
     elif test==11:
-        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Double gray')
+        plt.title('Temperature for t='+str(t)+' hours, test= Double gray')
     plt.show()
     
     
@@ -613,11 +613,11 @@ def temp_plot(T,lambdas,mus,t,dt,test,a1,minlevel,maxlevel):
 
     
     if test<3:
-        plt.title('Temperature for t='+str(round(t*dt/3600,1))+' hours, test='+str(test)+', alpha='+str(a1))
+        plt.title('Temperature for t='+str(t)+' hours, test='+str(test)+', alpha='+str(a1))
     elif test==10:
-        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Hot Jupiter')
+        plt.title('Temperature for t='+str(t)+' hours, test= Hot Jupiter')
     elif test==11:
-        plt.title('Temperature for t='+str(t*dt/3600)+' hours, test= Double Gray')
+        plt.title('Temperature for t='+str(t)+' hours, test= Double Gray')
     plt.show()
         
     

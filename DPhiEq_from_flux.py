@@ -16,8 +16,8 @@ DPhiEq3=3700*(flux3/(4*5.7*10**(-8)))**0.25/p.Phibar
 
 
 
-g=9.8
-p=100*250*g/10 #(in Pa)
+g=21.1
+p=100*250#*g/10 #(in Pa)
 Cp=13000
 
 sigmaSB=5.7*10**(-8)
@@ -28,7 +28,7 @@ TeW=755
 
 def find_tau_rad(p,Cp,g,sigmaSB,Te):
     
-    taurad=((p*Cp)/(4*g*sigmaSB*Te**3))/(3600*24)
+    taurad=((p*Cp)/(4*g*sigmaSB*(Te**3)))/(3600*24)
     
     return taurad
 

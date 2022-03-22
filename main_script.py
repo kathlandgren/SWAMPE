@@ -11,7 +11,7 @@ import main_function_restructure as main
 
 M=p.M
 
-dt1=180
+dt1=p.dt
 # Length of the run in time steps
 tmax = p.tmax
 #surface gravity
