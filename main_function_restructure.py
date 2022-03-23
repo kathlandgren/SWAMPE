@@ -10,11 +10,9 @@ This is the main SWAMP-E function. It calls the timestepping function.
 ## Import statements
 # Import python packages
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 # Import program packages
-#import params as p
-#import reshapefuns
 import initial_conditions as ic
 import fft_legendre_trans as rfl
 import tstepping_new as tstep
@@ -24,12 +22,8 @@ import filters
 import continuation as cont
 
 
-import pickle
 
-#define precision
-#mp.dps = 50
-
-def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8)):    
+def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33):    
  
     """
     Parameters
@@ -116,8 +110,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     # dt=dt1
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
-    
-    K6=1.24*10**33 #added 3 orders of magnitude for the reduced resolution
+    #K6=1.24*10**33 #added 3 orders of magnitude for the reduced resolution
     sigma=filters.sigma6(M,N,K6,a, dt)
     sigmaPhi=filters.sigma6Phi(M, N, K6, a, dt)
         
@@ -577,7 +570,9 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         
         if spinupdata[t-1,1]>8000:
             print('Time stepping stopped due to wind blow up. Max RMS winds = '+str(spinupdata[t-1,1]))
-            t=tmax
+            break
+            
+            #t=tmax
     
         
         Umdata[2,:,:]=rfl.fwd_fft_trunc(newU,I,M)
@@ -727,3 +722,5 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             
         Phiforcingdata[0:2,:,:]=Phiforcingdata[1:3,:,:]
         Phiforcingmdata[0:2,:,:]= Phiforcingmdata[1:3,:,:]
+    print('Loop finished') 
+               

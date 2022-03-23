@@ -413,7 +413,7 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     #plt.colorbar(extend='both')
 
     levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
-    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.jet, extend='both')
+    CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet
     
     colorbar = plt.colorbar(CS)
 

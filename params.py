@@ -18,7 +18,7 @@ M=42 #the largest Fourier wave number
 tmax=80000#5000#864 #number of time steps
 
 
-dt=120 #time step length, in seconds
+dt=30 #time step length, in seconds
 
 #make these into a file that gets read later
 test=10#10
@@ -73,9 +73,9 @@ elif test==10: # PBS Hot Jupiter
     expflag=0 #1 means explicit, anything else means semi-implicit scheme
     omega=3.2*10**(-5) #3.2*10**(-6) #1.46*10**(-5) #rotation rate of the planet, radians per second
     a=8.2*(10**7)#6.37122*10**(6)  #radius of the planet, meters
-    Phibar=300*3700#4*(10**6) #1*(10**3) #Geopotential height 
+    Phibar=4*(10**6)#300*3700 #1*(10**3) #Geopotential height 
     g=9.8 #m/s
-    DPhieq=300*3700#Phibar#4*(10**6) #m^2/s^2
+    DPhieq=Phibar#4*(10**6) #m^2/s^2
     
     minlevel=np.log10(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=np.log10(5.5*10**6)#6.8
@@ -115,6 +115,7 @@ savefreq=36000 #in seconds
 
 #Hyperviscosity parameters
 diffflag=1
+K6=1.24*10**34
 
 #Modal Splitting Fiter 
 modalflag=1
@@ -126,7 +127,7 @@ plotflag=0
 plotfreq=10
 
 #forcing parameters
-taurad=int(3600*24*0.1) #in Earth day seconds
+taurad=int(3600*24*10) #in Earth day seconds
 taudrag=-1#int(3600*24*1000)#if set to -1, means infinity
 
 

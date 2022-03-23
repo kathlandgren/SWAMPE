@@ -72,7 +72,7 @@ narray=tstep.narray(M,N)
 tmax=p.tmax
 ttoprint=int(tindex*p.savefreq/100)
 
-dt=60#120
+dt=30#120
 
 
 
@@ -82,7 +82,7 @@ dt=60#120
 
 
 #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
-# testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
+#testing_plots.spinup_geopot_plot(geopot,tindex,dt,p.test,p.a1)
 testing_plots.zonal_wind_plot(U,mus,tindex,dt,p.test,p.a1)
 #testing_plots.zonal_wind_plot(Upic,mus,ttoprint,200,p.test,p.a1)
 #testing_plots.zonal_wind_plot(V,mus,ttoprint,10,p.test,p.a1)
@@ -101,10 +101,16 @@ testing_plots.zonal_wind_plot(U,mus,tindex,dt,p.test,p.a1)
 
 testing_plots.physical_plot(eta0, mus, lambdas)
 testing_plots.physical_plot(delta0, mus, lambdas)
-testing_plots.quiver_geopot_plot(U,V,Phi0+p.Phibar,lambdas,mus,tindex,dt,5,p.test,p.a1,p.minlevel-0.5,p.maxlevel-0.5)
+testing_plots.physical_plot(np.log(Phi0), mus, lambdas)
+# minlevel=np.log(1.2*10**4+p.Phibar)
+# maxlevel=np.log(3.8*10**6+p.Phibar)
+minlevel=np.log10(1.2*10**4)
+maxlevel=np.log10(3.8*10**6)
+#testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
+testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
 #testing_plots.quiver_temp_plot(U,V,Phi0+p.Phibar,3000,lambdas,mus,ttoprint,200,5,p.test,p.a1,1300,1350)
 
-plt.plot(np.arange(p.tmax)*dt/3600,rmswinds[:,1])
+plt.plot(np.arange(len(rmswinds))*dt/3600,rmswinds[:,1])
 plt.xlabel('time, hours')
 plt.ylabel('RMS winds, m/s')
 plt.title('RMS winds for HJ')
@@ -116,3 +122,6 @@ plt.title('RMS winds for HJ')
 
 rms_winds=testing_plots.RMS_winds(p.a, I, J, lambdas, mus, U, V)
 print('RMS winds are '+str(rms_winds))
+plt.show()
+plt.plot(np.arange(len(geopot))*dt/3600,geopot[:,0])
+plt.plot(np.arange(len(geopot))*dt/3600,geopot[:,1])
