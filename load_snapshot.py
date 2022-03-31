@@ -22,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=1330
+tindex=1500
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0
@@ -99,16 +99,17 @@ testing_plots.zonal_wind_plot(U,mus,tindex,dt,p.test,p.a1)
 # plt.show()
     
 
-testing_plots.physical_plot(eta0, mus, lambdas)
-testing_plots.physical_plot(delta0, mus, lambdas)
-testing_plots.physical_plot(np.log(Phi0), mus, lambdas)
-# minlevel=np.log(1.2*10**4+p.Phibar)
-# maxlevel=np.log(3.8*10**6+p.Phibar)
+#testing_plots.physical_plot(eta0, mus, lambdas)
+#testing_plots.physical_plot(delta0, mus, lambdas)
+testing_plots.physical_plot(Phi0, mus, lambdas)
+# minlevel=np.log10(1000)
+# maxlevel=np.log10(10000)
 minlevel=np.log10(1.2*10**4)
 maxlevel=np.log10(3.8*10**6)
 #testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
-testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
+testing_plots.quiver_geopot_plot(U,V,p.Phibar+Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
 #testing_plots.quiver_temp_plot(U,V,Phi0+p.Phibar,3000,lambdas,mus,ttoprint,200,5,p.test,p.a1,1300,1350)
+
 
 plt.plot(np.arange(len(rmswinds))*dt/3600,rmswinds[:,1])
 plt.xlabel('time, hours')

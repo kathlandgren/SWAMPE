@@ -15,7 +15,7 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=80000#5000#864 #number of time steps
+tmax=800#5000#864 #number of time steps
 
 
 dt=30 #time step length, in seconds
@@ -109,7 +109,7 @@ elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=1
+saveflag=0
 #Continuation save frequency: every savefreq time steps
 savefreq=36000 #in seconds
 
@@ -122,7 +122,7 @@ modalflag=1
 alpha=0.05#0.01 #asselin filter coefficient to prevent aliasing
 
 #Plotting flag
-plotflag=0
+plotflag=1
 #plotting frequency, every plotfreq frames
 plotfreq=10
 
