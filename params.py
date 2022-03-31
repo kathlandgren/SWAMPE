@@ -79,13 +79,7 @@ elif test==10: # PBS Hot Jupiter
     
     minlevel=np.log10(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
     maxlevel=np.log10(5.5*10**6)#6.8
-elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
-    DPhieq=0.01*Phibar#4*(10**6) #m^2/s^2
-    
-    #minlevel=np.log10(Phibar) #should be good #the log values for the colorbar plotting.
-    #maxlevel=np.log10(2*Phibar)
-    minlevel=np.log10(3.99*10**6)
-    maxlevel=np.log10(4.01*10**6)
+
 elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
     #Physical parameters
     forcflag=1
