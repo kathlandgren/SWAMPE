@@ -5,6 +5,8 @@ Created on Tue Mar 15 19:20:00 2022
 @author: ek672
 """
 import params as p
+import astropy.constants as const
+import numpy as np
 
 flux1=468000
 flux2=7.37*10**4
@@ -34,3 +36,36 @@ def find_tau_rad(p,Cp,g,sigmaSB,Te):
 
 tauradH=find_tau_rad(p, Cp, g, sigmaSB, TeH)
 tauradW=find_tau_rad(p, Cp, g, sigmaSB, TeW)
+
+
+def find_Phibar(molmass,T):
+    """
+    
+
+    Parameters
+    ----------
+    molmass : float
+        DESCRIPTION.
+    T : float
+        Temperature, K.
+
+    Returns
+    -------
+    Phibar : TYPE
+        DESCRIPTION.
+
+    """
+    
+    Phibar=const.k_B.value*T/molmass
+    
+    return Phibar
+
+mu_range=[2.3,2.5,3.2,4.0,5.5]
+Trange=[400,800,1200]
+
+for i in range(len(mu_range)):
+    for j in range(len(Trange)):
+        
+        Phibar=find_Phibar(mu_range[i]*(1.6735*10**(-27)), Trange[j])
+        print(int(Phibar))
+        

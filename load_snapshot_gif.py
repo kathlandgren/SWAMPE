@@ -21,8 +21,8 @@ M=p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
-tmin=0
-tmax=350
+tmin=2400
+tmax=2660
 trange=np.arange(tmin,tmax)
 spacing=10
 tspaced=trange[::spacing]
@@ -45,9 +45,9 @@ for k in range(num_snapshot):
     
     
     
-sparseness=6
+sparseness=4
 frms=5
-string='overshoot.gif'
+string='taurad10.gif'
 test=10
 a1=0
 minlevel=p.minlevel

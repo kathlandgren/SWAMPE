@@ -291,9 +291,9 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,ma
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
     
     if test<3:
-         plt.title('t='+str(t)+' hours, test='+str(test)+', alpha='+str(a1))
+         plt.title('t='+str(t*int(dt/3600))+' hours, test='+str(test)+', alpha='+str(a1))
     else:
-         plt.title('t='+str(t)+' hours, test= Hot Jupiter')
+         plt.title('t='+str(t*int(dt/3600))+' hours, test= Hot Jupiter')
     plt.show()
     # IMPORTANT ANIMATION CODE HERE
     # Used to keep the limits constant
