@@ -121,45 +121,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
 
         
     ## Initialize data arrays 
-    # etadata=np.zeros((tmax,J,I))
-    # deltadata=np.zeros((tmax,J,I))
-    # Phidata=np.zeros((tmax,J,I))
-    
-    # etamdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # deltamdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Phimdata=np.zeros((tmax,J,M+1),dtype=complex)
-    
-    # etamndata=np.zeros((tmax,M+1,N+1),dtype=complex)
-    # deltamndata=np.zeros((tmax,M+1,N+1),dtype=complex)
-    # Phimndata=np.zeros((tmax,M+1,N+1),dtype=complex)
-    
-    # Udata=np.zeros((tmax,J,I))
-    # Vdata=np.zeros((tmax,J,I))
-    
-    # Umdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Vmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    
-    # Adata=np.zeros((tmax,J,I))
-    # Bdata=np.zeros((tmax,J,I))
-    # Cdata=np.zeros((tmax,J,I))
-    # Ddata=np.zeros((tmax,J,I))
-    # Edata=np.zeros((tmax,J,I))
-    
-    # Amdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Bmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Cmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Dmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Emdata=np.zeros((tmax,J,M+1),dtype=complex)
-    
-    # Fdata=np.zeros((tmax,J,I))
-    # Gdata=np.zeros((tmax,J,I))
-    
-    # Fmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    # Gmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    
-    # Phiforcingdata=np.zeros((tmax,J,I))
-    # Phiforcingmdata=np.zeros((tmax,J,M+1),dtype=complex)
-    
+   
     etadata=np.zeros((3,J,I))
     deltadata=np.zeros((3,J,I))
     Phidata=np.zeros((3,J,I))
@@ -199,11 +161,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     Phiforcingdata=np.zeros((3,J,I))
     Phiforcingmdata=np.zeros((3,J,M+1),dtype=complex)
     
-    #left unchanged: long array
+    #long arrays
     spinupdata=np.zeros((tmax,2))
     
     geopotdata=np.zeros((tmax,2))
-    ## time-stepping inputs
+    
     
     #coriolis
 

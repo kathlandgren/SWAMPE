@@ -22,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=2660
+tindex=1980
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0
@@ -74,7 +74,8 @@ ttoprint=int(tindex*p.savefreq/100)
 
 dt=30#120
 
-
+cont.write_pickle('lambdas', lambdas)
+cont.write_pickle('mus', mus)
 
 # plt.plot(lambdas*180/np.pi,U[31,:])
 # plt.title('Equatorial winds')
