@@ -22,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=1980
+tindex=1630
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0
@@ -74,8 +74,8 @@ ttoprint=int(tindex*p.savefreq/100)
 
 dt=30#120
 
-cont.write_pickle('lambdas', lambdas)
-cont.write_pickle('mus', mus)
+# cont.write_pickle('lambdas', lambdas)
+# cont.write_pickle('mus', mus)
 
 # plt.plot(lambdas*180/np.pi,U[31,:])
 # plt.title('Equatorial winds')
@@ -93,22 +93,23 @@ testing_plots.zonal_wind_plot(U,mus,tindex,dt,p.test,p.a1)
 # plt.plot(Vbar, Y)
 
 # plt.xlabel('mean V, m/s')
-# plt.ticklabel_format(axis='both', style='sci')
-# plt.ylabel('latitude')
-# plt.ticklabel_format(axis='both', style='sci')
-# plt.title('t='+str(200*p.savefreq*tindex/3600)+' hours, test= Hot Jupiter')
+# plt.ticklabel_format(axis='both', style='s00)+' hours, test= Hot Jupiter')
 # plt.show()
     
 
 #testing_plots.physical_plot(eta0, mus, lambdas)
 #testing_plots.physical_plot(delta0, mus, lambdas)
-testing_plots.physical_plot(Phi0, mus, lambdas)
-# minlevel=np.log10(1000)
-# maxlevel=np.log10(10000)
-minlevel=np.log10(1.2*10**4)
-maxlevel=np.log10(3.8*10**6)
-#testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
-testing_plots.quiver_geopot_plot(U,V,p.Phibar+Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
+#testing_plots.physical_plot(Phi0, mus, lambdas)
+minlevel=(1)
+maxlevel=1.5*10**6
+# minlevel=np.log10(1.2*10**4)
+# maxlevel=np.log10(3.8*10**6)
+#testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevci')
+# plt.ylabel('latitude')
+# plt.ticklabel_format(axis='both', style='sci')
+# plt.title('t='+str(200*p.savefreq*tindex/36el,maxlevel)
+testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,minlevel,maxlevel)
+testing_plots.quiver_geopot_plot(U,V,Phi0,lambdas,mus,tindex,dt,4,p.test,p.a1,np.min(Phi0),np.max(Phi0))
 #testing_plots.quiver_temp_plot(U,V,Phi0+p.Phibar,3000,lambdas,mus,ttoprint,200,5,p.test,p.a1,1300,1350)
 
 

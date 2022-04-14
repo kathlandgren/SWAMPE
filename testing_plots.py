@@ -111,7 +111,7 @@ def physical_plot(plotdata,mus,lambdas):
     # Plot the surface.
     cp = plt.contourf(X, Y, plotdata,30)
     norm = mpl.colors.Normalize(vmin=0, vmax=5*10**6)
-    cb = plt.colorbar(cp,format=ticker.FuncFormatter(fmt),norm=norm)
+    cb = plt.colorbar(cp,format=ticker.FuncFormatter(fmt),norm=norm, cmap=cm.magma)
     #cb.set_clim(0, 5*10**(6))
     
     plt.show()
@@ -411,15 +411,15 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
 
     plt.contourf(X, Y, (Phi))
     #plt.colorbar(extend='both')
-    bounds=[-100000,1.2*10**4,4.4*10**5,8.6*10**5,1.3*10**6,1.7*10**6,2.1*10**6,2.6*10**6,3.0*10**6,3.4*10**6,3.8*10**6]
-    bounds=np.array(bounds)+4*10**6
-    bounds2=np.interp(np.linspace(4*10**6-100000,4*10**6+3.8*10**6,len(bounds)*20),bounds,bounds)
+    #bounds=[-100000,1.2*10**4,4.4*10**5,8.6*10**5,1.3*10**6,1.7*10**6,2.1*10**6,2.6*10**6,3.0*10**6,3.4*10**6,3.8*10**6]
+    #bounds=np.array(bounds)+4*10**6
+    #bounds2=np.interp(np.linspace(4*10**6-100000,4*10**6+3.8*10**6,len(bounds)*20),bounds,bounds)
     #bounds2=np.interp(np.linspace(1.2*10**4,3.8*10**6,100),bounds,bounds)
 
     levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
-    # CS = plt.contourf(X, Y, np.log10(Phi), levels=levels, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet
-    # CS = plt.contourf(X, Y, (Phi), levels=bounds2, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet    
-    CS = plt.contourf(X, Y, (Phi), levels=bounds2, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet    
+    CS = plt.contourf(X, Y, (Phi), levels=levels, cmap=cm.nipy_spectral, extend='both') #cm=cm.nipy_spectral
+    #CS = plt.contourf(X, Y, (Phi), levels=bounds2, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet    
+    #CS = plt.contourf(X, Y, (Phi), levels=bounds2, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet    
     colorbar = plt.colorbar(CS)
 
     #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')

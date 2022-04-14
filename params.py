@@ -15,13 +15,13 @@ M=42 #the largest Fourier wave number
 
 #time-stepping parameters
 
-tmax=800#5000#864 #number of time steps
+tmax=80#5000#864 #number of time steps
 
 
 dt=30 #time step length, in seconds
 
 #make these into a file that gets read later
-test=10#10
+test=1#10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -39,8 +39,8 @@ if test==1: # Williamson Test 1
     Phibar=1*(10**3) #Geopotential height
     g=9.8 #gravity of the planet in m/s^2
     
-    minlevel=3 #the log values for the colorbar plotting.
-    maxlevel=3.3
+    minlevel=1000 
+    maxlevel=2000
 elif test==2: # Williamson Test 2
     forcflag=0
     expflag=1 #1 means explicit, anything else means semi-implicit scheme

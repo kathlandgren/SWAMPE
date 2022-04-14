@@ -168,9 +168,9 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     
     #coriolis
-
-    fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-    fmn[0,1]=omega/np.sqrt(0.375)
+    fmn=ic.coriolismn(M, omega)
+    # fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
+    # fmn[0,1]=omega/np.sqrt(0.375)
     
     tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
     tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
@@ -180,23 +180,6 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     narray=tstep.narray(M,N)
         
     
-
-    # f=np.zeros([J,I])
-    
-    # if test==2:
-    #     for i in range(I):
-    #         for j in range(J):
-    #             f[j,i]=2*omega*(-np.cos(lambdas[i])*np.cos(np.arcsin(mus[j]))*sina+mus[j]*cosa)
-    # else:
-    #     for i in range(I):
-    #         for j in range(J):
-    #             f[j,i]=2*omega*mus[j]
-    # fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-
-
-    # fm=rfl.fwd_fft_trunc(f, I, M)
-    # fmn=rfl.fwd_leg(fm, J, M, N, Pmn, w)
-    # #fmn[0,1]=omega/np.sqrt(0.375)
 
     if contflag==0:
         SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
