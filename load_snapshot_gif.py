@@ -21,7 +21,7 @@ M=p.M
 N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
-tmin=2400
+tmin=900
 tmax=2660
 trange=np.arange(tmin,tmax)
 spacing=10
@@ -47,7 +47,7 @@ for k in range(num_snapshot):
     
 sparseness=4
 frms=5
-string='taurad10.gif'
+string='taurad10period10-v1.gif'
 test=10
 a1=0
 minlevel=p.minlevel

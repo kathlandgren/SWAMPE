@@ -22,7 +22,7 @@ N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
         
 
-tindex=1630
+tindex=2660
 #etaic0 = cont.load_input('etadata')
 eta0=cont.read_pickle('eta-'+str(tindex))
 eta1 = eta0
@@ -99,7 +99,7 @@ testing_plots.zonal_wind_plot(U,mus,tindex,dt,p.test,p.a1)
 
 #testing_plots.physical_plot(eta0, mus, lambdas)
 #testing_plots.physical_plot(delta0, mus, lambdas)
-#testing_plots.physical_plot(Phi0, mus, lambdas)
+testing_plots.physical_plot(Phi0, mus, lambdas)
 minlevel=(1)
 maxlevel=1.5*10**6
 # minlevel=np.log10(1.2*10**4)
@@ -128,3 +128,5 @@ print('RMS winds are '+str(rms_winds))
 plt.show()
 plt.plot(np.arange(len(geopot))*dt/3600,geopot[:,0])
 plt.plot(np.arange(len(geopot))*dt/3600,geopot[:,1])
+
+print(np.mean(Phi0))

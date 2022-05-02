@@ -62,8 +62,6 @@ elif test==9: # Kraucunas and Hartman 2006 basic state
     g=9.8 #m/s
     DPhieq=1500#4*(10**6) #m^2/s^2
     
-    minlevel=6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
-    maxlevel=6.8
     minlevel=np.log10(0.9*10**3)
     maxlevel=np.log10(2.5*10**3)
     

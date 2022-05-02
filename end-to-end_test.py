@@ -18,7 +18,7 @@ M=42
 
 dt=1200
 # Length of the run in time steps
-tmax = 20
+tmax = 1000#20
 
 #mean geopotential height. In hot Jupiter case, Phibar is the flat nightside thickness
 Phibar=1000
@@ -31,26 +31,29 @@ a=6.37122*10**(6)
 a1=0.0
 
 
-main.main(M,dt,tmax,Phibar, omega, a, a1=0.0, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
+# main.main(M,dt,tmax,Phibar, omega, a, a1=0.0, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
 
-#save this somehow? -- low save frequency! 
+# #save this somehow? -- low save frequency! 
 
-#load reference data?
+# #load reference data?
 
-#assert the data are close? 
+# #assert the data are close? 
 
-main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/3, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
+# main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/3, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
 
 
 
-### TEST 2 ###
-M=63
-Phibar=3000
+# ### TEST 2 ###
+# M=63
+# Phibar=3000
 
-main.main(M,dt,tmax,Phibar, omega, a, a1=0.05, test=2,plotflag=1, plotfreq=10,forcflag=0, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=1,modalflag=1)
+# main.main(M,dt,tmax,Phibar, omega, a, a1=0.05, test=2,plotflag=1, plotfreq=10,forcflag=0, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=1,modalflag=1)
 
-main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/4, test=2,plotflag=1, plotfreq=10,forcflag=0, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=1,modalflag=1)
+# main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/4, test=2,plotflag=1, plotfreq=10,forcflag=0, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=1,modalflag=1)
 
+
+### TEST TERRESTRIAL PLANET ###
+main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/4, test=9,plotflag=1, plotfreq=10,forcflag=1, DPhieq=1500, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=0,modalflag=1)
 
 ### TEST HOT JUPITER ###
 
