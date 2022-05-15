@@ -52,48 +52,6 @@ a=get_distance(31558196.02038122, const.M_sun.value)
 
 def get_luminosity(Rstar,Tstar):
     L=4*np.pi*Rstar**2*const.sigma_sb.value*Tstar**4
-#implement star masses and luminosities
-
-# ##sample algorithm
-
-# prot=50*24*3600 #10 hours
-# startype='K0'
-
-# if startype=='Sun': 
-#     Mstar=const.M_sun.value
-#     Lstar=const.L_sun.value   
-# elif startype=='K0': 
-#     Mstar=0.78*const.M_sun.value
-#     Tstar=5240
-#     Rstar=0.85*const.R_sun.value
-#     Lstar=0.40*const.L_sun.value    
-# elif startype=='K5': 
-#     Mstar=0.69*const.M_sun.value
-#     Tstar=4410
-#     Rstar=0.74*const.R_sun.value
-#     Lstar=0.16*const.L_sun.value
-# elif startype=='M0':
-#     Mstar=0.60*const.M_sun.value
-#     Tstar=3800
-#     Rstar=0.51*const.R_sun.value
-#     Lstar=0.072*const.L_sun.value
-# elif startype=='M5': 
-#     Mstar=0.15*const.M_sun.value
-#     Tstar=3120
-#     Rstar=0.18*const.R_sun.value
-#     Lstar=0.0027*const.L_sun.value
-# else:
-#     print('Unsupported star type.')
-
-# #get distance
-# a=get_distance(prot,Mstar)
-
-# #albedo 
-# Albedo=0
-# Sp=get_Sp(Lstar,a)
-# Teq=get_Teq(Albedo,Sp)
-# print('distance is '+str(a/const.au.value)+' AU')
-# print('temperature is '+str(Teq))
 
 def get_Teq_and_dist(startype,prot,albedo):
     
@@ -138,7 +96,7 @@ def get_Teq_and_dist(startype,prot,albedo):
 prot=10
 
 typelist=['K0','K5', 'M0', 'M5']
-protlist=[10*3600, 20*3600, 50*3600, 100*3600]
+protlist=[24*3600, 5*24*3600, 10*24*3600]
 Teqlist=np.zeros((len(typelist),len(protlist)))
 distlist=np.zeros((len(typelist),len(protlist)))
 
@@ -150,7 +108,7 @@ for i in range(len(typelist)):
         
 print(Teqlist[0,:])
 
-protlisth=[10, 20, 50, 100]
+protlisth=[24, 120, 240]
 
 plt.scatter(protlisth,Teqlist[0],c='purple')
 plt.scatter(protlisth,Teqlist[1],c='blue')
@@ -160,11 +118,11 @@ plt.xlabel(r'Planetary rotation/orbital period $P_{rot}}$, hours')
 plt.ylabel(r"Equilibrium temperature $T_{eq}$, K")
 plt.grid(visible=True, which='major', axis='both')
 plt.fill_between(protlisth,400, 1200, facecolor='gray', interpolate=True, alpha=0.5)
-plt.text(71, 1000, 'sampled region', style='italic',
+plt.text(150, 1000, 'sampled region', style='italic',
         bbox={'facecolor': 'white', 'alpha': 0.8, 'pad': 10})
 #ax.set_yticks([0.2, 0.6, 0.8], minor=False)
-plt.xticks([10, 20, 50, 100])
+plt.xticks([24, 120, 240])
 plt.yticks([400, 800, 1200, 1600, 2000])
 plt.legend(typelist)
-
+plt.savefig('t_eq.pdf', dpi = 300,bbox_inches='tight')
 plt.show()

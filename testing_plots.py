@@ -264,7 +264,7 @@ def quiver_for_offset_2D(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,ma
     #X, Y = np.meshgrid(X, Y)
     
     # Plot the surface.
-    plt.contourf(X, Y, Phi,30)
+    plt.contourf(X, Y, Phi,30,cmap='inferno')
     #cb = plt.colorbar(format=ticker.FuncFormatter(fmt))
     
 
