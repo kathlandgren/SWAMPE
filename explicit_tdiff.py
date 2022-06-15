@@ -15,6 +15,7 @@ import filters
 
 ## PHI tstep
 def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t):
+    
     Phicomp1=rfl.fwd_leg(Phim0, J, M, N, Pmn, w)
     
     Phicomp2prep=np.multiply(tstepcoeff1,np.multiply((1j)*mJarray,Cm))

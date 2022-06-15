@@ -7,7 +7,7 @@ Created on Thu Apr 14 15:33:22 2022
 This script runs end-to-end test
 """
  
-import main_function_restructure as main
+import main_function as main
 import numpy as np
 import continuation as cont
 
@@ -31,7 +31,7 @@ a=6.37122*10**(6)
 a1=0.0
 
 
-# main.main(M,dt,tmax,Phibar, omega, a, a1=0.0, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
+main.main(M,dt,tmax,Phibar, omega, a, a1=0.0, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
 
 # #save this somehow? -- low save frequency! 
 
@@ -39,7 +39,7 @@ a1=0.0
 
 # #assert the data are close? 
 
-# main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/3, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
+#main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/3, test=1,plotflag=1, forcflag=0, plotfreq=10, saveflag=0, minlevel=900,maxlevel=1800,diffflag=0,modalflag=0)
 
 
 
@@ -53,7 +53,7 @@ a1=0.0
 
 
 ### TEST TERRESTRIAL PLANET ###
-main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/4, test=9,plotflag=1, plotfreq=10,forcflag=1, DPhieq=1500, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=0,modalflag=1)
+#main.main(M,dt,tmax,Phibar, omega, a, a1=np.pi/4, test=9,plotflag=1, plotfreq=10,forcflag=1, DPhieq=1500, saveflag=0, minlevel=-10000,maxlevel=10**4,diffflag=0,modalflag=1)
 
 ### TEST HOT JUPITER ###
 
