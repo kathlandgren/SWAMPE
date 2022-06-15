@@ -9,7 +9,6 @@ This file contains the initial conditions for the simulation"""
 import numpy as np
 import scipy.special as sp
 
-
 def test1_init(a,omega,a1):
     """
     Initializes the parameters from Test 1 in Williamson et al. (1992),
@@ -119,11 +118,18 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 etaic0[j,i]=etaamp*(latlonarg)
 
                 Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)#/g
-    
-    elif test==10 or test==11:
+                
+    elif test==9:
         for i in range(I):
             for j in range(J):
-                etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*0+(mus[j])*1)
+                Phiic0[j,i]=0#15000*(1-(mus[j])**2) 
+                etaic0[j,i]=etaamp*mus[j]#2*3.2*10**(-5)*mus[j]
+    
+    elif test==10 or test==11:
+
+        for i in range(I):
+            for j in range(J):
+                etaic0[j,i]=etaamp*(-np.cos(lambdas[i])*np.sqrt(1-mus[j]**2)*(0)+(mus[j])*(1))
                 
     etaic1=etaic0 #need two time steps to initialize
     deltaic1=deltaic0
@@ -167,6 +173,7 @@ def spectral_params(M):
         I=128
         dt=1200
         K4=0.5*10**(16)
+        #K4=1.24*10**30
     elif M==63:
         J=96
         I=192

@@ -9,9 +9,6 @@ This module contains the functions used for the evaluation of forcing.
 
 import numpy as np 
 
-import testing_plots
-import scipy.special as sp
-
 def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     """
     Evaluates the equilibrium geopotential from Perez-Becker and Showman.
@@ -57,18 +54,23 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     for i in range(I):
         for j in range(J):
             #assume substellar point is (0,0)
+
             if  -np.pi/2<lambdas[i]<np.pi/2:
                 PhieqMat[j,i]=PhieqMat[j,i]+DPhieq*np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))     
-
+    
     return PhieqMat
 
 
+def insolation(L_star,distance,sigmaSB):
+    insolation=((L_star)/(4*np.pi*(distance**2)))/sigmaSB
+    
+    return insolation
 
 # def Qfun(heq,Phi,Phibar,taurad,g):
 #     Q=(1/taurad)*(heq-(Phi+Phibar)/g)
 #     #Q=(1/taurad)*(heq-(Phi)/g)
 #     return Q
-def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
+def DoubleGrayTEqfun(Phibar,insolation,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
     """
     Evaluates the equilibrium temperature from Langton and Laughlin (2008).
     
@@ -129,12 +131,32 @@ def DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,p,g,R,Cp,sigma):
 
     x=np.exp(-k1*p/g)
     
+    #insolation=DPhieq#(DPhieq/R)**4
+    ratio=(k1/k2)
+    
     for i in range(I):
         for j in range(J):
             #assume substellar point is (0,0)
             if  -np.pi/2<lambdas[i]<np.pi/2:
                 
-                TeqMat[j,i]=TeqMat[j,i]+(k1/k2)*(((DPhieq/R)**4)*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))))#+(Phibar/R)**4
+                
+                ## implementation of Langton formulation
+                # ss_angle_sec=(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))
+                
+                # day_forcing=ratio*(insolation*(x**ss_angle_sec))
+                
+                # TeqMat[j,i]=TeqMat[j,i]+day_forcing
+                
+                
+                ## cosine bell experiment
+                
+                ss_angle=(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))
+                
+                day_forcing=ratio*insolation*(x*ss_angle)
+                
+                TeqMat[j,i]=TeqMat[j,i]+day_forcing
+                
+                #TeqMat[j,i]=TeqMat[j,i]+(k1/k2)*(((DPhieq/R)**4)*(x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))))#+(Phibar/R)**4
                 #PhieqMat[j,i]=PhieqMat[j,i]+k1*DPhieq*(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2)))*x**(1/(np.cos(lambdas[i])*np.sqrt((1-mus[j]**2))))        
 
     return TeqMat
@@ -181,11 +203,11 @@ def DoubleGrayPhiForcing(TeqMat,Phidata,Phibar,k2,sigma,Cp,R):
     
     
     
-    I=192
-    J=96
+    # I=192
+    # J=96
     
-    lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
-    [mus,w]=sp.roots_legendre(J)
+    # lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
+    # [mus,w]=sp.roots_legendre(J)
     # testing_plots.physical_plot(TeqMat,mus,lambdas)
     # testing_plots.physical_plot(((Phidata+Phibar)/R)**4,mus,lambdas)
     # testing_plots.physical_plot(Q,mus,lambdas)
@@ -226,6 +248,12 @@ def Qfun(Phieq,Phi,Phibar,taurad):
 
     return Q
 
+def Phieq_basic_state(I,J,mus,Phibar):
+    PhieqMat=Phibar*np.ones((J,I))
+    for i in range(I):
+            for j in range(J):
+                PhieqMat[j,i]=PhieqMat[j,i]+15000*(1-(mus[j])**2)
+    return PhieqMat
 
 def Qfun_with_rampup(Phieq,Phi,Phibar,taurad,t,dt):
     
@@ -309,9 +337,15 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
                 Second component of the velocity forcing vector
 
     :rtype: array of float64
+
     """
-    Ru=np.divide(np.multiply(-U,Q),Phi+Phibar)
-    Rv=np.divide(np.multiply(-V,Q),Phi+Phibar)
+    
+    Qtest=Q.copy()
+    Qtest[Q<0]=0
+    # Ru=np.divide(np.multiply(-U,Q),Phi+Phibar)
+    # Rv=np.divide(np.multiply(-V,Q),Phi+Phibar)
+    Ru=np.divide(np.multiply(-U,Qtest),Phi+Phibar)
+    Rv=np.divide(np.multiply(-V,Qtest),Phi+Phibar)
     
     #reset to 0 if losing mass
     Ru[Q<0]=0
@@ -319,7 +353,6 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
     
      #if taudrag is infinity, only have the R component from Perez-Becker and Showman    
     if taudrag!=-1:
-        
         F=Ru-(U/taudrag)
         G=Rv-(V/taudrag)
         
