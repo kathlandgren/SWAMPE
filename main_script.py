@@ -6,7 +6,7 @@ Created on Mon Mar 29 16:07:20 2021
 """
 
 import params as p
-import main_function_restructure as main
+import main_function as main
 #import main_function as main
 
 M=p.M

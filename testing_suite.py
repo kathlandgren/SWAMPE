@@ -7,10 +7,10 @@ Created on Tue Feb 23 16:15:02 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-import fft_legendre_trans as rfl
+import spectral_transform as rfl
 import params as p
 import initial_conditions as ic
-import tstepping_new as tstep
+import time_stepping as tstep
 
 
 def init_test():

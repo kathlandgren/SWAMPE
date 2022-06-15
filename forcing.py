@@ -9,9 +9,6 @@ This module contains the functions used for the evaluation of forcing.
 
 import numpy as np 
 
-import testing_plots
-import scipy.special as sp
-
 def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     """
     Evaluates the equilibrium geopotential from Perez-Becker and Showman.
