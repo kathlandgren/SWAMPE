@@ -21,7 +21,7 @@ tmax=80#5000#864 #number of time steps
 dt=30 #time step length, in seconds
 
 #make these into a file that gets read later
-test=1#10
+test=10#10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)

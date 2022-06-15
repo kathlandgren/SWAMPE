@@ -9,7 +9,7 @@ Created on Mon Aug 17 15:18:28 2020
 import numpy as np
 import scipy.special as sp
 import math
-import testing_plots
+import plotting as testing_plots
 #import pyshtools as pysh
 
 

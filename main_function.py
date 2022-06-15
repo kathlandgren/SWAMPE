@@ -15,7 +15,7 @@ import numpy as np
 import initial_conditions as ic
 import spectral_transform as rfl
 import time_stepping as tstep
-import testing_plots
+import plotting as testing_plots
 import forcing
 import filters
 import continuation as cont
