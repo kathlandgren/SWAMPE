@@ -169,8 +169,6 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     #coriolis
     fmn=ic.coriolismn(M, omega)
-    # fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-    # fmn[0,1]=omega/np.sqrt(0.375)
     
     tstepcoeffmn=tstep.tstepcoeffmn(M,N,a)
     tstepcoeff=tstep.tstepcoeff(J,M,dt,mus,a)
