@@ -67,17 +67,6 @@ def sigma(M,N,K4,a,dt):
     :rtype: array of float64
 
     """
-    # sigma=np.zeros((M+1,N+1))
-    
-    # nvec=np.arange(N+1)
-    # coeff=np.multiply(np.multiply(nvec,nvec),np.multiply(nvec+1,nvec+1))-4
-    # const=K4*dt/a**4
-    # sigmacoeff1=2*const*coeff
-    # sigmacoeff=(1+sigmacoeff1)
-    
-
-    # sigmas=np.divide(1,sigmacoeff)
-    
     
     #order of operations following Hack and Jakob code
     sigma=np.zeros((M+1,N+1))

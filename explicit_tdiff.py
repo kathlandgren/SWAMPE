@@ -77,7 +77,6 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         deltaf4=rfl.fwd_leg(deltaf4prep, J, M, N, Hmn, w)
         
         deltaforcing=-deltaf1+deltaf2+deltaf3-deltaf4
-        #deltaforcing=deltaf3+deltaf4
         deltamntstep=deltamntstep+deltaforcing
         
     
