@@ -13,13 +13,12 @@ Welcome to SWAMP-E's documentation!
 
    forcing
 
-   fft_legendre_trans
+   spectral_transform
 
    continuation
 
    filters
 
-   tstepping_new
 
 Indices and tables
 ==================

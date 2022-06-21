@@ -1,16 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 17 15:18:28 2020
-
-@author: Alice Nadeau
-"""
-
 import numpy as np
 import scipy.special as sp
 import math
-import plotting as testing_plots
-#import pyshtools as pysh
 
 
 def PmnHmn(J,M,N,mus):
@@ -20,16 +10,18 @@ def PmnHmn(J,M,N,mus):
         
     :param J: number of latitudes
     :type J: int
-    :param M: highest wavenumber
+    :param M: highest wavenumber for associated Legendre polynomials
     :type M: int
     :param N: highest degree of the Legendre functions for m=0
     :type N: int
     :param mus: Gaussian latitudes
     :type mus: array of float64
     
-    :return: Pmn array  (assoc. legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2))
+    :return: Pmn array (associated legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2)),
+    both evaluated at the Gaussian latitudes mus
     :rtype: array of float64
     """
+    
     Pmn=np.zeros((J,M+1,N+1))
     Hmn=np.zeros((J,M+1,N+1))
     Pmntemp=np.zeros((J,M+1,N+1))
@@ -51,49 +43,9 @@ def PmnHmn(J,M,N,mus):
                 
     return Pmn, Hmn
 
-# def PmnHmnSH(J,M,N,mus):
-#     """Calculates the values of associated Legendre polynomials and their 
-#      derivatives evaluated at Gaussian latitudes (mus) up to wavenumber M 
-        
-#         :param J: number of latitudes
-#         :type J: int
-#         :param M: highest wavenumber
-#         :type M: int
-#         :param N: highest degree of the Legendre functions for m=0
-#         :type N: int
-#         :param mus: Gaussian latitudes
-#         :type mus: array of float64
-        
-#         :return: Pmn array  (assoc. legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2))
-#         :rtype: array of float64
-#         """
-#     lmax = M
-#     temp_size = int((lmax+1)*(lmax+2)/2)
-#     Pmn=np.zeros((J,M+1,N+1))
-#     Hmn=np.zeros((J,M+1,N+1))
-#     Pmntemp=np.zeros((J,temp_size))
-#     Hmntemp=np.zeros((J,temp_size))
-#     for j in range (0,J):
-
-#         Pmntemp[j,:], Hmntemp[j,:] = pysh.legendre.PlmBar_d1(lmax, mus[j])
-        
-#         Pmntemp[j,:]=0.5*Pmntemp[j,:] #rescale by 1/2 to match our factor
-#         Hmntemp[j,:] = 0.5*(1-mus[j]**2)*Hmntemp[j,:]
-        
-#     for m in range (0,M+1):
-#         for n in range (m,N+1):
-#             if m==0:
-#                 Pmn[:,m,n] = np.sqrt(2)*Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
-#                 Hmn[:,m,n] = np.sqrt(2)*Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
-#             else:
-#                 Pmn[:,m,n] = Pmntemp[:,pysh.legendre.PlmIndex (n, m)]
-#                 Hmn[:,m,n] = Hmntemp[:,pysh.legendre.PlmIndex (n, m)]
-                
-#     return Pmn, Hmn
-
 
 def fwd_leg(data,J,M,N,Pmn,w):
-    """Calculates the forward legendre transform function
+    """Calculates the forward legendre transform
 
         :param data: input to be transformed (usually output of fft)
         :type data: array of float64 or array of complex128
@@ -101,13 +53,13 @@ def fwd_leg(data,J,M,N,Pmn,w):
         :param J: number of latitudes
         :type J: int
         
-        :param M: maximal wave number
+        :param M: highest wavenumber for associated Legendre polynomials
         :type M: int
         
         :param N: highest degree of the Legendre functions for m=0
         :type N: int
         
-        :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mu
+        :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
         :type Pmn: array of float
         
         :param w: Gauss Legendre weights
@@ -124,24 +76,6 @@ def fwd_leg(data,J,M,N,Pmn,w):
     legcoeff=np.sum(legterm,0)
     return legcoeff
 
-# def fwd_leg_HJ(data,J,M,N,PHmn):
-#     legterm=np.zeros((J,M+1,N+1),dtype=complex) 
-    
-#     for m in range (0, M+1):
-#         for j in range (0,J):
-#             legterm[j,m,:]=(data[j,m])*PHmn[j,m,:] 
-#     return legterm
-    
-# def fwd_leg_int(legterm,J,M,N,w):
-#     temp=np.zeros((J,M+1,N+1),dtype=complex) 
-    
-#     for m in range (0, M+1):
-#         for j in range (0,J):
-#             temp[j,m,:]=w[j]*legterm[j,m,:]
-#     legcoeff=np.sum(temp,0)
-#     return legcoeff
-    
-
 def fwd_fft_trunc(data,I,M):
     """Calculates and truncates the fast forward Fourier transform of the input
 
@@ -150,7 +84,8 @@ def fwd_fft_trunc(data,I,M):
         
         :param I: number of longitudes
         :type I: int
-        :param M: maximal wave number
+        
+        :param M: highest wavenumber for associated Legendre polynomials
         :type M: int
 
         :return datam: Fourier coefficients 0 through M
@@ -169,17 +104,15 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     :param J: number of latitudes
     :type J: int
     
-    :param M: maximal wave number
+    :param M: highest wavenumber for associated Legendre polynomials
     :type M: int
     
-    :param Pmn: associated legendre functions and coefficients
+    :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
     :type Pmn: array of float64
     
     :return: transformed spectral coefficients
     :rtype: array of complex128
     """
-    
-    #legcoeff[legcoeff<10**(-17)]=0 #reset small coeffs to 0
     
     approxXim=np.zeros((J,I),dtype=complex)
     approxXimPos=np.zeros((J,M+1),dtype=complex) 
@@ -188,11 +121,9 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
 
         approxXimPos[:,m]=np.matmul(Pmn[:,m,m:N+1],(legcoeff[m,m:N+1]))
         
-        #if m !=M:
+    #use symmetry of the associated Legendre polynomials to compute negative coefficients
         if m !=0:
             negm=-m
-            # print(m)
-            # print(negm)
             negPmn=((-1)**m)*Pmn[:,m,m:N+1]
             negXileg=((-1)**m)*np.conj(legcoeff[m,m:N+1])
             approxXimNeg[:,negm]=np.matmul(negPmn,negXileg)
@@ -202,22 +133,24 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     return approxXim
 
 def invrs_fft(approxXim,I):
-    """Calculates the inverse Fourier transform function
+    """Calculates the inverse Fourier transform
     
     :param approxXim: Fourier coefficients
     :type approxXim: array of complex128
+    
     :param I: number of longitudes
     :type I: integer
 
     :return: long-lat coefficients
-    :rtype: array of complex
+    :rtype: array of complex128
     """
     approxXinew=np.fft.ifft(I*approxXim,I,1);
     return approxXinew
 
 def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     """
-    Computes the wind velocity from the values of vorticity and divergence
+    Computes the wind velocity from the values of vorticity and divergence. This is a diagnostic relationship.
+    For details, see Hack and Jakob (1992) equations (5.24)-(5.25).
 
     Parameters
     ----------
@@ -227,33 +160,33 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     :param etamn: Fourier coefficients of vorticity
     :type etamn: array of complex128
 
-    :param fmn: spectral coefficients of the Coriolis form
+    :param fmn: spectral coefficients of the Coriolis force
     :type etamn: array of float64
     
     :param I: number of longitudes 
     :type I: int
     
-    :param J: number of Gaussian latitudes
+    :param J: number of latitudes
     :type J: int
     
-    :param M: highest Fourier wavenumber
+    :param M:  highest wavenumber for associated Legendre polynomials
     :type M: int
     
-    :param N:  highest degree of the associated Legendre polynomials
+    :param N:  highest degree of associated Legendre polynomials
     :type N: int
     
     :param Pmn: values of the associated Legendre polynomials at Gaussian 
-    latitudes up to wavenumber M
+    latitudes mus up to wavenumber M
     :type Pmn: array of float64
     
     :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
     latitudes up to wavenumber M
     :type Hmn: array of float64
         
-    :param tstepcoeffmn: TO FILL IN
+    :param tstepcoeffmn: coefficient to scale spectral components
     :type tstepcoeffmn: array of float64
     
-    :param marray: TO FILL IN
+    :param marray: array to multiply a quantity by a factor of m ranging from 0 through M.
     :type marray: array of float64
 
     Returns
@@ -269,13 +202,9 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
 
     """
     
-    #do not sum over n=0 according to Hack and Jakob 5.24-5.25
+    #do not sum over n=0 (see Hack and Jakob 1992 equations 5.24-5.25)
     deltamn[:,0]=0
     etamn[:,0]=0
-    # marray=np.zeros((M+1,N+1)) #TODO make this an input, compute once
-    # mtemp=np.arange(M+1)
-    # for n in range(N+1):
-    #     marray[:,n]=mtemp
         
     newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
     newUm2=invrs_leg(np.multiply(etamn-fmn,tstepcoeffmn), I,J, M, N, Hmn)
@@ -283,31 +212,59 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,etamn-fmn),tstepcoeffmn), I,J, M, N, Pmn)
     newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
     
-    # newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
-    # newUm2=invrs_leg(np.multiply(etamn,tstepcoeffmn), I,J, M, N, Hmn)
-    
-    # newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,etamn),tstepcoeffmn), I,J, M, N, Pmn)
-    # newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
-    
-    # test,newUm1=invrs_leg((1j)*np.multiply(np.multiply(marray,deltamn),tstepcoeffmn), I,J, M, N, Pmn)
-    # test,newUm2=invrs_leg(np.multiply(0,tstepcoeffmn), I,J, M, N, Hmn)
 
-    # test,newVm1=invrs_leg((1j)*np.multiply(np.multiply(marray,0),tstepcoeffmn), I,J, M, N, Pmn)
-    # test,newVm2=invrs_leg(np.multiply(deltamn,tstepcoeffmn), I,J, M, N, Hmn)
-    
-    # test, etam=invrs_leg(etamn, I, J, M, N, Pmn)
-    # test, fm=invrs_leg(fmn, I, J, M, N, Pmn)
-    # eta=invrs_fft(etam,I)
-    # f=invrs_fft(fm,I)
-    # import initial_conditions as ic
-    # N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(63)
-    # testing_plots.physical_plot(eta,mus,lambdas)
-    # testing_plots.physical_plot(eta-f,mus,lambdas)
     Unew=-invrs_fft(newUm1-newUm2, I)
     Vnew=-invrs_fft(newVm1+newVm2, I)
     return Unew, Vnew
 
 def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
+    """
+    Computes vorticity and divergence from zonal and meridional wind fields. This is a diagnostic relationship.
+    For details, see Hack and Jakob (1992) equations (5.26)-(5.27).
+
+    Parameters
+    ----------
+    Um : array of float
+        Fourier coefficients of zonal winds.
+    Vm : array of float
+        Fourier coefficients of meridional winds.
+    fmn : array of float
+        Array of spectral coefficients of the Coriolis force
+    I : int
+        Number of longitudes.
+    J : int
+        Number of latitudes
+    M : int
+        highest wavenumber for associated Legendre polynomials
+    N : int
+         highest degree of associated Legendre polynomials
+    Pmn : array of float
+        values of the associated Legendre polynomials at Gaussian 
+    latitudes mus up to wavenumber M.
+    Hmn : array of float
+        values of the derivatives of the associated Legendre polynomials at Gaussian 
+    latitudes mus up to wavenumber M.
+    w : array of float
+        Gauss Legendre weights
+    tstepcoeff : array of float
+        a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
+    mJarray : RRy of float
+        Computes coefficients equal to m=0,1,...,M.
+    dt : float
+        Size of time step, in seconds.
+
+    Returns
+    -------
+    neweta : TYPE
+        DESCRIPTION.
+    newdelta : TYPE
+        DESCRIPTION.
+    etamn : TYPE
+        DESCRIPTION.
+    deltamn : TYPE
+        DESCRIPTION.
+
+    """
     coeff=tstepcoeff/(2*dt)
     etacomp1prep=np.multiply(np.multiply(coeff,(1j)*mJarray),Vm)
     etacomp2prep=np.multiply(coeff,Um)
