@@ -18,6 +18,8 @@ Welcome to SWAMP-E's documentation!
    continuation
 
    filters
+   
+   time_stepping
 
 
 Indices and tables

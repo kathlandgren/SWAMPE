@@ -1,4 +1,4 @@
 Time stepping
 ==================  
-.. automodule:: tstepping_new
+.. automodule:: time_stepping
     :members:

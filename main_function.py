@@ -13,7 +13,7 @@ import numpy as np
 
 # Import program packages
 import initial_conditions as ic
-import spectral_transform as rfl
+import spectral_transform as st
 import time_stepping as tstep
 import plotting as testing_plots
 import forcing
@@ -22,7 +22,7 @@ import continuation as cont
 
 
 
-def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33):    
+def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,expflag=0,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33):    
  
     
     """
@@ -109,7 +109,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     # dt=dt1
     # Associated Legendre Polynomials and their derivatives
-    Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    Pmn, Hmn = st.PmnHmn(J, M, N, mus)
     #K6=1.24*10**33 #added 3 orders of magnitude for the reduced resolution
     sigma=filters.sigma6(M,N,K6,a, dt)
     sigmaPhi=filters.sigma6Phi(M, N, K6, a, dt)
@@ -204,12 +204,12 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Phiic1 = Phiic0
 
         
-        etam0=rfl.fwd_fft_trunc(etaic0, I, M)
-        etamn0=rfl.fwd_leg(etam0,J,M,N,Pmn,w)
-        deltam0=rfl.fwd_fft_trunc(deltaic0, I, M)
-        deltamn0=rfl.fwd_leg(deltam0,J,M,N,Pmn,w)
+        etam0=st.fwd_fft_trunc(etaic0, I, M)
+        etamn0=st.fwd_leg(etam0,J,M,N,Pmn,w)
+        deltam0=st.fwd_fft_trunc(deltaic0, I, M)
+        deltamn0=st.fwd_leg(deltam0,J,M,N,Pmn,w)
         
-        Uiccomp,Viccomp=rfl.invrsUV(deltamn0,etamn0,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+        Uiccomp,Viccomp=st.invrsUV(deltamn0,etamn0,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
         Uic=np.real(Uiccomp)
         Vic=np.real(Viccomp)
     Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
@@ -328,68 +328,64 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     
     ## FFT    
     
-    Amdata[0,:,:]=rfl.fwd_fft_trunc(Aic, I, M)
+    Amdata[0,:,:]=st.fwd_fft_trunc(Aic, I, M)
     Amdata[1,:,:]=Amdata[0,:,:]
     
-    Bmdata[0,:,:]=rfl.fwd_fft_trunc(Bic, I, M)
+    Bmdata[0,:,:]=st.fwd_fft_trunc(Bic, I, M)
     Bmdata[1,:,:]=Bmdata[0,:,:]
     
-    Cmdata[0,:,:]=rfl.fwd_fft_trunc(Cic, I, M)
+    Cmdata[0,:,:]=st.fwd_fft_trunc(Cic, I, M)
     Cmdata[1,:,:]=Cmdata[0,:,:]
     
-    Dmdata[0,:,:]=rfl.fwd_fft_trunc(Dic, I, M)
+    Dmdata[0,:,:]=st.fwd_fft_trunc(Dic, I, M)
     Dmdata[1,:,:]=Dmdata[0,:,:]
     
-    Emdata[0,:,:]=rfl.fwd_fft_trunc(Eic, I, M)
+    Emdata[0,:,:]=st.fwd_fft_trunc(Eic, I, M)
     Emdata[1,:,:]=Emdata[0,:,:]
     
-    etamdata[0,:,:]=rfl.fwd_fft_trunc(etaic0, I, M)
+    etamdata[0,:,:]=st.fwd_fft_trunc(etaic0, I, M)
     etamdata[1,:,:]=etamdata[0,:,:]
     
-    deltamdata[0,:,:]=rfl.fwd_fft_trunc(deltaic0, I, M)
+    deltamdata[0,:,:]=st.fwd_fft_trunc(deltaic0, I, M)
     deltamdata[1,:,:]=deltamdata[0,:,:]
     
-    Phimdata[0,:,:]=rfl.fwd_fft_trunc(Phiic0, I, M)
+    Phimdata[0,:,:]=st.fwd_fft_trunc(Phiic0, I, M)
     Phimdata[1,:,:]=Phimdata[0,:,:]
     
     
     ## Forcing Fourier transform ##
     
-    Phiforcingmdata[0,:,:]=rfl.fwd_fft_trunc(Phiforcingdata[0,:,:], I, M)
+    Phiforcingmdata[0,:,:]=st.fwd_fft_trunc(Phiforcingdata[0,:,:], I, M)
     Phiforcingmdata[1,:,:]=Phiforcingmdata[0,:,:]
     
-    Fmdata[0,:,:]=rfl.fwd_fft_trunc(Fdata[0,:,:], I, M)
+    Fmdata[0,:,:]=st.fwd_fft_trunc(Fdata[0,:,:], I, M)
     Fmdata[1,:,:]=Fmdata[0,:,:]
     
-    Gmdata[0,:,:]=rfl.fwd_fft_trunc(Gdata[0,:,:], I, M)
+    Gmdata[0,:,:]=st.fwd_fft_trunc(Gdata[0,:,:], I, M)
     Gmdata[1,:,:]=Gmdata[0,:,:]
     
-    Umdata[0,:,:]=rfl.fwd_fft_trunc(Udata[0,:,:], I, M)
+    Umdata[0,:,:]=st.fwd_fft_trunc(Udata[0,:,:], I, M)
     Umdata[1,:,:]=Umdata[0,:,:]
     
-    Vmdata[0,:,:]=rfl.fwd_fft_trunc(Vdata[0,:,:], I, M)
+    Vmdata[0,:,:]=st.fwd_fft_trunc(Vdata[0,:,:], I, M)
     Vmdata[1,:,:]=Vmdata[0,:,:]
     
     
     
     ## Forward Legendre
     
-    etamndata[0,:,:]=rfl.fwd_leg(etamdata[0,:,:],J,M,N,Pmn,w)
+    etamndata[0,:,:]=st.fwd_leg(etamdata[0,:,:],J,M,N,Pmn,w)
     etamndata[1,:,:]=etamndata[0,:,:]
     
-    deltamndata[0,:,:]=rfl.fwd_leg(deltamdata[0,:,:],J,M,N,Pmn,w)
+    deltamndata[0,:,:]=st.fwd_leg(deltamdata[0,:,:],J,M,N,Pmn,w)
     deltamndata[1,:,:]=deltamndata[0,:,:]
     
-    Phimndata[0,:,:]=rfl.fwd_leg(Phimdata[0,:,:],J,M,N,Pmn,w)
+    Phimndata[0,:,:]=st.fwd_leg(Phimdata[0,:,:],J,M,N,Pmn,w)
     Phimndata[1,:,:]=Phimndata[0,:,:]
     
     ####
     # Time stepping
     ####
-    
-
-    
-    ## time -stepping
     
     for t in range(2,tmax):
         # print('t='+str(t))
@@ -418,9 +414,9 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Gm=Gmdata[1,:,:]
         
     
-        PhiFM=Phiforcingmdata[1,:,:]    
+        PhiFm=Phiforcingmdata[1,:,:]    
         
-        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
+        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=tstep.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,expflag,sigma,sigmaPhi,test,t)
         
         
         #write new data
@@ -518,18 +514,16 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             #t=tmax
     
         
-        Umdata[2,:,:]=rfl.fwd_fft_trunc(newU,I,M)
-        Vmdata[2,:,:]=rfl.fwd_fft_trunc(newV,I, M)
+        Umdata[2,:,:]=st.fwd_fft_trunc(newU,I,M)
+        Vmdata[2,:,:]=st.fwd_fft_trunc(newV,I, M)
         
         Um=Umdata[2,:,:]
         Vm=Vmdata[2,:,:]
         
-        #neweta1,newdelta1,etamn1,deltamn1=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
-        #print('Diagnostic eta - timestepping eta '+str(np.max(neweta1-neweta)))
         
-        etamdata[2,:,:]=rfl.fwd_fft_trunc(neweta,I,M)
-        deltamdata[2,:,:]=rfl.fwd_fft_trunc(newdelta,I,M)
-        Phimdata[2,:,:]=rfl.fwd_fft_trunc(newPhi,I,M)
+        etamdata[2,:,:]=st.fwd_fft_trunc(neweta,I,M)
+        deltamdata[2,:,:]=st.fwd_fft_trunc(newdelta,I,M)
+        Phimdata[2,:,:]=st.fwd_fft_trunc(newPhi,I,M)
         
             
         ######## FORCING ############
@@ -544,11 +538,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             Fdata[2,:,:]=F
             Gdata[2,:,:]=G
             
-            Fmdata[2,:,:]=rfl.fwd_fft_trunc(F, I, M)
-            Gmdata[2,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            Fmdata[2,:,:]=st.fwd_fft_trunc(F, I, M)
+            Gmdata[2,:,:]=st.fwd_fft_trunc(G, I, M)
             
             Phiforcingdata[2,:,:]=PhiF
-            Phiforcingmdata[2,:,:]=rfl.fwd_fft_trunc(PhiF, I, M)  
+            Phiforcingmdata[2,:,:]=st.fwd_fft_trunc(PhiF, I, M)  
             
         
         elif test==10:
@@ -562,11 +556,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             Fdata[2,:,:]=F
             Gdata[2,:,:]=G
             
-            Fmdata[2,:,:]=rfl.fwd_fft_trunc(F, I, M)
-            Gmdata[2,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            Fmdata[2,:,:]=st.fwd_fft_trunc(F, I, M)
+            Gmdata[2,:,:]=st.fwd_fft_trunc(G, I, M)
             
             Phiforcingdata[2,:,:]=PhiF
-            Phiforcingmdata[2,:,:]=rfl.fwd_fft_trunc(PhiF, I, M)  
+            Phiforcingmdata[2,:,:]=st.fwd_fft_trunc(PhiF, I, M)  
             
         elif test==11:
             Q=forcing.DoubleGrayPhiForcing(Teq,np.real(newPhi),Phibar,k2,sigmaSB,Cp,R)
@@ -575,14 +569,14 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
 
 
-            Fdata[2,:,:]=F#0
-            Gdata[2,:,:]=G#0
+            Fdata[2,:,:]=F
+            Gdata[2,:,:]=G
             
-            Fmdata[2,:,:]=rfl.fwd_fft_trunc(F, I, M)
-            Gmdata[2,:,:]=rfl.fwd_fft_trunc(G, I, M)
+            Fmdata[2,:,:]=st.fwd_fft_trunc(F, I, M)
+            Gmdata[2,:,:]=st.fwd_fft_trunc(G, I, M)
             
             Phiforcingdata[2,:,:]=PhiF
-            Phiforcingmdata[2,:,:]=rfl.fwd_fft_trunc(PhiF, I, M)  
+            Phiforcingmdata[2,:,:]=st.fwd_fft_trunc(PhiF, I, M)  
             
             
         
@@ -609,7 +603,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 # plt.title('Equatorial winds')
                 # plt.show()
 
-                #testing_plots.physical_plot(Q, mus, lambdas)             
+                testing_plots.physical_plot(Phidata[2,:,:], mus, lambdas)             
                # testing_plots.physical_plot(Phidata[t,:,:], mus, lambdas)
                 # plt.contourf(lambdas, mus, newzeta)
                 # plt.colorbar()
@@ -625,11 +619,11 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Ddata[2,:,:]=D
         Edata[2,:,:]=E
         
-        Amdata[2,:,:]=rfl.fwd_fft_trunc(A, I, M)
-        Bmdata[2,:,:]=rfl.fwd_fft_trunc(B, I, M)
-        Cmdata[2,:,:]=rfl.fwd_fft_trunc(C, I, M)
-        Dmdata[2,:,:]=rfl.fwd_fft_trunc(D, I, M)
-        Emdata[2,:,:]=rfl.fwd_fft_trunc(E, I, M)
+        Amdata[2,:,:]=st.fwd_fft_trunc(A, I, M)
+        Bmdata[2,:,:]=st.fwd_fft_trunc(B, I, M)
+        Cmdata[2,:,:]=st.fwd_fft_trunc(C, I, M)
+        Dmdata[2,:,:]=st.fwd_fft_trunc(D, I, M)
+        Emdata[2,:,:]=st.fwd_fft_trunc(E, I, M)
         
         #rotate all arrays 
 
@@ -665,5 +659,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
             
         Phiforcingdata[0:2,:,:]=Phiforcingdata[1:3,:,:]
         Phiforcingmdata[0:2,:,:]= Phiforcingmdata[1:3,:,:]
+        
+        print(np.max(Phidata[2,:,:]))
     print('Loop finished') 
                

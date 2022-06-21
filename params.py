@@ -21,7 +21,7 @@ tmax=80#5000#864 #number of time steps
 dt=30 #time step length, in seconds
 
 #make these into a file that gets read later
-test=1#10
+test=10
 ##specifies the testing regime: 
 # 1 -- test 1 from Williamson (advection of cosine bell)
 # 2 -- test 2 from Williamson (global steady state nonlinear zonal geostrophic flow)
@@ -75,8 +75,8 @@ elif test==10: # PBS Hot Jupiter
     g=9.8 #m/s
     DPhieq=Phibar#4*(10**6) #m^2/s^2
     
-    minlevel=np.log10(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
-    maxlevel=np.log10(5.5*10**6)#6.8
+    minlevel=(2*10**6)#6.55 #np.log10(Phibar) should be good #the log values for the colorbar plotting.
+    maxlevel=(6.8*10**6)#6.8
 
 elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
     #Physical parameters
@@ -116,7 +116,7 @@ alpha=0.05#0.01 #asselin filter coefficient to prevent aliasing
 #Plotting flag
 plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=10
+plotfreq=1
 
 #forcing parameters
 taurad=int(3600*24*10) #in Earth day seconds

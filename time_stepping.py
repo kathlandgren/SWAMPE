@@ -1,126 +1,150 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Aug  5 15:03:58 2020
-
-@author: ek672
+This module contains the function that calls an explicit or an implicit time-stepping scheme,
+as well as the functions that compute the arrays of coefficients involved in time-stepping. 
 """
 
 import numpy as np
 
-#local imports 
-import params as p
+#local import
 import spectral_transform as st
 
 
-expflag=p.expflag
-if expflag==1:
-    import explicit_tdiff as tdiff
-else:
 
-    import modEuler_tdiff as tdiff
-
-
-def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t):
+def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,expflag,sigma,sigmaPhi,test,t):
     """
     
-    :param etam0: DESCRIPTION
-    :type etam0: TYPE
-    :param etam1: DESCRIPTION
-    :type etam1: TYPE
-    :param deltam0: DESCRIPTION
-    :type deltam0: TYPE
-    :param deltam1: DESCRIPTION
-    :type deltam1: TYPE
-    :param Phim0: DESCRIPTION
-    :type Phim0: TYPE
-    :param Phim1: DESCRIPTION
-    :type Phim1: TYPE
-    :param I: DESCRIPTION
-    :type I: TYPE
-    :param J: DESCRIPTION
-    :type J: TYPE
-    :param M: DESCRIPTION
-    :type M: TYPE
-    :param N: DESCRIPTION
-    :type N: TYPE
-    :param Am: DESCRIPTION
-    :type Am: TYPE
-    :param Bm: DESCRIPTION
-    :type Bm: TYPE
-    :param Cm: DESCRIPTION
-    :type Cm: TYPE
-    :param Dm: DESCRIPTION
-    :type Dm: TYPE
-    :param Em: DESCRIPTION
-    :type Em: TYPE
-    :param Fm: DESCRIPTION
-    :type Fm: TYPE
-    :param Gm: DESCRIPTION
-    :type Gm: TYPE
-    :param Um: DESCRIPTION
-    :type Um: TYPE
-    :param Vm: DESCRIPTION
-    :type Vm: TYPE
-    :param fmn: DESCRIPTION
-    :type fmn: TYPE
-    :param Pmn: DESCRIPTION
-    :type Pmn: TYPE
-    :param Hmn: DESCRIPTION
-    :type Hmn: TYPE
-    :param w: DESCRIPTION
-    :type w: TYPE
-    :param tstepcoeff: DESCRIPTION
-    :type tstepcoeff: TYPE
-    :param tstepcoeff2: DESCRIPTION
-    :type tstepcoeff2: TYPE
-    :param tstepcoeffmn: DESCRIPTION
-    :type tstepcoeffmn: TYPE
-    :param marray: DESCRIPTION
-    :type marray: TYPE
-    :param mJarray: DESCRIPTION
-    :type mJarray: TYPE
-    :param narray: DESCRIPTION
-    :type narray: TYPE
-    :param PhiFM: DESCRIPTION
-    :type PhiFM: TYPE
-    :param dt: DESCRIPTION
-    :type dt: TYPE
-    :param a: DESCRIPTION
-    :type a: TYPE
-    :param K4: DESCRIPTION
-    :type K4: TYPE
-    :param Phibar: DESCRIPTION
-    :type Phibar: TYPE
-    :param taurad: DESCRIPTION
-    :type taurad: TYPE
-    :param taudrag: DESCRIPTION
-    :type taudrag: TYPE
-    :param forcflag: DESCRIPTION
-    :type forcflag: TYPE
-    :param diffflag: DESCRIPTION
-    :type diffflag: TYPE
-    :param sigma: DESCRIPTION
-    :type sigma: TYPE
-    :param sigmaPhi: DESCRIPTION
-    :type sigmaPhi: TYPE
-    :param test: DESCRIPTION
+    Calls the timestepping scheme.
+    
+    :param etam0: Fourier coefficents of absolute vorticity for one time step
+    :type etam0: array of float
+    :param etam1: Fourier coefficents of absolute vorticity for the following time step
+    :type etam1: array of float
+    :param deltam0: Fourier coefficents of divergence for one time step
+    :type deltam0: array of float
+    :param deltam1: Fourier coefficents of divergence for the following time step
+    :type deltam1:  array of float
+    :param Phim0: Fourier coefficents of geopotential for one time step
+    :type Phim0: array of float
+    :param Phim1: Fourier coefficents of geopotential for the following time step
+    :type Phim1: array of float
+    :param I: number of longitudes
+    :type I: int
+    :param J: number of Gaussian latitudes
+    :type J: int
+    :type M: int
+    :param N: highest degree of the Legendre functions for m=0
+    :type N: int
+    :param Am: Fourier coefficients of the nonlinear component A=U*eta
+    :type Am: array of float
+    :param Bm: Fourier coefficients of the nonlinear component B=V*eta
+    :type Bm: array of float
+    :param Cm: Fourier coefficients of the nonlinear component C=U*Phi
+    :type Cm: array of float
+    :param Dm: Fourier coefficients of the nonlinear component D=V*Phi
+    :type Dm: array of float
+    :param Em: Fourier coefficients of the nonlinear component E=(U^2+V^2)/(2(1-mu^2))
+    :type Em: array of float
+    :param Fm: Fourier coefficients of the zonal component of wind forcing
+    :type Fm: array of float
+    :param Gm:  Fourier coefficients of the meridional component of wind forcing
+    :type Gm: array of float
+    :param Um: Fourier coefficients of the zonal component of wind
+    :type Um: array of float
+    :param Vm: Fourier coefficients of the meridional component of wind
+    :type Vm: array of float
+    :param fmn: spectral coefficients of the Coriolis force
+    :type fmn: array of float
+    :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
+    :type Pmn: array of float
+    :param Hmn: derivatives of the associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
+    :type Hmn: array of float
+    :param w: Gauss Legendre weights
+    :type w: array of float
+    
+    :param tstepcoeff: coefficient for time-stepping of the form 2dt/(a(1-mus^2))
+    :type tstepcoeff: array of float
+    
+    :param tstepcoeff2: time stepping coefficient of the form 2dt/a^2
+    :type tstepcoeff2: array of float
+    
+    :param tstepcoeffmn: an array of coefficients a/(n(n+1))
+    :type tstepcoeffmn: array of float
+    
+    :param marray: coefficients equal to m=0,1,...,M in a matrix M+1xN+1
+    :type marray: array of float
+    
+    :param mJarray:  coefficients equal to m=0,1,...,M in a matrix M+1xJ
+    :type mJarray: array of float
+    
+    :param narray: array n(n+1) in a matrix M+1xN+1
+    :type narray: array of float
+    :param PhiFm: Fourier coefficients of the geopotential forcing 
+    :type PhiFM: array of float
+    :param dt: time step, in seconds
+    :type dt: float
+    :param a: planetary radius, m
+    :type a: float
+    :param K4: fourth-degree hyperdiffusion filter coefficient
+    :type K4: float
+    :param Phibar: time-invariant spatial mean geopotential, height of the top layer
+    :type Phibar: float
+    :param taurad: radiative timescale
+    :type taurad: float
+    :param taudrag: drag timescale
+    :type taudrag: float
+    :param forcflag: forcing flag
+    :type forcflag: float
+    
+    :param diffflag: hyperdiffusion filter flag
+    :type diffflag: float
+    
+    :param sigma: hyperdiffusion filter coefficients for absolute vorticity and divergence
+    :type sigma: array of float
+    :param sigmaPhi: hyperdiffusion filter coefficients for geopotential
+    :type sigmaPhi: array of float
+    :param test: number of test
     :type test: TYPE
-    :param t: DESCRIPTION
-    :type t: TYPE
+    :param t: number of current time step
+    :type t: int
     
     
-    :return: DESCRIPTION
-    :rtype: TYPE
+    :return: 
+        - newetamn 
+                Updated spectral coefficients of absolute vorticity
+        - newetatstep
+                Updated absolute vorticity
+        - newdeltamn
+                Updated spectral coefficients of divergence
+        - newdeltatstep
+                Updated divergence
+        - newPhimn
+                Updated spectral coefficients of geopotential
+        - newPhitstep
+                Updated geopotential
+        - Unew
+                Updated zonal winds
+        - Vnew 
+                Updated meridional winds
+                
+    :rtype: array of float
 
     """
     
-    newPhimn,newPhitstep2=tdiff.phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
-    newdeltamn,newdeltatstep2=tdiff.delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
-    newetamn,newetatstep2=tdiff.eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
+    #import explicit or implicit time difference scheme
+    if expflag==1:
+        import explicit_tdiff as tdiff
+    else:
+        import modEuler_tdiff as tdiff
+
+    
+    newPhimn,newPhitstep=tdiff.phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
+    newdeltamn,newdeltatstep=tdiff.delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
+    newetamn,newetatstep=tdiff.eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
     
     Unew,Vnew=st.invrsUV(newdeltamn,newetamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
     
-    return newetamn,newetatstep2,newdeltamn,newdeltatstep2,newPhimn,newPhitstep2,Unew,Vnew
+    return newetamn,newetatstep,newdeltamn,newdeltatstep,newPhimn,newPhitstep,Unew,Vnew
 
 
 def tstepcoeffmn(M,N,a):
@@ -147,6 +171,8 @@ def tstepcoeffmn(M,N,a):
         tstepcoeffmn[m,:]=tstepcoeff
         
     return tstepcoeffmn
+
+
 def tstepcoeff2(J,M,dt,a):
     """
     Computes the time stepping coefficient of the form 2dt/a^2 from Hack and 
@@ -159,13 +185,13 @@ def tstepcoeff2(J,M,dt,a):
     :type M: int
     
     :param dt: time step length, s
-    :type dt: float64
+    :type dt: float
     
     :param a: planetary radius, m
-    :type a: float64
+    :type a: float
 
     :return tstepcoeff2: time stepping coefficients of size (J,M+1)
-    :rtype: array of float64
+    :rtype: array of float
 
     """
     tstepcoeff2=np.zeros((J,M+1))
@@ -185,7 +211,7 @@ def narray(M,N):
     :type N: int
     
     :return narray: coefficients n(n+1) in a matrix of size (M+1,N+1)
-    :rtype: array of float64
+    :rtype: array of float
 
     """
     narray=np.zeros((M+1,N+1))
@@ -206,13 +232,13 @@ def tstepcoeff(J,M,dt,mus,a):
     :type M: int
     
     :param mus: array of Gaussian latitudes of length J
-    :type mus: array of float64
+    :type mus: array of float
     
     :param a: planetary radius, m
-    :type a: float64
+    :type a: float
     
     :return tstepcoeff: coefficients 2dt/(a(1-mus^2)) in a matrix of size (J,M+1)
-    :rtype: array of float64
+    :rtype: array of float
     
     """
     tstepcoeff=np.zeros((J,M+1))
@@ -231,7 +257,7 @@ def mJarray(J,M):
     :type M: int   
 
     :return mJarray: coefficient m in a matrix of size (J, M+1)
-    :rtype: array of float64
+    :rtype: array of float
     """
     
     mJarray=np.zeros((J,M+1))
@@ -245,14 +271,14 @@ def marray(M,N):
     Computes coefficients equal to m=0,1,...,M
 
    
-    :param M: spectral dimension
+    :param M: highest wavenumber of associated Legendre polynomials
     :type M: int   
 
     :param N: highest degreee of associated Legendre polynomials
     :type N: int
     
     :return marray: coefficient m in a matrix of size (M+1, N+1)
-    :rtype: array of float64
+    :rtype: array of float
    
     """
     marray=np.zeros((M+1,N+1)) #TODO make this an input, compute once

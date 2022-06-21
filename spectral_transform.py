@@ -17,8 +17,7 @@ def PmnHmn(J,M,N,mus):
     :param mus: Gaussian latitudes
     :type mus: array of float
     
-    :return: Pmn array (associated legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2)),
-    both evaluated at the Gaussian latitudes mus
+    :return: Pmn array (associated legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2)), both evaluated at the Gaussian latitudes mus
     :rtype: array of float
     """
     
