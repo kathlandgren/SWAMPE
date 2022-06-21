@@ -9,7 +9,7 @@ import numpy as np
 
 #local imports 
 import params as p
-import spectral_transform as rfl
+import spectral_transform as st
 
 
 expflag=p.expflag
@@ -19,20 +19,113 @@ else:
 
     import modEuler_tdiff as tdiff
 
-##TODO: fix inputs into invrsUV: fmn, tstepcoeffmn
+
 def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t):
+    """
+    
+    :param etam0: DESCRIPTION
+    :type etam0: TYPE
+    :param etam1: DESCRIPTION
+    :type etam1: TYPE
+    :param deltam0: DESCRIPTION
+    :type deltam0: TYPE
+    :param deltam1: DESCRIPTION
+    :type deltam1: TYPE
+    :param Phim0: DESCRIPTION
+    :type Phim0: TYPE
+    :param Phim1: DESCRIPTION
+    :type Phim1: TYPE
+    :param I: DESCRIPTION
+    :type I: TYPE
+    :param J: DESCRIPTION
+    :type J: TYPE
+    :param M: DESCRIPTION
+    :type M: TYPE
+    :param N: DESCRIPTION
+    :type N: TYPE
+    :param Am: DESCRIPTION
+    :type Am: TYPE
+    :param Bm: DESCRIPTION
+    :type Bm: TYPE
+    :param Cm: DESCRIPTION
+    :type Cm: TYPE
+    :param Dm: DESCRIPTION
+    :type Dm: TYPE
+    :param Em: DESCRIPTION
+    :type Em: TYPE
+    :param Fm: DESCRIPTION
+    :type Fm: TYPE
+    :param Gm: DESCRIPTION
+    :type Gm: TYPE
+    :param Um: DESCRIPTION
+    :type Um: TYPE
+    :param Vm: DESCRIPTION
+    :type Vm: TYPE
+    :param fmn: DESCRIPTION
+    :type fmn: TYPE
+    :param Pmn: DESCRIPTION
+    :type Pmn: TYPE
+    :param Hmn: DESCRIPTION
+    :type Hmn: TYPE
+    :param w: DESCRIPTION
+    :type w: TYPE
+    :param tstepcoeff: DESCRIPTION
+    :type tstepcoeff: TYPE
+    :param tstepcoeff2: DESCRIPTION
+    :type tstepcoeff2: TYPE
+    :param tstepcoeffmn: DESCRIPTION
+    :type tstepcoeffmn: TYPE
+    :param marray: DESCRIPTION
+    :type marray: TYPE
+    :param mJarray: DESCRIPTION
+    :type mJarray: TYPE
+    :param narray: DESCRIPTION
+    :type narray: TYPE
+    :param PhiFM: DESCRIPTION
+    :type PhiFM: TYPE
+    :param dt: DESCRIPTION
+    :type dt: TYPE
+    :param a: DESCRIPTION
+    :type a: TYPE
+    :param K4: DESCRIPTION
+    :type K4: TYPE
+    :param Phibar: DESCRIPTION
+    :type Phibar: TYPE
+    :param taurad: DESCRIPTION
+    :type taurad: TYPE
+    :param taudrag: DESCRIPTION
+    :type taudrag: TYPE
+    :param forcflag: DESCRIPTION
+    :type forcflag: TYPE
+    :param diffflag: DESCRIPTION
+    :type diffflag: TYPE
+    :param sigma: DESCRIPTION
+    :type sigma: TYPE
+    :param sigmaPhi: DESCRIPTION
+    :type sigmaPhi: TYPE
+    :param test: DESCRIPTION
+    :type test: TYPE
+    :param t: DESCRIPTION
+    :type t: TYPE
+    
+    
+    :return: DESCRIPTION
+    :rtype: TYPE
+
+    """
+    
     newPhimn,newPhitstep2=tdiff.phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
     newdeltamn,newdeltatstep2=tdiff.delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
     newetamn,newetatstep2=tdiff.eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFM,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)
     
-    Unew,Vnew=rfl.invrsUV(newdeltamn,newetamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray) # TODO: reorder inputs later alphabetically
+    Unew,Vnew=st.invrsUV(newdeltamn,newetamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
     
     return newetamn,newetatstep2,newdeltamn,newdeltatstep2,newPhimn,newPhitstep2,Unew,Vnew
 
 
 def tstepcoeffmn(M,N,a):
     """
-    Generates the coefficient that multiplies components in invrsUV
+    Generates the coefficient that multiplies spectral components in invrsUV
     :param M: highest wave number
     :type M: int
     :param N: highest degree of associated legendre polynomial for m=0

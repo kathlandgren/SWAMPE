@@ -1,10 +1,7 @@
 
 """
-Created on Wed Jun  3 18:29:42 2020
-
-@author: ek672
-
-This file contains the initial conditions for the simulation"""
+This module contains the initialization functions.
+"""
 
 import numpy as np
 import scipy.special as sp
@@ -18,15 +15,15 @@ def test1_init(a,omega,a1):
     ----------
     :param a: 
         Planetary radius, in meters.
-    :type a: float64
+    :type a: float
     
     :param omega: 
         Planetary rotation rate, in radians per second.
-    :type omega: float64
+    :type omega: float
     
     :param a1:
         Angle of advection, in radians.
-    :type a1: float64
+    :type a1: float
 
     Returns
     -------
@@ -41,7 +38,7 @@ def test1_init(a,omega,a1):
             Amplitude of absolute vorticity.
         - Phiamp 
             Amplitude of geopotential.
-    :rtype: float64
+    :rtype: float
 
     """
     #Parameters for Test 1 in Williamson et al. (1992)
@@ -67,18 +64,18 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     :type J: int
     :param mus:
         Array of Gaussian latitudes of length J.
-    :type mus: array of float64
+    :type mus: array of float
     :param lambdas: 
         Uniformly spaced longitudes of length I.
-    :type lambdas: array of float64
+    :type lambdas: array of float
     :param test:
         The number of the regime being tested.
     :type test: int
     :param etaamp:
         Amplitude of absolute vorticity.
-    :type etaamp: float64
-    *args : TYPE
-        DESCRIPTION.
+    :type etaamp: float
+    *args : Additional initialization parameters for tests from Williamson et al. (1992)
+    
 
     Returns
     -------
@@ -90,7 +87,7 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
         - Phiic0 - Initial condition for geopotential, (J,I).
         - Phiic1 - Second initial condition for geopotential, (J,I).
 
-    :rtype: tuple of arrays of float64
+    :rtype: tuple of arrays of float
     """
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
@@ -158,11 +155,11 @@ def spectral_params(M):
         length of time step.
     K4 : float64
         hyperviscosity parameter from Gelb and Gleeson.
-    lambdas : array of float64
+    lambdas : array of float
         Uniformly spaced longitudes of length I.
-    mus : array of float64
+    mus : array of float
         Array of Gaussian latitudes of length J.
-    w : array of float 64
+    w : array of float
         Gaussian weights of length J.
 
     """
@@ -197,19 +194,10 @@ def spectral_params(M):
     else:
         print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
     
-    #lmax=M
-    # I = int(2*lmax + 1)#p.I 
-    # J = int(lmax+1)#p.J
-
     
     lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
     [mus,w]=sp.roots_legendre(J)
-    
-    #mus_SH, w_SH = pysh.expand.SHGLQ(N)
-    # Sine of the latitude
-    #mus = mus_SH# p.mus #need negative to correspond to the transform
-    # Weights for integrating
-    #w = w_SH# p.w
+
         
     return N,I,J,dt,K4,lambdas,mus,w
 
@@ -226,19 +214,19 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     :type J:  int
     
     :param SU0: Amplitude parameter from Test 1 in Williamson et al. (1992)
-    :type SU0: float64
+    :type SU0: float
 
     :param cosa: cosine of the angle of advection.
-    :type cosa: float64
+    :type cosa: float
 
     :param sina: sine of the angle of advection.
-    :type sina: float64
+    :type sina: float
 
     :param mus: Array of Gaussian latitudes of length J
-    :type mus: array of float64
+    :type mus: array of float
         
     :param lambdas: Array of uniformly spaces longitudes of length I.
-    :type lambdas: array of float64
+    :type lambdas: array of float
         
     :param test: The number of the regime being tested.
     :type test: int
@@ -249,7 +237,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     :return: 
        - Uic - (J,I) array - the initial condition for the latitudinal velocity component,
        - Vic - (J,I) array - the initial condition for the meridional velocity component.
-    :rtype: array of float64
+    :rtype: array of float
     """
     Uic=np.full((J,I),0.0) #initialize
     Vic=np.full((J,I),0.0)
@@ -281,22 +269,22 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
     """Initializes the state auxiliary variables
     
     :param Uic: zonal velocity component
-    :type Uic: array of complex128
+    :type Uic: array of float or complex
     
     :param Vic: meridional velocity component
-    :type Vic: array of complex128
+    :type Vic: array of float or complex
     
     :param etaic0: initial eta
-    :type etaic0:  array of complex128
+    :type etaic0:  array of float or complex
     
     :param Phiic0: initial Phi
-    :type Phiic0:  array of complex128
+    :type Phiic0:  array of float or complex
     
     :param mustile: reshaped mu array to fit the dimensions
-    :type mustile:  array of complex128
+    :type mustile:  array of float or complex
 
     :return: J by I data arrays for eta0, eta1, delta0, delta1, and phi0, phi1
-    :rtype:  array of complex128
+    :rtype:  array of float or complex
     """
     Aic=np.multiply(Uic,etaic0) #A=U*\eta
     Bic=np.multiply(Vic,etaic0) #B=V*\eta
@@ -324,12 +312,12 @@ def coriolismn(M,omega):
     :type M: int
     
     :param omega: Planetary rotation rate, in radians per second.
-    :type omega:  float64
+    :type omega:  float
 
     Returns
     -------
     :return: fmn The Coriolis force in spectral space of dimension (M+1, M+1).
-    :rtype:  array of float64
+    :rtype:  array of float
 
     """
     
