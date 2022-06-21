@@ -15,11 +15,11 @@ def PmnHmn(J,M,N,mus):
     :param N: highest degree of the Legendre functions for m=0
     :type N: int
     :param mus: Gaussian latitudes
-    :type mus: array of float64
+    :type mus: array of float
     
     :return: Pmn array (associated legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2)),
     both evaluated at the Gaussian latitudes mus
-    :rtype: array of float64
+    :rtype: array of float
     """
     
     Pmn=np.zeros((J,M+1,N+1))
@@ -48,7 +48,7 @@ def fwd_leg(data,J,M,N,Pmn,w):
     """Calculates the forward legendre transform
 
         :param data: input to be transformed (usually output of fft)
-        :type data: array of float64 or array of complex128
+        :type data: array of float or array of complex
         
         :param J: number of latitudes
         :type J: int
@@ -63,10 +63,10 @@ def fwd_leg(data,J,M,N,Pmn,w):
         :type Pmn: array of float
         
         :param w: Gauss Legendre weights
-        :type w: array of float64
+        :type w: array of float
 
         :return legcoeff: Legendre coefficients (if data was output from FFT, then legcoeff are the spectral coefficients)
-        :rtype legcoeff: array of complex128
+        :rtype legcoeff: array of complex
         """
     legterm=np.zeros((J,M+1,N+1),dtype=complex) 
     
@@ -80,7 +80,7 @@ def fwd_fft_trunc(data,I,M):
     """Calculates and truncates the fast forward Fourier transform of the input
 
         :param data: array of dimension IxJ (usually the values of state variables at lat-long coordinates)
-        :type data: array of float64
+        :type data: array of float
         
         :param I: number of longitudes
         :type I: int
@@ -89,7 +89,7 @@ def fwd_fft_trunc(data,I,M):
         :type M: int
 
         :return datam: Fourier coefficients 0 through M
-        :rtype datam: array of complex128
+        :rtype datam: array of complex
         """
     datam=np.fft.fft(data/I,I,1)[:,0:M+1]
     
@@ -99,7 +99,7 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     """Calculates the inverse Legendre transform function
     
     :param legcoeff: Legendre coefficients
-    :type legcoeff: array of complex128
+    :type legcoeff: array of complex
     
     :param J: number of latitudes
     :type J: int
@@ -108,10 +108,10 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     :type M: int
     
     :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
-    :type Pmn: array of float64
+    :type Pmn: array of float
     
     :return: transformed spectral coefficients
-    :rtype: array of complex128
+    :rtype: array of complex
     """
     
     approxXim=np.zeros((J,I),dtype=complex)
@@ -136,13 +136,13 @@ def invrs_fft(approxXim,I):
     """Calculates the inverse Fourier transform
     
     :param approxXim: Fourier coefficients
-    :type approxXim: array of complex128
+    :type approxXim: array of complex
     
     :param I: number of longitudes
     :type I: integer
 
     :return: long-lat coefficients
-    :rtype: array of complex128
+    :rtype: array of complex
     """
     approxXinew=np.fft.ifft(I*approxXim,I,1);
     return approxXinew
@@ -155,13 +155,13 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     Parameters
     ----------
     :param deltamn: Fourier coefficients of divergence
-    :type deltamn: array of complex128
+    :type deltamn: array of complex
     
     :param etamn: Fourier coefficients of vorticity
-    :type etamn: array of complex128
+    :type etamn: array of complex
 
     :param fmn: spectral coefficients of the Coriolis force
-    :type etamn: array of float64
+    :type etamn: array of float
     
     :param I: number of longitudes 
     :type I: int
@@ -177,17 +177,17 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     
     :param Pmn: values of the associated Legendre polynomials at Gaussian 
     latitudes mus up to wavenumber M
-    :type Pmn: array of float64
+    :type Pmn: array of float
     
     :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
     latitudes up to wavenumber M
-    :type Hmn: array of float64
+    :type Hmn: array of float
         
     :param tstepcoeffmn: coefficient to scale spectral components
-    :type tstepcoeffmn: array of float64
+    :type tstepcoeffmn: array of float
     
     :param marray: array to multiply a quantity by a factor of m ranging from 0 through M.
-    :type marray: array of float64
+    :type marray: array of float
 
     Returns
     -------
@@ -198,7 +198,7 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
         - Vnew 
                 Meridional velocity component
 
-    :rtype: array of float64
+    :rtype: array of float
 
     """
     
@@ -219,52 +219,61 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
 
 def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     """
+
     Computes vorticity and divergence from zonal and meridional wind fields. This is a diagnostic relationship.
     For details, see Hack and Jakob (1992) equations (5.26)-(5.27).
 
-    Parameters
-    ----------
-    Um : array of float
-        Fourier coefficients of zonal winds.
-    Vm : array of float
-        Fourier coefficients of meridional winds.
-    fmn : array of float
-        Array of spectral coefficients of the Coriolis force
-    I : int
-        Number of longitudes.
-    J : int
-        Number of latitudes
-    M : int
-        highest wavenumber for associated Legendre polynomials
-    N : int
-         highest degree of associated Legendre polynomials
-    Pmn : array of float
-        values of the associated Legendre polynomials at Gaussian 
-    latitudes mus up to wavenumber M.
-    Hmn : array of float
-        values of the derivatives of the associated Legendre polynomials at Gaussian 
-    latitudes mus up to wavenumber M.
-    w : array of float
-        Gauss Legendre weights
-    tstepcoeff : array of float
-        a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
-    mJarray : RRy of float
-        Computes coefficients equal to m=0,1,...,M.
-    dt : float
-        Size of time step, in seconds.
-
-    Returns
-    -------
-    neweta : TYPE
-        DESCRIPTION.
-    newdelta : TYPE
-        DESCRIPTION.
-    etamn : TYPE
-        DESCRIPTION.
-    deltamn : TYPE
-        DESCRIPTION.
+   
+    
+    :param Um: Fourier coefficient of zonal winds
+    :type Um: array of float
+    :param Vm: Fourier coefficient of meridional winds
+    :type Vm: array of float
+    :param fmn: spectal coefficients of the Coriolic force
+    :type fmn: array of float
+    :param I: number of longitudes
+    :type I: int
+    :param J: number of Gaussian latitudes
+    :type J: int
+    :param M:  highest wavenumber for associated Legendre polynomials
+    :type M: int
+    
+    :param N:  highest degree of associated Legendre polynomials
+    :type N: int
+    
+     :param Pmn: values of the associated Legendre polynomials at Gaussian 
+    latitudes mus up to wavenumber M
+    :type Pmn: array of float64
+    
+    :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
+    latitudes up to wavenumber M
+    :type Hmn: array of float
+    :param w: Gauss Legendre weights
+    :type w: array of float
+    :param tstepcoeff: a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
+    from Hack and Jakob (1992)
+    :type tstepcoeff: array of float
+    :param mJarray: coefficients equal to m=0,1,...,M
+    :type mJarray: array of float
+    :param dt: time step, in seconds
+    :type dt: float
+     Returns
+        -------
+        
+         :return:
+            - neweta 
+                    Absolute vorticity
+            - newdelta 
+                    Divergence
+            - etamn 
+                    Spectral coefficients of absolute vorticity
+            - deltamn 
+                    Spectral coefficients of divergence
+    
+        :rtype: array of float
 
     """
+
     coeff=tstepcoeff/(2*dt)
     etacomp1prep=np.multiply(np.multiply(coeff,(1j)*mJarray),Vm)
     etacomp2prep=np.multiply(coeff,Um)
