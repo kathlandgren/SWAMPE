@@ -7,7 +7,7 @@ Created on Tue Feb 23 16:15:02 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-import spectral_transform as rfl
+import spectral_transform as st
 import params as p
 import initial_conditions as ic
 import time_stepping as tstep
@@ -25,7 +25,7 @@ def Pmn_Hmn_test():
     #tests Legendre polynomials against analytical definition
     M=42
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
-    Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    Pmn, Hmn = st.PmnHmn(J, M, N, mus)
     
     Pmncheck=0.25*np.sqrt(15)*(1-mus**2)
     Hmncheck=0.5*np.sqrt(6)*(1-mus**2)
@@ -38,7 +38,7 @@ def spectral_transform_test():
     M=106
     omega=3.2*10**(-5)
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
-    Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    Pmn, Hmn = st.PmnHmn(J, M, N, mus)
     f=np.zeros((J,I))
     for i in range(I):
              for j in range(J):
@@ -46,9 +46,9 @@ def spectral_transform_test():
 
     #fmn=np.zeros([M+1,N+1]) 
     fm=np.zeros((J,M+1))
-    fm=rfl.fwd_fft_trunc(f, I, M)
+    fm=st.fwd_fft_trunc(f, I, M)
 
-    fmn=rfl.fwd_leg(fm, J, M, N, Pmn, w)
+    fmn=st.fwd_leg(fm, J, M, N, Pmn, w)
     
     fmncheck=np.zeros([M+1,N+1]) 
     fmncheck[0,1]=omega/np.sqrt(0.375)
@@ -67,21 +67,21 @@ def spectral_transform_forward_inverse_test():
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
     # Associated Legendre Polynomials and their derivatives
-    Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    Pmn, Hmn = st.PmnHmn(J, M, N, mus)
 
     SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
     etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
     Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
     #Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
     
-    Uicm=rfl.fwd_fft_trunc(Uic,I,M)
+    Uicm=st.fwd_fft_trunc(Uic,I,M)
 
      
-    Uicmn=rfl.fwd_leg(Uicm,J,M,N,Pmn,w)
+    Uicmn=st.fwd_leg(Uicm,J,M,N,Pmn,w)
         
-    Uicmnew=rfl.invrs_leg(Uicmn,I,J,M,N,Pmn)
+    Uicmnew=st.invrs_leg(Uicmn,I,J,M,N,Pmn)
     
-    Uicnew=rfl.invrs_fft(Uicmnew,I)
+    Uicnew=st.invrs_fft(Uicmnew,I)
     
     assert np.allclose(Uic, Uicnew, atol=10**(-11)), "Error too high"
 
@@ -100,7 +100,7 @@ def wind_transform_test():
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
     # Associated Legendre Polynomials and their derivatives
-    Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    Pmn, Hmn = st.PmnHmn(J, M, N, mus)
     
     fmn=np.zeros([M+1,N+1]) 
     fmn[0,1]=omega/np.sqrt(0.375)
@@ -115,12 +115,12 @@ def wind_transform_test():
     etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
     U,V=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
    
-    Um=rfl.fwd_fft_trunc(U,I,M)
-    Vm=rfl.fwd_fft_trunc(V,I, M)
+    Um=st.fwd_fft_trunc(U,I,M)
+    Vm=st.fwd_fft_trunc(V,I, M)
  
-    eta,delta,etamn,deltamn=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
+    eta,delta,etamn,deltamn=st.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
         
-    Unew,Vnew=rfl.invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+    Unew,Vnew=st.invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
     
     assert np.allclose(U, Unew, atol=10**(-11)), "U error too high"
     assert np.allclose(V, Vnew, atol=10**(-11)), "V error too high"
@@ -140,7 +140,7 @@ def vorticity_divergence_transform_test():
     N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
 
     # Associated Legendre Polynomials and their derivatives
-    Pmn, Hmn = rfl.PmnHmn(J, M, N, mus)
+    Pmn, Hmn = st.PmnHmn(J, M, N, mus)
     
     fmn=np.zeros([M+1,N+1]) 
     fmn[0,1]=omega/np.sqrt(0.375)
@@ -154,18 +154,18 @@ def vorticity_divergence_transform_test():
     SU0, sina, cosa, etaamp,Phiamp=ic.test1_init(a, omega, a1)
     etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=ic.state_var_init(I,J,mus,lambdas,a,sina,cosa,etaamp,test)
     U,V=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
-    deltam=rfl.fwd_fft_trunc(deltaic0,I,M)
-    deltamn=rfl.fwd_leg(deltam,J,M,N,Pmn,w)
+    deltam=st.fwd_fft_trunc(deltaic0,I,M)
+    deltamn=st.fwd_leg(deltam,J,M,N,Pmn,w)
 
-    etam=rfl.fwd_fft_trunc(etaic0,I,M)
-    etamn=rfl.fwd_leg(etam,J,M,N,Pmn,w)
+    etam=st.fwd_fft_trunc(etaic0,I,M)
+    etamn=st.fwd_leg(etam,J,M,N,Pmn,w)
 
-    U,V=rfl.invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
+    U,V=st.invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
     
-    Um=rfl.fwd_fft_trunc(U,I,M)
-    Vm=rfl.fwd_fft_trunc(V,I, M)
+    Um=st.fwd_fft_trunc(U,I,M)
+    Vm=st.fwd_fft_trunc(V,I, M)
     
-    etanew,deltanew,etamnnew,deltamnnew=rfl.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
+    etanew,deltanew,etamnnew,deltamnnew=st.diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt)
     
     assert np.allclose(etaic0, etanew, atol=10**(-11)), "Vorticity eta error too high"
     assert np.allclose(deltaic0, deltanew, atol=10**(-11)), "Divergence delta error too high"
