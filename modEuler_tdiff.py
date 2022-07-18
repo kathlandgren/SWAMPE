@@ -145,7 +145,6 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         for i in range(I):
             for j in range(J):
                 Phis[j,:]=1500*9.8*(1-(mus[j])**2)
-       
 
         if t*dt<1*24*3600:
             factor=t*dt/(1*24*3600)
@@ -166,8 +165,6 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     
     deltacomp5=np.multiply(narray,deltacomp5)
     
-
-    
     Phicomp2prep=np.multiply(tstepcoeff1,np.multiply((1j)*mJarray,Cm))
     Phicomp2=st.fwd_leg(Phicomp2prep, J, M, N, Pmn, w)
 
@@ -175,16 +172,9 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     Phicomp3prep=np.multiply(tstepcoeff1,Dm)
     Phicomp3=st.fwd_leg(Phicomp3prep, J, M, N, Hmn, w)
 
-    # print('max deltacomp2 '+str(np.max(deltacomp2)))
-    # print('max deltacomp3 '+str(np.max(deltacomp3)))
-    # print('max deltacomp4 '+str(np.max(deltacomp4)))
-    # print('max deltacomp5 '+str(np.max(deltacomp5)))
-    
-    # print('max remaining deltacomp '+str(np.max(np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2)))
-    
     deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4+deltacomp5+np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2
 
-    # print('max deltamn tstep '+str(np.max(deltamntstep)))
+
     if forcflag==1:
         
         tstepcoeff1=tstepcoeff1/2
@@ -237,16 +227,8 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         Phicomp3prep=np.multiply(tstepcoeff1,Dm)
         Phicomp3=st.fwd_leg(Phicomp3prep, J, M, N, Hmn, w)
     
-        # print('max deltacomp2 '+str(np.max(deltacomp2)))
-        # print('max deltacomp3 '+str(np.max(deltacomp3)))
-        # print('max deltacomp4 '+str(np.max(deltacomp4)))
-        # print('max deltacomp5 '+str(np.max(deltacomp5)))
-        
-        # print('max remaining deltacomp '+str(np.max(np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2)))
-        
         deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4+deltacomp5+np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2
 
-    # print('max deltamn tstep '+str(np.max(deltamntstep)))
         Phiforcing=np.multiply(narray,st.fwd_leg((dt/2)*PhiFm, J, M, N, Pmn, w))/a**2
 
         deltamntstep=deltamntstep+Phiforcing
@@ -304,13 +286,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         Phicomp3prep=np.multiply(tstepcoeff1,Dm)
         Phicomp3=st.fwd_leg(Phicomp3prep, J, M, N, Hmn, w)
     
-        # print('max deltacomp2 '+str(np.max(deltacomp2)))
-        # print('max deltacomp3 '+str(np.max(deltacomp3)))
-        # print('max deltacomp4 '+str(np.max(deltacomp4)))
-        # print('max deltacomp5 '+str(np.max(deltacomp5)))
-        
-        # print('max remaining deltacomp '+str(np.max(np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2)))
-        
+     
         deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4+deltacomp5+np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2
    
  
@@ -353,9 +329,7 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     
     
     etamntstep=etacomp1-etacomp2+etacomp3
-    
-    
-   
+
     
     if diffflag==1:
         etamntstep=filters.diffusion(etamntstep, sigma)

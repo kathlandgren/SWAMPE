@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar  3 20:01:55 2021
 
-@author: Home
+"""
+This module contains the files needed to 
 """
 import pickle
 
