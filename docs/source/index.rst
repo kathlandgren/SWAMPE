@@ -7,6 +7,11 @@ Welcome to SWAMP-E's documentation!
 ===================================
 
 .. toctree::
+   :maxdepth: 1
+   
+   installation
+
+.. toctree::
    :maxdepth: 2
    
    initial_conditions
