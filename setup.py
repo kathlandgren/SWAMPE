@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 import os
 
 setup(
-    name = 'SWAMP-E',
-    version = '0.0.1',
+    name = 'SWAMPE',
+    version = '0.0.3',
     description = '2D Shallow-Water General Circulation Model for Exoplanet Atmospheres',
     long_description = open(os.path.join(
-                            os.path.dirname(__file__), 'README.rst')).read(),
+                            os.path.dirname(__file__), 'README.md')).read(),
     long_description_content_type = 'text/x-rst',
     author = 'Ekaterina Landgren',
     author_email = 'ek672@cornell.edu',
@@ -16,9 +16,8 @@ setup(
     python_requires = '<3.10',
     install_requires = ['numpy',
                         'scipy',
-                        'pickle',
                         'imageio',
-                        'matplotlib<=3.5.1',
+                        'matplotlib',
                         'astropy',
                         'pandas',
                         'jupyter'],

@@ -467,7 +467,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         spinupdata[t-1,1] = testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[1,:,:], Vdata[1,:,:])
         
             
-        #geopotential save
+
         
         geopotdata[t-1,0]=np.min(Phidata[1,:,:])
         geopotdata[t-1,1]=np.max(Phidata[1,:,:])
@@ -477,7 +477,6 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
    
             if dt*t%savefreq==0:                
                     
-                #timestamp=str(int(dt*t/3600))
                 timestamp=cont.compute_timestamp(timeunits,dt,t)
                 
                 cont.save_data(timestamp,np.real(neweta),np.real(newdelta), np.real(newPhi), np.real(newU), np.real(newV), spinupdata,geopotdata,custompath=custompath)
