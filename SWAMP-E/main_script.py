@@ -59,13 +59,7 @@ plotflag=p.plotflag
 plotfreq=p.plotfreq
 
 K6=p.K6
-#make these optional arguments
-#k1=p.k1
-# k2=p.k2
-#pressure=p.pressure
-#R=p.R
-#Cp=p.Cp
-#sigmaSB=p.sigmaSB
+
 
 k1= 0.0002#0.0002
 k2vec=[0.0004]#[0.182606]
@@ -77,7 +71,7 @@ k2vec=[0.0004]#[0.182606]
     #print(k2)
     #main.main(M,dt1,tmax,g,taurad,taudrag,Phibar,DPhieq,omega,a,a1,test,minlevel, maxlevel, forcflag,diffflag,modalflag,alpha,plotflag, plotfreq,contflag,saveflag,savefreq,k1,k2,pressure,Cp,R,sigmaSB)
     #main.main(M,dt1,tmax,Phibar, omega, a, test=p.test, DPhieq=DPhieq, plotflag=plotflag, plotfreq=plotfreq, minlevel=6.4, maxlevel=6.8, saveflag=1, savefreq=150, k1=k1, k2=k2,taudrag=p.taudrag, taurad=p.taurad,R=p.R, diffflag=p.diffflag)
-main.main(M,dt1,tmax,Phibar, omega, a, test=p.test, DPhieq=p.DPhieq, plotflag=p.plotflag, forcflag=p.forcflag, plotfreq=p.plotfreq, minlevel=p.minlevel, maxlevel=p.maxlevel, saveflag=p.saveflag, savefreq=p.savefreq, taudrag=p.taudrag, taurad=p.taurad, diffflag=p.diffflag,g=p.g,alpha=p.alpha,K6=K6,expflag=p.expflag,custompath="C:/Users/ek672/Documents/testdata/")
+main.main(M,dt1,tmax,Phibar, omega, a, test=p.test, DPhieq=p.DPhieq, plotflag=p.plotflag, forcflag=p.forcflag, plotfreq=p.plotfreq, minlevel=p.minlevel, maxlevel=p.maxlevel, saveflag=p.saveflag, savefreq=p.savefreq, taudrag=p.taudrag, taurad=p.taurad, diffflag=p.diffflag,g=p.g,alpha=p.alpha,K6=K6,expflag=p.expflag,custompath="C:/Users/ek672/Documents/testdata/",contflag=0,contTime=0,timeunits='minutes')
 #check if k1, k2 are overwritten when params are called in main_function
 
 

@@ -22,7 +22,7 @@ import continuation as cont
 
 
 
-def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,expflag=0,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33,custompath=None):    
+def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,expflag=0,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours'):    
  
     
     """
@@ -192,16 +192,27 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Uic,Vic=ic.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
     
     elif contflag==1:
+        
+        if custompath==None:
 
-        #etaic0 = cont.load_input('etadata')
-        etaic0=cont.read_pickle('eta-2')
-        etaic1 = etaic0
-        #deltaic0 = cont.load_input('deltadata')
-        deltaic0=cont.read_pickle('delta-2')
-        deltaic1 = deltaic0
-        #Phiic0 = cont.load_input('Phidata')
-        Phiic0=cont.read_pickle('Phi-2')
-        Phiic1 = Phiic0
+            etaic0=cont.read_pickle('eta-'+str(contTime))
+            etaic1 = etaic0
+
+            deltaic0=cont.read_pickle('delta-'+str(contTime))
+            deltaic1 = deltaic0
+
+            Phiic0=cont.read_pickle('Phi-'+str(contTime))
+            Phiic1 = Phiic0
+        else:
+            etaic0=cont.read_pickle('eta-'+str(contTime),custompath=custompath)
+            etaic1 = etaic0
+
+            deltaic0=cont.read_pickle('delta-'+str(contTime),custompath=custompath)
+            deltaic1 = deltaic0
+
+            Phiic0=cont.read_pickle('Phi-'+str(contTime),custompath=custompath)
+            Phiic1 = Phiic0
+            
 
         
         etam0=st.fwd_fft_trunc(etaic0, I, M)
@@ -212,6 +223,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Uiccomp,Viccomp=st.invrsUV(deltamn0,etamn0,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray)
         Uic=np.real(Uiccomp)
         Vic=np.real(Viccomp)
+        
     Aic,Bic,Cic,Dic,Eic=ic.ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J)
     
     
@@ -465,9 +477,10 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
    
             if dt*t%savefreq==0:                
                     
-                timestamp=str(int(dt*t/3600))
+                #timestamp=str(int(dt*t/3600))
+                timestamp=cont.compute_timestamp(timeunits,dt,t)
                 
-                cont.save_data(timestamp, np.real(newPhi), np.real(newU),np.real(newV), spinupdata,geopotdata,custompath=custompath)
+                cont.save_data(timestamp,np.real(neweta),np.real(newdelta), np.real(newPhi), np.real(newU), np.real(newV), spinupdata,geopotdata,custompath=custompath)
 
         
         if spinupdata[t-1,1]>8000:
