@@ -22,7 +22,7 @@ import continuation as cont
 
 
 
-def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,expflag=0,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33):    
+def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,expflag=0,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33,custompath=None):    
  
     
     """
@@ -463,49 +463,12 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         
         if saveflag==1:
    
-            if dt*t%savefreq==0:
-                
-                # if test==11:
-                #     if t>0:
-                #         # cont.save_output(etadata[t,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
-                #         # cont.save_output(deltadata[t,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
-                #         # cont.save_output(Phidata[t,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
-                #         cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-k1-'+str(k1)+'-k2-'+str(k2))
-                #         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-k1-'+str(k1)+'-k2-'+str(k2))
-                #         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-k1-'+str(k1)+'-k2-'+str(k2))
-                # elif test==10:
-                #         cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt)+'-hd6')
-                #         cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt)+'-hd6')
-                #         cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-taudrag-'+str(taudrag)+'-taurad-'+str(taurad)+'-dt-'+str(dt)+'-hd6')
-                        
-                #         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-omega-'+str(omega))
-                #         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-omega-'+str(omega))
-                #         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(omega))
-                        
-                #         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
-                #         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
-                #         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-Phibar-'+str(Phibar)+'-DPhieq-'+str(DPhieq))
-                        
-                #         # cont.flatten_and_save(etadata[::savefreq,:,:],'etadata-'+str(int(3600/t*dt)))
-                #         # cont.flatten_and_save(deltadata[::savefreq,:,:],'deltadata-'+str(int(3600/t*dt)))
-                #         # cont.flatten_and_save(Phidata[::savefreq,:,:],'Phidata-omega-'+str(int(3600/t*dt)))
-                    
-                # else:
-                # # Right now the continuation just overwrites the previous saved file.  If we need a time series we'll have to do something different
-                #     cont.save_output(etadata[t,:,:],'etadata')
-                #     cont.save_output(deltadata[t,:,:],'deltadata')
-                #     cont.save_output(Phidata[t,:,:],'Phidata')
+            if dt*t%savefreq==0:                
                     
                 timestamp=str(int(dt*t/3600))
-                cont.write_pickle('eta-'+timestamp, neweta)
-                cont.write_pickle('delta-'+timestamp, newdelta)     
-                cont.write_pickle('Phi-'+timestamp, np.real(newPhi))    
-                cont.write_pickle('U-'+timestamp, np.real(newU))    
-                cont.write_pickle('V-'+timestamp, np.real(newV)) 
                 
-                cont.write_pickle('spinup-winds', spinupdata) 
-                cont.write_pickle('spinup-geopot', geopotdata) 
-     
+                cont.save_data(timestamp, np.real(newPhi), np.real(newU),np.real(newV), spinupdata,geopotdata,custompath=custompath)
+
         
         if spinupdata[t-1,1]>8000:
             print('Time stepping stopped due to wind blow up. Max RMS winds = '+str(spinupdata[t-1,1]))

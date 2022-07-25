@@ -101,9 +101,9 @@ elif test==11: #Langton hot Jupiter -- for Double Gray Forcing
 #Continuation flag to load
 contflag=0 
 #continuation flag to save
-saveflag=0
+saveflag=1
 #Continuation save frequency: every savefreq time steps
-savefreq=36000 #in seconds
+savefreq=60# 36000 #in seconds
 
 #Hyperviscosity parameters
 diffflag=1
@@ -116,7 +116,7 @@ alpha=0.05#0.01 #asselin filter coefficient to prevent aliasing
 #Plotting flag
 plotflag=1
 #plotting frequency, every plotfreq frames
-plotfreq=1
+plotfreq=10
 
 #forcing parameters
 taurad=int(3600*24*10) #in Earth day seconds
