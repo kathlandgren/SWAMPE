@@ -7,10 +7,10 @@ Created on Tue Feb 23 16:15:02 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-import spectral_transform as st
-import params as p
-import initial_conditions as ic
-import time_stepping as tstep
+from . import spectral_transform as st
+from . import params as p
+from . import initial_conditions as ic
+from . import time_stepping as tstep
 
 
 def init_test():

@@ -3,7 +3,7 @@ import os
 
 setup(
     name = 'SWAMPE',
-    version = '0.0.3',
+    version = '0.0.13',
     description = '2D Shallow-Water General Circulation Model for Exoplanet Atmospheres',
     long_description = open(os.path.join(
                             os.path.dirname(__file__), 'README.md')).read(),
@@ -11,7 +11,7 @@ setup(
     author = 'Ekaterina Landgren',
     author_email = 'ek672@cornell.edu',
     license = 'MIT License',
-    packages = ['SWAMP-E'],
+    packages = ['SWAMPE'],
     include_package_data = True,
     python_requires = '<3.10',
     install_requires = ['numpy',

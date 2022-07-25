@@ -7,7 +7,8 @@ as well as the functions that compute the arrays of coefficients involved in tim
 import numpy as np
 
 #local import
-import spectral_transform as st
+from . import spectral_transform as st
+
 
 
 
@@ -131,11 +132,11 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
 
     """
     
-    #import explicit or implicit time difference scheme
+    import explicit or implicit time difference scheme
     if expflag==1:
-        import explicit_tdiff as tdiff
+        from . import explicit_tdiff as tdiff
     else:
-        import modEuler_tdiff as tdiff
+        from . import modEuler_tdiff as tdiff
 
     
     newPhimn,newPhitstep=tdiff.phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t)

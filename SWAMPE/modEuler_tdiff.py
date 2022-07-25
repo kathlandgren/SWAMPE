@@ -9,8 +9,8 @@ Created on Wed Mar 17 10:48:34 2021
 import numpy as np
 import scipy.special as sp
 #local imports
-import spectral_transform as st
-import filters
+from . import spectral_transform as st
+from . import filters
 
 
 ## PHI tstep

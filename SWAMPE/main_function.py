@@ -12,13 +12,13 @@ This is the main SWAMP-E function. It calls the timestepping function.
 import numpy as np
 
 # Import program packages
-import initial_conditions as ic
-import spectral_transform as st
-import time_stepping as tstep
-import plotting as testing_plots
-import forcing
-import filters
-import continuation as cont
+from . import initial_conditions as ic
+from . import spectral_transform as st
+from . import time_stepping as tstep
+from . import plotting as testing_plots
+from . import forcing
+from . import filters
+from . import continuation as cont
 
 
 

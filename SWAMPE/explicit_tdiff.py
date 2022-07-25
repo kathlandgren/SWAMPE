@@ -8,8 +8,8 @@ Created on Wed Aug  5 14:35:48 2020
 import numpy as np
 
 #local imports
-import spectral_transform as st
-import filters
+from . import spectral_transform as st
+from . import filters
 
 
 
