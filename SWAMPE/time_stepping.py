@@ -132,7 +132,7 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
 
     """
     
-    import explicit or implicit time difference scheme
+    #import explicit or implicit time difference scheme
     if expflag==1:
         from . import explicit_tdiff as tdiff
     else:

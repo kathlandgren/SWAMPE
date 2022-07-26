@@ -73,6 +73,7 @@ def compute_timestamp(units,t,dt):
 
 def save_data(timestamp,etadata, deltadata, Phidata, U,V, spinupdata,geopotdata,  custompath=None):
     """
+    Saves the data for plotting and continuation purposes.
     
     :param timestamp: timestamp to be used for naming saved files
     :type timestamp: string
@@ -95,8 +96,6 @@ def save_data(timestamp,etadata, deltadata, Phidata, U,V, spinupdata,geopotdata,
 
 
     """
-    
-
     
     if custompath==None:
         path = 'data/'
@@ -123,3 +122,32 @@ def save_data(timestamp,etadata, deltadata, Phidata, U,V, spinupdata,geopotdata,
         
         write_pickle('spinup-winds', spinupdata, custompath=custompath) 
         write_pickle('spinup-geopot', geopotdata, custompath=custompath) 
+        
+def load_data(timestamp,custompath=None):
+    """
+    
+    :param timestamp: timestamp used for naming saved files
+    :type timestamp: string
+    :param custompath: path to the custom directory, defaults to None. If None, files will be saved in the parent_directory/data/
+    :type custompath: string
+    
+    :return: arrays of eta, delta, Phi, U, V
+    :rtype: arrays of float JxI
+
+    """
+    
+    if custompath==None:
+        eta=read_pickle('eta-'+str(timestamp))
+        delta=read_pickle('delta-'+str(timestamp))
+        Phi=read_pickle('Phi-'+str(timestamp))
+        U=read_pickle('U-'+str(timestamp))
+        V=read_pickle('V-'+str(timestamp))
+    else:
+        eta=read_pickle('eta-'+str(timestamp),custompath=custompath)
+        delta=read_pickle('delta-'+str(timestamp),custompath=custompath)
+        Phi=read_pickle('Phi-'+str(timestamp),custompath=custompath)
+        U=read_pickle('U-'+str(timestamp),custompath=custompath)
+        V=read_pickle('V-'+str(timestamp),custompath=custompath)
+        
+    return eta, delta, Phi, U, V 
+    

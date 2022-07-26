@@ -405,38 +405,23 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,t,dt,sparseness,test,a1,minlevel,maxl
     
     X = lambdas*180/np.pi
     Y = np.arcsin(mus)*180/np.pi
-    #X, Y = np.meshgrid(X, Y)
     
-    # Plot the surface.
+    # Plot the geopotential surface.
 
     plt.contourf(X, Y, (Phi))
-    #plt.colorbar(extend='both')
-    #bounds=[-100000,1.2*10**4,4.4*10**5,8.6*10**5,1.3*10**6,1.7*10**6,2.1*10**6,2.6*10**6,3.0*10**6,3.4*10**6,3.8*10**6]
-    #bounds=np.array(bounds)+4*10**6
-    #bounds2=np.interp(np.linspace(4*10**6-100000,4*10**6+3.8*10**6,len(bounds)*20),bounds,bounds)
-    #bounds2=np.interp(np.linspace(1.2*10**4,3.8*10**6,100),bounds,bounds)
 
     levels =np.linspace(minlevel, maxlevel) #set the colorbar limits
-    CS = plt.contourf(X, Y, (Phi), levels=levels, cmap=cm.nipy_spectral, extend='both') #cm=cm.nipy_spectral
-    #CS = plt.contourf(X, Y, (Phi), levels=bounds2, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet    
-    #CS = plt.contourf(X, Y, (Phi), levels=bounds2, cmap=cm.nipy_spectral, extend='both') #cm=cm.jet    
+    CS = plt.contourf(X, Y, (Phi), levels=levels, cmap=cm.nipy_spectral, extend='both') 
     colorbar = plt.colorbar(CS)
 
-    #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
- 
-
-    #plt.colorbar(extend='both')
-    #plt.clim(0, 10**4)
-    
+    # set sparce grid to display wind vector field    
     Xsparse=X[0::sparseness]
     Ysparse=Y[0::sparseness]
-    #norm=np.sqrt(np.multiply(U,U)+np.multiply(V,V))
+
     Usparse=U[0::sparseness,0::sparseness]
     Vsparse=V[0::sparseness,0::sparseness]
-    # plt.quiver(x, y[skip], u[skip], v[skip], color='black', headwidth=1, scale = 10, headlength=4)
     
-    # ax.quiver(X,Y,U,V)
-    # Xsparse, Ysparse = np.meshgrid(Xsparse, Ysparse)
+
     plt.quiver(Xsparse,Ysparse,Usparse,Vsparse)
     
     if test<3:
@@ -613,8 +598,6 @@ def temp_plot(T,lambdas,mus,t,dt,test,a1,minlevel,maxlevel):
     colorbar = plt.colorbar(CS)
 
     #cb = plt.colorbar(format=ticker.FuncFormatter(fmt),extend='both')
- 
-
 
     
     if test<3:
