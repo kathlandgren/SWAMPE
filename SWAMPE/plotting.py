@@ -3,10 +3,10 @@
 Created on Mon Jun 22 13:57:02 2020
 
 @author: ek672
-This script contains the plotting functions
+This module contains the plotting functions
 """
 import numpy as np
-# from mpl_toolkits.mplot3d import Axes3D
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import cm
