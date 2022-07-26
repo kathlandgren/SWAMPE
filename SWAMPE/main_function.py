@@ -15,7 +15,7 @@ import numpy as np
 from . import initial_conditions as ic
 from . import spectral_transform as st
 from . import time_stepping as tstep
-from . import plotting as testing_plots
+from . import plotting
 from . import forcing
 from . import filters
 from . import continuation as cont
@@ -264,7 +264,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
     spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
     #spinupdata[0,1] = np.max(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))
     
-    spinupdata[0,1]=testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[0,:,:], Vdata[0,:,:])
+    spinupdata[0,1]=tstep.RMS_winds(a, I, J, lambdas, mus, Udata[0,:,:], Vdata[0,:,:])
     
     
     #geopotential calculations
@@ -449,7 +449,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
                 Phidata[1,:,:]=filters.modal_splitting(Phidata,alpha)
                 etadata[1,:,:]=filters.modal_splitting(etadata,alpha)
                 deltadata[1,:,:]=filters.modal_splitting(deltadata,alpha)
-                #print(np.max(temp-Phidata[1,:,:]))
+
 
         
     
@@ -463,8 +463,7 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         Vdata[2,:,:]=np.real(newV)
         
         spinupdata[t-1,0] = np.min(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
-        #spinupdata[t-1,1] = np.max(np.sqrt(Udata[1,:,:]**2 + Vdata[1,:,:]**2 ))
-        spinupdata[t-1,1] = testing_plots.RMS_winds(a, I, J, lambdas, mus, Udata[1,:,:], Vdata[1,:,:])
+        spinupdata[t-1,1] = tstep.RMS_winds(a, I, J, lambdas, mus, Udata[1,:,:], Vdata[1,:,:])
         
             
 
@@ -561,29 +560,15 @@ def main(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taud
         if plotflag==1:
             
             if t%plotfreq==0:
-                
- 
-                
-                testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
-                #testing_plots.spinup_geopot_plot(Phidata,tmax,dt,test,a1)
 
-                testing_plots.zonal_wind_plot(Udata[2,:,:],mus,t,dt,test,a1)
-                testing_plots.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)
-                
-                
-                #plt.plot(np.arcsin(mus)*180/np.pi,Phiic0[:,3])
-                
-               # plt.show()
-                # plt.plot(lambdas*180/np.pi,Udata[t,31,:])
-                # plt.title('Equatorial winds')
-                # plt.show()
+                plotting.spinup_plot(spinupdata, dt)
+                timestamp=cont.compute_timestamp(timeunits,dt,t)
+                plotting.mean_zonal_wind_plot(Udata[2,:,:], mus, timestamp)
+                plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp)
+                #testing_plots.spinup_plot(spinupdata,tmax,dt,test,a1)
+                # testing_plots.zonal_wind_plot(Udata[2,:,:],mus,t,dt,test,a1)
+                # testing_plots.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar,lambdas,mus,t,dt,5,test,a1,minlevel,maxlevel)         
 
-                testing_plots.physical_plot(Phidata[2,:,:], mus, lambdas)             
-               # testing_plots.physical_plot(Phidata[t,:,:], mus, lambdas)
-                # plt.contourf(lambdas, mus, newzeta)
-                # plt.colorbar()
-                # plt.title('zeta IC')
-                # plt.show()
         
         
         A,B,C,D,E = ic.ABCDE_init(np.real(newU),np.real(newV),np.real(neweta),np.real(newPhi),mus,I,J)

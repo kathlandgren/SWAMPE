@@ -287,3 +287,44 @@ def marray(M,N):
     for n in range(N+1):
         marray[:,n]=mtemp
     return marray
+
+def RMS_winds(a,I,J,lambdas,mus,U,V):
+    """
+    Computes RMS winds based on the zonal and meridional wind fields.
+    :param a: planteray radius, m
+    :type a: float
+    :param I: number of longitudes
+    :type I: int
+     :param J: number of Gaussian latitudes
+    :type J: int
+    :param mus: Array of Gaussian latitudes of length J
+    :type mus: array of float
+        
+    :param lambdas: Array of uniformly spaces longitudes of length I.
+    :type lambdas: array of float
+        
+    :param U: zonal wind field, JxI
+    :type U: array of float
+    :param V: meridional wind field, JxI
+    :type V: array of float
+    :return: RMS winds value
+    :rtype: float
+
+    """
+    
+    phis=np.arcsin(mus)
+    deltalambda=lambdas[2]-lambdas[1]
+    deltaphi=phis[2]-phis[1]
+    weighted_comps=np.zeros((J,I))
+    area_planet=4*np.pi*a**2
+    for j in range(J):
+        for i in range(I):
+            area_comp=a**2*(np.sin(phis[j]+np.pi/2))**2*deltaphi*deltalambda
+            integrand=((U[j,i]/np.cos(phis[j]))**2+(V[j,i]/np.cos(phis[j]))**2)
+            
+            
+            weighted_comps[j,i]=area_comp*integrand/area_planet
+            
+    rmswinds=np.sqrt(np.sum(weighted_comps))
+    return rmswinds
+    
