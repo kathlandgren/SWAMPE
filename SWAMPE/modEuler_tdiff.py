@@ -46,7 +46,7 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     
     Phimntstep=Phicomp1-Phicomp2+Phicomp3-Phicomp4-Phibar*(0.5)*(deltacomp2+deltacomp3+deltacomp5+(1/a**2)*np.multiply(narray,Phicomp1))
 
-    if forcflag==1:
+    if forcflag==True:
         tstepcoeff1=tstepcoeff1/2
         tstepcoeff2=tstepcoeff2/2
     
@@ -113,7 +113,7 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
 
 
     
-    if diffflag==1:
+    if diffflag==True:
         Phimntstep=filters.diffusion(Phimntstep, sigmaPhi) 
         
         
@@ -139,23 +139,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
 
     deltacomp3=st.fwd_leg(deltacomp3prep, J, M, N, Hmn, w)
     
-    if test==9:
-        Phis=np.zeros((J,I))
-        [mus,w]=sp.roots_legendre(J)
-        for i in range(I):
-            for j in range(J):
-                Phis[j,:]=1500*9.8*(1-(mus[j])**2)
-
-        if t*dt<1*24*3600:
-            factor=t*dt/(1*24*3600)
-        else:
-            factor=1    
-        Phis=factor*Phis
-            
-        Phism=st.fwd_fft_trunc(Phis, I, M) 
-        deltacomp4prep=np.multiply(tstepcoeff2,Phim1+Phism)
-    else:
-        deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
+    deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
     deltacomp4=st.fwd_leg(deltacomp4prep, J, M, N, Pmn, w)
     
     deltacomp4=np.multiply(narray,deltacomp4)
@@ -175,7 +159,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4+deltacomp5+np.multiply(narray,(Phicomp2+Phicomp3)/2)/a**2-Phibar*np.multiply(narray,deltacomp1)/a**2
 
 
-    if forcflag==1:
+    if forcflag==True:
         
         tstepcoeff1=tstepcoeff1/2
         tstepcoeff2=tstepcoeff2/2
@@ -191,24 +175,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     
         deltacomp3=st.fwd_leg(deltacomp3prep, J, M, N, Hmn, w)
         
-        if test==9:
-            Phis=np.zeros((J,I))
-            [mus,w]=sp.roots_legendre(J)
-            for i in range(I):
-                for j in range(J):
-                    Phis[j,:]=1500*9.8*(1-(mus[j])**2)
-           
-    
-            if t*dt<1*24*3600:
-                factor=t*dt/(1*24*3600)
-            else:
-                factor=1    
-            Phis=factor*Phis
-                
-            Phism=st.fwd_fft_trunc(Phis, I, M) 
-            deltacomp4prep=np.multiply(tstepcoeff2,Phim1+Phism)
-        else:
-            deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
+        deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
         deltacomp4=st.fwd_leg(deltacomp4prep, J, M, N, Pmn, w)
         
         deltacomp4=np.multiply(narray,deltacomp4)
@@ -250,24 +217,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     
         deltacomp3=st.fwd_leg(deltacomp3prep, J, M, N, Hmn, w)
         
-        if test==9:
-            Phis=np.zeros((J,I))
-            [mus,w]=sp.roots_legendre(J)
-            for i in range(I):
-                for j in range(J):
-                    Phis[j,:]=1500*9.8*(1-(mus[j])**2)
-           
-    
-            if t*dt<1*24*3600:
-                factor=t*dt/(1*24*3600)
-            else:
-                factor=1    
-            Phis=factor*Phis
-                
-            Phism=st.fwd_fft_trunc(Phis, I, M) 
-            deltacomp4prep=np.multiply(tstepcoeff2,Phim1+Phism)
-        else:
-            deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
+        deltacomp4prep=np.multiply(tstepcoeff2,Phim1)
         deltacomp4=st.fwd_leg(deltacomp4prep, J, M, N, Pmn, w)
         
         deltacomp4=np.multiply(narray,deltacomp4)
@@ -294,7 +244,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         
 
     
-    if diffflag==1:
+    if diffflag==True:
         deltamntstep=filters.diffusion(deltamntstep, sigma)
 
     newdeltamtstep=st.invrs_leg(deltamntstep, I,J, M, N, Pmn)
@@ -305,7 +255,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
 def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t):
  
     
-    if forcflag==1:
+    if forcflag==True:
         etacomp1=st.fwd_leg(etam1, J, M, N, Pmn, w)
     
         etacomp2prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Am-Gm)
@@ -331,7 +281,7 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     etamntstep=etacomp1-etacomp2+etacomp3
 
     
-    if diffflag==1:
+    if diffflag==True:
         etamntstep=filters.diffusion(etamntstep, sigma)
     
     newetamtstep=st.invrs_leg(etamntstep, I,J, M, N, Pmn)

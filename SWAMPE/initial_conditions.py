@@ -94,7 +94,7 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     deltaic0=np.zeros((J,I))
     
 
-    if test<=2:
+    if test!=None:
         a,sina,cosa,Phibar,Phiamp=args
     if test==1:
         bumpr=a/3 #radius of the bump
@@ -115,14 +115,8 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
                 etaic0[j,i]=etaamp*(latlonarg)
 
                 Phiic0[j,i]=((Phibar-Phiamp)*(latlonarg)**2)#/g
-                
-    elif test==9:
-        for i in range(I):
-            for j in range(J):
-                Phiic0[j,i]=0#15000*(1-(mus[j])**2) 
-                etaic0[j,i]=etaamp*mus[j]#2*3.2*10**(-5)*mus[j]
     
-    elif test==10 or test==11:
+    elif test==None:
 
         for i in range(I):
             for j in range(J):
@@ -258,7 +252,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
                 Vic[j,i] = -SU0*(np.sin(lambdas[i])*sina)
                
 
-    elif test==10:
+    elif test==None:
         for i in range(I):
             for j in range(J):
                 Uic[j,i]=0#SU0*(np.cos(np.arcsin(mus[j]))*1 +mus[j]*np.cos(lambdas[i])*0)#assign according to init.f

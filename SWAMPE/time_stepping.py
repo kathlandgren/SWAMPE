@@ -104,8 +104,8 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
     :type sigma: array of float
     :param sigmaPhi: hyperdiffusion filter coefficients for geopotential
     :type sigmaPhi: array of float
-    :param test: number of test
-    :type test: TYPE
+    :param test: number of test, defaults to None
+    :type test: int
     :param t: number of current time step
     :type t: int
     
@@ -133,7 +133,7 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
     """
     
     #import explicit or implicit time difference scheme
-    if expflag==1:
+    if expflag==True:
         from . import explicit_tdiff as tdiff
     else:
         from . import modEuler_tdiff as tdiff

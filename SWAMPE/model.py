@@ -1,7 +1,6 @@
 
 # Import python packages
 import numpy as np
-
 # Import program packages
 from . import initial_conditions
 from . import spectral_transform
@@ -11,7 +10,7 @@ from . import forcing
 from . import filters
 from . import continuation
 
-def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=1, plotfreq=5, minlevel=6, maxlevel=7, diffflag=1,modalflag=1,alpha=0.01,contflag=0,saveflag=1,expflag=0,savefreq=150,k1=2*10**(-4), k2=4*10**(-4), pressure=100*250*9.8/10, R=3000, Cp=13000, sigmaSB=5.7*10**(-8),K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours',verbose=True):    
+def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=True, plotfreq=5, minlevel=4*(10**6), maxlevel=2*4*(10**6), diffflag=True,modalflag=True,alpha=0.01,contflag=False,saveflag=True,expflag=False,savefreq=150, K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours',verbose=True):    
  
     
     """
@@ -69,18 +68,6 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
         DESCRIPTION. The default is 1.
     savefreq : TYPE, optional
         DESCRIPTION. The default is 150.
-    k1 : TYPE, optional
-        DESCRIPTION. The default is 2*10**(-4).
-    k2 : TYPE, optional
-        DESCRIPTION. The default is 4*10**(-4).
-    pressure : TYPE, optional
-        DESCRIPTION. The default is 100*250*9.8/10.
-    R : TYPE, optional
-        DESCRIPTION. The default is 3000.
-    Cp : TYPE, optional
-        DESCRIPTION. The default is 13000.
-    sigmaSB : TYPE, optional
-        DESCRIPTION. The default is 5.7*10**(-8).
 
     Returns
     -------
@@ -88,10 +75,6 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
 
     """
 
-
-    #positional: M, dt, tmax, Phibar, g, omega, a, test
-    #optional: taurad, taudrag, DPhieq, a1, minlevel, maxlevel, forcflag, diffflag, modalflag, alpha, plotflag, plotfreq, contflag, saveflag, savefreq, k1, k2, pressure, Cp, R, sigmaSB 
-    
     #get other dimensional parameters using the spectral dimension
     N,I,J,otherdt,K4,lambdas,mus,w=initial_conditions.spectral_params(M)
     
@@ -168,19 +151,19 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
         
     
 
-    if contflag==0:
+    if contflag==False:
         SU0, sina, cosa, etaamp,Phiamp=initial_conditions.test1_init(a, omega, a1)
         
         if test==1:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=initial_conditions.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)
         elif test==2:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=initial_conditions.state_var_init(I,J,mus,lambdas,test,etaamp,a,sina,cosa,Phibar,Phiamp)   
-        elif test==9 or test==10 or test==11:
+        else:
             etaic0, etaic1, deltaic0, deltaic1, Phiic0, Phiic1=initial_conditions.state_var_init(I,J,mus,lambdas,test,etaamp)
         
         Uic,Vic=initial_conditions.velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test)
     
-    elif contflag==1:
+    elif contflag==True:
         
         if custompath==None:
 
@@ -261,29 +244,8 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
     
     
     #### Forcing ####
-    if test==9:
-        
-        Phieq=forcing.Phieq_basic_state(I,J,mus,Phibar)
-        
-        Q=forcing.Qfun(Phibar+2000, Phiic0,Phibar, taurad)
-
-        #geopotential forcing to be passed to time stepping
-        PhiF=Q
-       
-        F,G=forcing.Rfun(Uic, Vic, -1*np.ones((J,I)), Phiic0,Phibar,taudrag)
-        
-        Phiforcingdata[0,:,:]=PhiF
-        Phiforcingdata[1,:,:]=PhiF
-        
-        
-        F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
-        Fdata[0,:,:]=F
-        Fdata[1,:,:]=Fdata[0,:,:]
-        Gdata[0,:,:]=G
-        Gdata[1,:,:]=Gdata[0,:,:]
     
-    
-    elif test==10:
+    if test==None:
         Phieq=forcing.Phieqfun(Phibar, DPhieq, lambdas, mus, I, J, g)
         
         Q=forcing.Qfun(Phieq, Phiic0, Phibar,taurad)
@@ -300,24 +262,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
         Fdata[1,:,:]=Fdata[0,:,:]
         Gdata[0,:,:]=G
         Gdata[1,:,:]=Gdata[0,:,:]
-    elif test==11:
-
-        Teq=forcing.DoubleGrayTEqfun(Phibar,DPhieq,lambdas,mus,I,J,k1,k2,pressure,g,R,Cp,sigmaSB)
-
-        Q=forcing.DoubleGrayPhiForcing(Teq,Phiic0,Phibar,k2,sigmaSB,Cp,R)
-        #geopotential forcing to be passed to time stepping
-        PhiF=Q
-        
-        Phiforcingdata[0,:,:]=PhiF
-        Phiforcingdata[1,:,:]=PhiF
-        
-        
-        F,G=forcing.Rfun(Uic, Vic, Q, Phiic0,Phibar,taudrag)
-        Fdata[0,:,:]=F
-        Fdata[1,:,:]=Fdata[0,:,:]
-        Gdata[0,:,:]=G
-        Gdata[1,:,:]=Gdata[0,:,:]
-        
+ 
     
     
     ####
@@ -426,7 +371,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
         Phidata[2,:,:]=np.real(newPhi)
         
             
-        if modalflag==1:
+        if modalflag==True:
             if t>2:
 
                 temp=np.zeros((J,I))
@@ -455,7 +400,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
         geopotdata[t-1,1]=np.max(Phidata[1,:,:])
         
         
-        if saveflag==1:
+        if saveflag==True:
    
             if dt*t%savefreq==0:                
                     
@@ -484,25 +429,8 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
         
             
         ######## FORCING ############
-        if test==9:
-            
-            Q=forcing.Qfun(Phibar+2000, np.real(newPhi),Phibar, taurad)
-            #geopotential forcing to be passed to time stepping
-            PhiF=Q
-            #print(np.max(Q))
-            F,G=forcing.Rfun(np.real(newU), np.real(newV), -1*np.ones((J,I)), np.real(newPhi),Phibar,taudrag)
-            
-            Fdata[2,:,:]=F
-            Gdata[2,:,:]=G
-            
-            Fmdata[2,:,:]=spectral_transform.fwd_fft_trunc(F, I, M)
-            Gmdata[2,:,:]=spectral_transform.fwd_fft_trunc(G, I, M)
-            
-            Phiforcingdata[2,:,:]=PhiF
-            Phiforcingmdata[2,:,:]=spectral_transform.fwd_fft_trunc(PhiF, I, M)  
-            
         
-        elif test==10:
+        if test==None:
             
             Q=forcing.Qfun(Phieq, np.real(newPhi),Phibar, taurad)
             #geopotential forcing to be passed to time stepping
@@ -518,29 +446,14 @@ def run_model(M,dt,tmax,Phibar, omega, a, test, g=9.8, forcflag=1, taurad=86400,
             
             Phiforcingdata[2,:,:]=PhiF
             Phiforcingmdata[2,:,:]=spectral_transform.fwd_fft_trunc(PhiF, I, M)  
-            
-        elif test==11:
-            Q=forcing.DoubleGrayPhiForcing(Teq,np.real(newPhi),Phibar,k2,sigmaSB,Cp,R)
-            #geopotential forcing to be passed to time stepping
-            PhiF=Q
-            F,G=forcing.Rfun(np.real(newU), np.real(newV), Q, np.real(newPhi),Phibar,taudrag)
-
-
-            Fdata[2,:,:]=F
-            Gdata[2,:,:]=G
-            
-            Fmdata[2,:,:]=spectral_transform.fwd_fft_trunc(F, I, M)
-            Gmdata[2,:,:]=spectral_transform.fwd_fft_trunc(G, I, M)
-            
-            Phiforcingdata[2,:,:]=PhiF
-            Phiforcingmdata[2,:,:]=spectral_transform.fwd_fft_trunc(PhiF, I, M)  
+        
             
             
         if verbose==True:
             if t%int(tmax/10)==0:
                 print('t='+str(t)+', '+str(t*100/tmax)+'% complete')
         
-        if plotflag==1:
+        if plotflag==True:
             
             if t%plotfreq==0:
 

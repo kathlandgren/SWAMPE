@@ -28,12 +28,12 @@ def phi_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     
     Phimntstep=Phicomp1-Phicomp2+Phicomp3-Phicomp4
 
-    if forcflag==1:
+    if forcflag==True:
         Phiforcing=st.fwd_leg(2*dt*PhiFM, J, M, N, Pmn, w)
         Phimntstep=Phimntstep+Phiforcing
         
     
-    if diffflag==1:
+    if diffflag==True:
         Phimntstep=filters.diffusion(Phimntstep, sigmaPhi)    
     
     newPhimtstep=st.invrs_leg(Phimntstep, I,J, M, N, Pmn)
@@ -62,7 +62,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
     #deltamntstep=deltacomp1+deltacomp2+deltacomp3+deltacomp4
     deltamntstep=deltacomp1#+deltacomp2+deltacomp4
 
-    if forcflag==1:
+    if forcflag==True:
 
         deltaf1prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Um)/taudrag
         deltaf1=st.fwd_leg(deltaf1prep, J, M, N, Pmn, w)
@@ -80,7 +80,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
         deltamntstep=deltamntstep+deltaforcing
         
     
-    if diffflag==1:
+    if diffflag==True:
         deltamntstep=filters.diffusion(deltamntstep, sigma)
 
     newdeltamtstep=st.invrs_leg(deltamntstep, I,J, M, N, Pmn)
@@ -102,7 +102,7 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
     
     etamntstep=etacomp1-etacomp2+etacomp3
     
-    if forcflag==1:
+    if forcflag==True:
         
         etaf1prep=np.multiply(np.multiply(tstepcoeff1,(1j)*mJarray),Vm)/taudrag
         etaf1=st.fwd_leg(etaf1prep, J, M, N, Pmn, w)
@@ -121,7 +121,7 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
         etamntstep=etamntstep+etaforcing
 
     
-    if diffflag==1:
+    if diffflag==True:
         etamntstep=filters.diffusion(etamntstep, sigma)
     
     newetamtstep=st.invrs_leg(etamntstep, I,J, M, N, Pmn)
