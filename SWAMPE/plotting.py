@@ -93,7 +93,8 @@ def mean_zonal_wind_plot(plotdata,mus,timestamp,units='hours',customtitle=None,c
             plt.savefig(path+filename, bbox_inches='tight', dpi=800)
         else:
             plt.savefig(custompath+filename, bbox_inches='tight', dpi=800)
-        
+    
+    plt.show()
     return fig
 
 #need for colorbar
