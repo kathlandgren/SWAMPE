@@ -60,7 +60,7 @@ def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
 def Qfun(Phieq,Phi,Phibar,taurad):
     """
     Evaluates the radiative forcing on the geopotential. Corresponds to the 
-    Q from Perez-Becker and Showman, but has an extra factor of g as we are 
+    Q from Perez-Becker and Showman (2013), but has an extra factor of g as we are 
     evaluating the geopotential, and they are evaluating the geopotential 
     height. 
 
