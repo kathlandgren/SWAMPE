@@ -79,18 +79,12 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
     N,I,J,otherdt,K4,lambdas,mus,w=initial_conditions.spectral_params(M)
     
     
-    # dt=dt1
+
     # Associated Legendre Polynomials and their derivatives
     Pmn, Hmn = spectral_transform.PmnHmn(J, M, N, mus)
-    #K6=1.24*10**33 #added 3 orders of magnitude for the reduced resolution
+    
     sigma=filters.sigma6(M,N,K6,a, dt)
     sigmaPhi=filters.sigma6Phi(M, N, K6, a, dt)
-        
-    #Earth sigma
-    # sigma=filters.sigma(M,M,K4,6.37122*10**(6),1200)
-    # sigmaPhi=filters.sigmaPhi(M, M, K4, 6.37122*10**(6), 1200)
-    
-
         
     ## Initialize data arrays 
    

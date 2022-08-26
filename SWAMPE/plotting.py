@@ -218,6 +218,7 @@ def spinup_plot(plotdata,dt,units='hours',customtitle=None,customxlabel=None,cus
         else:
             plt.savefig(custompath+filename, bbox_inches='tight', dpi=800)
     
+    plt.show()
     return fig
 
 
