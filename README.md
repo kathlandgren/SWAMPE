@@ -10,6 +10,31 @@
 
 # Shallow-Water Atmospheric Model in Python for Exoplanets
 
-Written by [Ekaterina Landgren](https://github.com/kathlandgren) and [Alice Nadeau](https://github.com/Alice-N).
 
-email: ek672@cornell.edu
+
+Documentation
+-------------
+
+The installation guide and a wide-range of tutorials for different applications
+can be found in the
+SWAMPE documentation *COMING SOON*
+
+Attribution
+-----------
+
+A JOSS paper describing this open source release is currently in prep.
+
+License
+-------
+Written by [Ekaterina Landgren](https://github.com/kathlandgren) and [Alice Nadeau](https://github.com/Alice-N).
+Copyright 2022 Ekaterina Landgren
+
+SWAMPE is available under the BSD 3-Clause License.
+Please see the LICENSE file for more information.
+
+Support
+-------
+
+Please reach out with any feedback, bug reports, or questions to ek672@cornell.edu
+
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
