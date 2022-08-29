@@ -1,4 +1,6 @@
-
+"""
+This module contains the main SWAMPE function which runs the 2D shallow-water general circulation model.
+"""
 # Import python packages
 import numpy as np
 # Import program packages

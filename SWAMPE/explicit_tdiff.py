@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Aug  5 14:35:48 2020
-
-@author: ek672
+This module contains the functions that perform the explicit timestepping scheme as described in Hack and Jakob (1992).
 """
 
 import numpy as np

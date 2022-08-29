@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jul 26 10:01:11 2022
-
-@author: ek672
+This module contains functions related to generating figures and gifs with SWAMPE.
 """
 import numpy as np
 import matplotlib.pyplot as plt

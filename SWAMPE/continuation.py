@@ -1,6 +1,6 @@
 
 """
-This module contains the functions needed to save and read SWAMP-E data, as well as for continuation.
+This module contains the functions needed to save and read SWAMPE data, as well as for continuation.
 """
 import pickle
 import os
