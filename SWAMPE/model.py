@@ -76,7 +76,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
     """
 
     #get other dimensional parameters using the spectral dimension
-    N,I,J,otherdt,K4,lambdas,mus,w=initial_conditions.spectral_params(M)
+    N,I,J,otherdt,lambdas,mus,w=initial_conditions.spectral_params(M)
     
     
 
@@ -227,14 +227,15 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
     
     
     # Spin-up RMS wind calculations
-    spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))   
-    spinupdata[0,1]=time_stepping.RMS_winds(a, I, J, lambdas, mus, Udata[0,:,:], Vdata[0,:,:])
-    
-    
-    #geopotential calculations
-    
-    geopotdata[0,0]=np.min(Phidata[0,:,:])
-    geopotdata[0,1]=np.max(Phidata[0,:,:])
+    if contflag==False:
+        spinupdata[0,0] = np.min(np.sqrt(Udata[0,:,:]**2 + Vdata[0,:,:]**2 ))   
+        spinupdata[0,1]=time_stepping.RMS_winds(a, I, J, lambdas, mus, Udata[0,:,:], Vdata[0,:,:])
+        
+        
+        #geopotential calculations
+        
+        geopotdata[0,0]=np.min(Phidata[0,:,:])
+        geopotdata[0,1]=np.max(Phidata[0,:,:])
     
     
     #### Forcing ####
@@ -324,7 +325,13 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
     # Time stepping
     ####
     
-    for t in range(2,tmax):
+    if contflag==False:
+        starttime=2
+    elif contflag==True:
+        starttime=continuation.compute_t_from_timestamp(timeunits,contTime,dt)
+        
+    
+    for t in range(starttime,tmax):
         
         etam0=etamdata[0,:,:]
         etam1=etamdata[1,:,:]
@@ -352,7 +359,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
     
         PhiFm=Phiforcingmdata[1,:,:]    
         
-        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=time_stepping.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFm,dt,a,K4,Phibar,taurad,taudrag,forcflag,diffflag,expflag,sigma,sigmaPhi,test,t)
+        newetamn,neweta,newdeltamn,newdelta,newPhimn,newPhi,newU,newV=time_stepping.tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,fmn,Pmn,Hmn,w,tstepcoeff,tstepcoeff2,tstepcoeffmn,marray,mJarray,narray,PhiFm,dt,a,Phibar,taurad,taudrag,forcflag,diffflag,expflag,sigma,sigmaPhi,test,t)
         
         
         #write new data
@@ -453,8 +460,8 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
 
                 
                 timestamp=continuation.compute_timestamp(timeunits,dt,t)
-                fig_zonal=plotting.mean_zonal_wind_plot(Udata[2,:,:], mus, timestamp)
-                fig_quiver=plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp) 
+                fig_zonal=plotting.mean_zonal_wind_plot(Udata[2,:,:], mus, timestamp,units=timeunits)
+                fig_quiver=plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp,units=timeunits) 
                 fig_spinup=plotting.spinup_plot(spinupdata, dt,units=timeunits)       
         
         A,B,C,D,E = initial_conditions.ABCDE_init(np.real(newU),np.real(newV),np.real(neweta),np.real(newPhi),mus,I,J)

@@ -47,12 +47,13 @@ def read_pickle(filename,custompath=None):
 
 def compute_timestamp(units,t,dt):
     """
-    
+    Computes timestamp in appropriate units to append to the saved data files.
+
     :param units: Units of timestamps on the savefile: 'hours','minutes', or 'seconds'
     :type units: str
     :param t: number of current timestep
     :type t: int
-    :param dt: timestep length, in second s
+    :param dt: timestep length, in seconds
     :type dt: float
     :return: timestamp in desired units
     :rtype: string
@@ -70,6 +71,31 @@ def compute_timestamp(units,t,dt):
         print('Cannot parse units. Acceptable units are: hours, minutes, seconds.')
     
     return timestamp
+
+def compute_t_from_timestamp(units,timestamp,dt):
+    """_summary_
+
+    :param units: Units of timestamps on the savefile: 'hours','minutes', or 'seconds'
+    :type units: str
+    :param timestamp: Timestamp in specified units
+    :type timestamp: int
+    :param dt: timestep length, in second s
+    :type dt: float
+
+    return: number of timestep to continue the simulation
+    rtype: int
+    """
+
+    if units=='hours':
+        t=int(timestamp*3600/dt) 
+    elif units=='minutes':
+        t=int(timestamp*60/dt)
+    elif units=='seconds':
+        t=int(timestamp/dt)
+    else:
+        print('Cannot parse units. Acceptable units are: hours, minutes, seconds.')
+
+    return t 
 
 def save_data(timestamp,etadata, deltadata, Phidata, U,V, spinupdata,geopotdata,  custompath=None):
     """
