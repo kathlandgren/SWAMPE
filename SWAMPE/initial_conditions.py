@@ -130,61 +130,47 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
 
 def spectral_params(M):
     """
-    Initializes the spectral parameters corresponding to the spectral resolution M
+    Generates the resolution parameters according to Table 1 and 2 from Jakob et al. (1993).
+    Note the timesteps are appropriate for Earth-like forcing. More strongly forced planets will need shorter timesteps.
 
-    Parameters
-    ----------
-    M : int
-        Spectral truncation.
+    :param M: spectral resolution
+    :type M: int
 
     Returns
     -------
-    N : int
-        DESCRIPTION.
-    I : int
-        number of longitudes.
-    J : int
-        number of latitudes.
-    dt : float64
-        length of time step.
-    K4 : float64
-        hyperviscosity parameter from Gelb and Gleeson.
-    lambdas : array of float
-        Uniformly spaced longitudes of length I.
-    mus : array of float
-        Array of Gaussian latitudes of length J.
-    w : array of float
-        Gaussian weights of length J.
+    :return: 
+        - N - int - the highest degree of the Legendre functions for m = 0
+        - I - int - number of longitudes
+        - J - int - number of Gaussian latitudes
+        - dt - float - timestep length, in seconds
+        - lambdas - array of float of length I - evenly spaced longitudes
+        - mus - array of float of length J - Gaussian latitudes
+        - w - array of float of length J - Gaussian weights
 
     """
+
     N=M
     #set dimensions according to Jakob and Hack (1993), Tables 1, 2, and 3
     if M==42:
         J=64
         I=128
         dt=1200
-        K4=0.5*10**(16)
-        #K4=1.24*10**30
     elif M==63:
         J=96
         I=192
         dt=900
-        K4=10.0**(15)
     elif M==106:
         J=160
         I=320
         dt=600
-        K4=1.25*10**(14)
     elif M==170:
         J=256
         I=512
         dt=450
-        K4=2.00*10*(13)
     elif M==213:
         J=320
         I=640
         dt=360
-        K4=8.00*10**12
     else:
         print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
     
@@ -193,7 +179,7 @@ def spectral_params(M):
     [mus,w]=sp.roots_legendre(J)
 
         
-    return N,I,J,dt,K4,lambdas,mus,w
+    return N,I,J,dt,lambdas,mus,w
 
 def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     """

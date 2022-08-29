@@ -451,10 +451,11 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
             
             if t%plotfreq==0:
 
-                plotting.spinup_plot(spinupdata, dt)
+                
                 timestamp=continuation.compute_timestamp(timeunits,dt,t)
-                plotting.mean_zonal_wind_plot(Udata[2,:,:], mus, timestamp)
-                plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp)        
+                fig_zonal=plotting.mean_zonal_wind_plot(Udata[2,:,:], mus, timestamp)
+                fig_quiver=plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp) 
+                fig_spinup=plotting.spinup_plot(spinupdata, dt,units=timeunits)       
         
         A,B,C,D,E = initial_conditions.ABCDE_init(np.real(newU),np.real(newV),np.real(neweta),np.real(newPhi),mus,I,J)
         

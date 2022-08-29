@@ -63,7 +63,7 @@ def mean_zonal_wind_plot(plotdata,mus,timestamp,units='hours',customtitle=None,c
     #convert latitudes to degrees
     Y = np.arcsin(mus)*180/np.pi #generate latitudes in degrees
     
-    
+    fig = plt.figure()
     
     if color!=None:
         fig=plt.plot(zonal_mean, Y,color=color)
@@ -121,7 +121,7 @@ def quiver_geopot_plot(U,V,Phi,lambdas,mus,timestamp,sparseness=4,minlevel=None,
         colormap=cm.nipy_spectral
     #set the colorbar limits
     levels =np.linspace(minlevel, maxlevel)
-    CS = plt.contourf(X, Y, (Phi), levels=levels, cmap=colormap, extend='both',style='sci') 
+    CS = plt.contourf(X, Y, (Phi), levels=levels, cmap=colormap, extend='both') 
     colorbar = plt.colorbar(CS,format=ticker.FuncFormatter(fmt))
 
     # set sparce grid to display wind vector field    
@@ -167,21 +167,21 @@ def spinup_plot(plotdata,dt,units='hours',customtitle=None,customxlabel=None,cus
     tmax=np.shape(plotdata)[0]
     
     if units=='hours':
-        tlim=(int(dt*tmax/3600))
+        tlim=dt*tmax/3600
     elif units=='minutes':
-        tlim=(int(dt*tmax/60))
+        tlim=dt*tmax/60
     elif units=='seconds':
-        tlim=(int(dt*tmax))
+        tlim=dt*tmax
     else:
         print('Cannot parse units. Acceptable units are: hours, minutes, seconds.')
     
-    t = np.linspace(0, tlim, tmax, endpoint=True)
-    
+    t = np.linspace(0, tlim, num=tmax, endpoint=True)
+    fig_spinup = plt.figure()
     if color!=None:
-        fig=plt.plot(t, plotdata[:,0],color=color[0])
+        fig_spinup=plt.plot(t, plotdata[:,0],color=color[0])
         plt.plot(t, plotdata[:,1],color=color[1])
     else:
-        fig=plt.plot(t, plotdata[:,0])
+        fig_spinup=plt.plot(t, plotdata[:,0])
         plt.plot(t, plotdata[:,1])
     
     
@@ -219,7 +219,7 @@ def spinup_plot(plotdata,dt,units='hours',customtitle=None,customxlabel=None,cus
             plt.savefig(custompath+filename, bbox_inches='tight', dpi=800)
     
     plt.show()
-    return fig
+    return fig_spinup
 
 
 
