@@ -3,7 +3,7 @@ import os
 
 setup(
     name = 'SWAMPE',
-    version = '0.0.48',
+    version = '0.0.50',
     description = '2D Shallow-Water General Circulation Model for Exoplanet Atmospheres',
     long_description = open(os.path.join(
                             os.path.dirname(__file__), 'README.md')).read(),

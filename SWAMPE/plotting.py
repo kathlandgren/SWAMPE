@@ -9,50 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import matplotlib.ticker as ticker
 import os
-
-
-
-
-# import continuation as cont
-
-# import spectral_transform as st
-
-# import initial_conditions as ic
-# import params as p
-
-
-
-# M=42
-# #get other dimensional parameters using the spectral dimension
-# N,I,J,dt,K4,lambdas,mus,w=ic.spectral_params(M)
-# Pmn, Hmn = st.PmnHmn(J, M, N, mus)
-        
-
-# timestamp=1000
-
-
-# eta, delta, Phi, U, V =cont.load_data(timestamp,'C:/Users/ek672/Dropbox/SWAMP-E/Misc_SWAMP-E_files/data/')
-
-# spinupdata=cont.read_pickle('spinup-winds','C:/Users/ek672/Dropbox/SWAMP-E/Misc_SWAMP-E_files/data/')
-
-# etam0=st.fwd_fft_trunc(eta, I, M)
-# etamn0=st.fwd_leg(etam0,J,M,N,Pmn,w)
-# deltam0=st.fwd_fft_trunc(delta, I, M)
-# deltamn0=st.fwd_leg(deltam0,J,M,N,Pmn,w)
-
-
-# f=np.zeros([J,I])
-# for i in range(I):
-#     for j in range(J):
-#         f[j,i]=2*p.omega*mus[j]
-# fmn=np.zeros([M+1,N+1]) #TODO make a function in tstep
-# fm=st.fwd_fft_trunc(f, I, M)
-# fmn=st.fwd_leg(fm, J, M, N, Pmn, w)
-
-# tmax=p.tmax
-# ttoprint=int(timestamp*p.savefreq/100)
-
-# dt=30#120
+import imageio
 
 
 def mean_zonal_wind_plot(plotdata,mus,timestamp,units='hours',customtitle=None,customxlabel=None,savemyfig=False,filename=None,custompath=None,color=None):
@@ -223,12 +180,17 @@ def spinup_plot(plotdata,dt,units='hours',customtitle=None,customxlabel=None,cus
 
 
 
+def gif_helper(fig,dpi=200):
+    fig.set_dpi(dpi)
+    fig.canvas.draw()       # draw the canvas, cache the renderer
+    image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
+    image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
 
-# spinup_plot(spinupdata,30)
-# plt.show()
+    return image
 
-# mean_zonal_wind_plot(U,mus,timestamp,color='green')
-# plt.show()
-
-# quiver_geopot_plot(U,V,Phi,lambdas,mus,timestamp,axlabels=True)
-
+def write_quiver_gif(lambdas,mus,Phidata,Udata,Vdata,timestamps,filename,frms=5,sparseness=4,dpi=200,minlevel=None,maxlevel=None,units='hours',customtitle=None,custompath=None,axlabels=False,colormap=None):
+    if minlevel==None:
+        minlevel=np.min(Phidata)
+    if maxlevel==None:
+        maxlevel=np.max(Phidata)
+    imageio.mimsave('./'+filename, [gif_helper(quiver_geopot_plot(Udata[i,:,:],Vdata[i,:,:],Phidata[i,:,:],lambdas,mus,timestamps[i],sparseness=sparseness,minlevel=minlevel,maxlevel=maxlevel,units=units,customtitle=customtitle,custompath=None,axlabels=axlabels,colormap=colormap),dpi=200) for i in range(len(timestamps))], fps=frms)
