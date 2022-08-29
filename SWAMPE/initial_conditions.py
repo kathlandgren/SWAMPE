@@ -163,16 +163,8 @@ def spectral_params(M):
         J=160
         I=320
         dt=600
-    elif M==170:
-        J=256
-        I=512
-        dt=450
-    elif M==213:
-        J=320
-        I=640
-        dt=360
     else:
-        print('Error: unsupported value of M. Only 42,63, 106, 170, and 213 are supported')
+        print('Error: unsupported value of M. Only 42, 63, and 106 are supported')
     
     
     lambdas=np.linspace(-np.pi, np.pi, num=I,endpoint=False) 
