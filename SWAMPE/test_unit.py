@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This module contains the unit tests designed to test the spectral transform.
+This module contains the unit tests designed to test the spectral transform. For end-to-end tests, see tutorials.
 """
 import numpy as np
 import matplotlib.pyplot as plt
