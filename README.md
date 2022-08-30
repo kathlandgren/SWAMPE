@@ -38,3 +38,4 @@ Support
 Please reach out with any feedback, bug reports, or questions to ek672@cornell.edu
 
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+![CI](https://github.com/kathlandgren/SWAMPE/actions/workflows/main.yml/badge.svg)
