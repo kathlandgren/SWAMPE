@@ -12,12 +12,12 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../SWAMPE'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'SWAMP-E'
-copyright = '2021, Ekaterina Landgren'
+project = 'SWAMPE'
+copyright = '2022, Ekaterina Landgren'
 author = 'Ekaterina Landgren'
 
 # The full version, including alpha/beta/rc tags
@@ -29,7 +29,10 @@ release = '0.0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc']
+extensions = ['sphinx.ext.autodoc','nbsphinx']
+
+#autoapi_dirs = ['SWAMPE/']
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -37,17 +40,21 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
-
-
+exclude_patterns = ['**.ipynb_checkpoints']
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_logo = "../_static/SWAMPE_logo_clear.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+.. note::  `Download full notebook here <https://github.com/kathlandgren/SWAMPE/tree/main/docs/source/notebooks/{{ docname }}>`_
+"""

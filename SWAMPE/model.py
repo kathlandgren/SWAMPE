@@ -4,77 +4,75 @@ This module contains the main SWAMPE function which runs the 2D shallow-water ge
 # Import python packages
 import numpy as np
 # Import program packages
-from . import initial_conditions
-from . import spectral_transform
-from . import time_stepping
-from . import plotting
-from . import forcing
-from . import filters
-from . import continuation
+from SWAMPE import initial_conditions
+from SWAMPE import spectral_transform
+from SWAMPE import time_stepping
+from SWAMPE import plotting
+from SWAMPE import forcing
+from SWAMPE import filters
+from SWAMPE import continuation
 
-def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=True, plotfreq=5, minlevel=4*(10**6), maxlevel=2*4*(10**6), diffflag=True,modalflag=True,alpha=0.01,contflag=False,saveflag=True,expflag=False,savefreq=150, K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours',verbose=True):    
- 
-    
-    """
-    Parameters
-    ----------
+def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=True, plotfreq=5, minlevel=None, maxlevel=None, diffflag=True,modalflag=True,alpha=0.01,contflag=False,saveflag=True,expflag=False,savefreq=150, K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours',verbose=True):    
+    """_summary_
+
     :param M: spectral resolution
     :type M: int
-    
-    :param dt: length of time step, in seconds
-    :type dt: float64
-    
-    :param tmax: number of time steps to run
+    :param dt: time step length in seconds
+    :type dt: float
+    :param tmax: number of timesteps to run in the simulation
     :type tmax: int
-    
-    :param Phibar: mean geopotential, m^2/s^2
-    :type Phibar: float64
-
-    :param omega: planetary rotation rate, radians
-    :type omega: float64
-    
-    :param a: planetary radius, m
-    :type a: float64
-    
-    :param test: TYPE
-        DESCRIPTION.
-    g : TYPE, optional
-        DESCRIPTION. The default is 9.8.
-    forcflag : TYPE, optional
-        DESCRIPTION. The default is 1.
-    taurad : TYPE, optional
-        DESCRIPTION. The default is 86400.
-    taudrag : TYPE, optional
-        DESCRIPTION. The default is 86400.
-    DPhieq : TYPE, optional
-        DESCRIPTION. The default is 4*(10**6).
-    a1 : TYPE, optional
-        DESCRIPTION. The default is 0.05.
-    plotflag : TYPE, optional
-        DESCRIPTION. The default is 1.
-    plotfreq : TYPE, optional
-        DESCRIPTION. The default is 5.
-    minlevel : TYPE, optional
-        DESCRIPTION. The default is 6.
-    maxlevel : TYPE, optional
-        DESCRIPTION. The default is 7.
-    diffflag : TYPE, optional
-        DESCRIPTION. The default is 1.
-    modalflag : TYPE, optional
-        DESCRIPTION. The default is 1.
-    alpha : TYPE, optional
-        DESCRIPTION. The default is 0.01.
-    contflag : TYPE, optional
-        DESCRIPTION. The default is 0.
-    saveflag : TYPE, optional
-        DESCRIPTION. The default is 1.
-    savefreq : TYPE, optional
-        DESCRIPTION. The default is 150.
-
-    Returns
-    -------
-    None.
-
+    :param Phibar: reference geopotential (a good rule of thumb is Phibar=gH, where H is scale height in meters)
+    :type Phibar: float
+    :param omega: planetary rotation rate in radians/s
+    :type omega: float
+    :param a: planetary radius in meters
+    :type a: float
+    :param test: number of test from Jakob & Hack (1993), tests 1 and 2 are supported, defaults to None
+    :type test: int, optional
+    :param g: surface gravity, defaults to 9.8 m/s^2
+    :type g: float, optional
+    :param forcflag: option to implement radiative forcing from the host star, defaults to True
+    :type forcflag: bool, optional
+    :param taurad: radiative timescale for Newtonian relaxation in the forcing scheme, defaults to 86400 s
+    :type taurad: float, optional
+    :param taudrag: drag timescale for wind forcing, defaults to 86400 s
+    :type taudrag: float, optional
+    :param DPhieq: day/night amplitude of prescribed local radiative equilibrium geopotential, defaults to 4*(10**6) m^2/s^2.
+    :type DPhieq: float, optional
+    :param a1: angle for tests 1 and 2 from Jakob and Hack (1993), defaults to 0.05
+    :type a1: float, optional
+    :param plotflag: option to display progress plots over the course of the simulation run, defaults to True
+    :type plotflag: bool, optional
+    :param plotfreq: frequency of plot output during the simulation run, defaults to once every 5 timesteps
+    :type plotfreq: int, optional
+    :param minlevel: minimum level of colorbar for geopotential plotting, defaults to minimum geopotential
+    :type minlevel: float, optional
+    :param maxlevel: maximum level of colorbar for geopotential plotting, defaults to minimum geopotential
+    :type maxlevel: float, optional
+    :param diffflag: option to turn on the diffusion/hyperviscosity filter, defaults to True (strongly recommended)
+    :type diffflag: bool, optional
+    :param modalflag: option to turn on the modal splitting filter from Hack and Jakob (1992), defaults to True
+    :type modalflag: bool, optional
+    :param alpha: parameter for the modal splitting filter from Hack and Jakob (1992), defaults to 0.01
+    :type alpha: float, optional
+    :param contflag: option to continue the simulation from saved data, defaults to False
+    :type contflag: bool, optional
+    :param saveflag: option to save data as pickle files, defaults to True
+    :type saveflag: bool, optional
+    :param expflag: option to use explicit time-stepping scheme instead of modified Euler, defaults to False (strongly recommended to use the modified Euler scheme)
+    :type expflag: bool, optional
+    :param savefreq: frequency of saving the data, defaults to once every 150 timesteps
+    :type savefreq: int, optional
+    :param K6: sixth order hyperviscosity filter parameter, defaults to 1.24*10**33
+    :type K6: float, optional
+    :param custompath: option to specify the path for saving the data. By default SWAMPE will make a local directory data/ and store files there.
+    :type custompath: str, optional
+    :param contTime: (if continuing from saved data) timestamp of the data, defaults to None
+    :type contTime: int, optional
+    :param timeunits: time units, defaults to 'hours', also supports 'minutes' and 'seconds'
+    :type timeunits: str, optional
+    :param verbose: option to print progress statements, defaults to True
+    :type verbose: bool, optional
     """
 
     #get other dimensional parameters using the spectral dimension
@@ -463,7 +461,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
                 
                 timestamp=continuation.compute_timestamp(timeunits,dt,t)
                 fig_zonal=plotting.mean_zonal_wind_plot(Udata[2,:,:], mus, timestamp,units=timeunits)
-                fig_quiver=plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp,units=timeunits) 
+                fig_quiver=plotting.quiver_geopot_plot(Udata[2,:,:],Vdata[2,:,:],Phidata[2,:,:]+Phibar, lambdas, mus, timestamp,units=timeunits,minlevel=minlevel,maxlevel=maxlevel) 
                 fig_spinup=plotting.spinup_plot(spinupdata, dt,units=timeunits)       
         
         A,B,C,D,E = initial_conditions.ABCDE_init(np.real(newU),np.real(newV),np.real(neweta),np.real(newPhi),mus,I,J)

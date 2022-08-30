@@ -147,6 +147,7 @@ def invrs_fft(approxXim,I):
     return approxXinew
 
 def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
+    
     """
     Computes the wind velocity from the values of vorticity and divergence. This is a diagnostic relationship.
     For details, see Hack and Jakob (1992) equations (5.24)-(5.25).
@@ -240,14 +241,16 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     :param N:  highest degree of associated Legendre polynomials
     :type N: int
     
-     :param Pmn: values of the associated Legendre polynomials at Gaussian 
+    :param Pmn: values of the associated Legendre polynomials at Gaussian 
     latitudes mus up to wavenumber M
     :type Pmn: array of float64
     
     :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
     latitudes up to wavenumber M
+
     :type Hmn: array of float
     :param w: Gauss Legendre weights
+    
     :type w: array of float
     :param tstepcoeff: a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
     from Hack and Jakob (1992)

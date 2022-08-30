@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from . import spectral_transform as st
-# from . import params as p
 from . import initial_conditions as ic
 from . import time_stepping as tstep
 
