@@ -1,5 +1,5 @@
 
-name: SWAMPE
+name: Github Actions CI
 
 on:
   push:
