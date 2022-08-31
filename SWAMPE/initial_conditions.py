@@ -127,7 +127,6 @@ def spectral_params(M):
 
     :param M: spectral resolution
     :type M: int
-
     Returns
     -------
     :return: 
@@ -138,7 +137,6 @@ def spectral_params(M):
         - lambdas - array of float of length I - evenly spaced longitudes
         - mus - array of float of length J - Gaussian latitudes
         - w - array of float of length J - Gaussian weights
-
     """
 
     N=M
@@ -173,29 +171,20 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     ----------
     :param I: number of latitudes.
     :type I:  int
-
     :param J: number of longitudes.
     :type J:  int
-    
     :param SU0: Amplitude parameter from Test 1 in Williamson et al. (1992)
     :type SU0: float
-
     :param cosa: cosine of the angle of advection.
     :type cosa: float
-
     :param sina: sine of the angle of advection.
     :type sina: float
-
     :param mus: Array of Gaussian latitudes of length J
     :type mus: array of float
-        
     :param lambdas: Array of uniformly spaces longitudes of length I.
     :type lambdas: array of float
-        
     :param test: The number of the regime being tested.
     :type test: int
-        
-
     Returns
     -------
     :return: 
@@ -234,19 +223,14 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
     
     :param Uic: zonal velocity component
     :type Uic: array of float or complex
-    
     :param Vic: meridional velocity component
     :type Vic: array of float or complex
-    
     :param etaic0: initial eta
     :type etaic0:  array of float or complex
-    
     :param Phiic0: initial Phi
     :type Phiic0:  array of float or complex
-    
     :param mustile: reshaped mu array to fit the dimensions
     :type mustile:  array of float or complex
-
     :return: J by I data arrays for eta0, eta1, delta0, delta1, and phi0, phi1
     :rtype:  array of float or complex
     """
@@ -271,18 +255,14 @@ def coriolismn(M,omega):
     
     Parameters
     ----------
-    
     :param M: Spectral dimension.
     :type M: int
-    
     :param omega: Planetary rotation rate, in radians per second.
     :type omega:  float
-
     Returns
     -------
     :return: fmn The Coriolis force in spectral space of dimension (M+1, M+1).
     :rtype:  array of float
-
     """
     
     fmn=np.zeros([M+1,M+1]) 
