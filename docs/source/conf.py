@@ -53,8 +53,3 @@ html_logo = "../_static/SWAMPE_logo_clear.png"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-
-nbsphinx_prolog = """
-{% set docname = env.doc2path(env.docname, base=None) %}
-.. note::  `Download full notebook here <https://github.com/kathlandgren/SWAMPE/tree/main/docs/source/notebooks/{{ docname }}>`_
-"""

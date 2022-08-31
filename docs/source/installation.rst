@@ -2,6 +2,8 @@ Installation
 ============
 
 
+
+
 Install SWAMPE from GitHub
 ____________________________________
 
@@ -11,7 +13,7 @@ or clone the repository:
 
 .. code-block:: bash
 		
-   git clone https://github.com/kathlandgren/SWAMP-E.git
+   git clone https://github.com/kathlandgren/SWAMPE.git
 
 Then navigate into the 'SWAMPE' directory and install the package via:
 

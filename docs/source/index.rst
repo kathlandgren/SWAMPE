@@ -11,7 +11,7 @@ exoplanet atmospheres.
 
 SWAMPE's features currently include:
 
-* Simulations that can be run on your laptop.
+* Exoplanet atmosphere simulations that can be run on your laptop.
 * Can be easily adapted to model a variety of substellar objects.
 
 This public release contains tutorials for running atmospheric simulations,
