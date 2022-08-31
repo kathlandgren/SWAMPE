@@ -9,10 +9,8 @@ def modal_splitting(Xidataslice,alpha):
     
     :param Xidata: data array to be filtered
     :type Xidata: list
-    
     :param alpha: filter coefficient
     :type alpha: float
-
     :return newxi: filtered data slice 
     :rtype: array of float
     """
@@ -24,10 +22,8 @@ def diffusion(Ximn,sigma):
     
     :param Ximn: the spectral coefficient data to be filtered
     :type Ximn: list
-
     :param sigma: the hyperviscosity coefficient
     :type sigma: float
-    
     :return newXimn: filtered spectral coefficient
     :rtype: array of float
     """
@@ -41,24 +37,18 @@ def sigma(M,N,K4,a,dt):
     """Computes the coefficient for the fourth degree diffusion filter described in Gelb and
     Gleeson (eq. 12) for vorticity and divergence.
 
-
     Parameters
     ----------
     :param M: spectral dimension
     :type M: int
-    
     :param N: highest degree of associated Legendre polynomials
     :type N: int
- 
     :param K4: hyperviscosity coefficient
     :type K4: float
-    
     :param a: planetary radius, m
-    :type a: float
-        
+    :type a: float 
     :param dt: time step,s
     :type dt: float
-    
     Returns
     -------
     :return sigma: coefficient for the diffusion filter for geopotential
@@ -87,29 +77,22 @@ def sigmaPhi(M,N,K4,a,dt):
 
     """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
     Gleeson (eq. 12) for geopotential.
-
     Parameters
     ----------
     :param M: spectral dimension
     :type M: int
-    
     :param N: highest degree of associated Legendre polynomials
     :type N: int
- 
     :param K4: hyperviscosity coefficient
     :type K4: float
-    
     :param a: planetary radius, m
     :type a: float
-        
     :param dt: time step,s
     :type dt: float
-    
     Returns
     -------
     :return sigma: coefficient for the diffusion filter for geopotential
     :rtype: array of float
-
     """
     
     sigma=np.zeros((M+1,N+1))
@@ -132,29 +115,22 @@ def sigma6(M,N,K4,a,dt):
     """Computes the coefficient for the sixth degree diffusion filter 
     for vorticity and divergence.
 
-
     Parameters
     ----------
     :param M: spectral dimension
     :type M: int
-    
     :param N: highest degree of associated Legendre polynomials
     :type N: int
- 
     :param K4: hyperviscosity coefficient
     :type K4: float64
-    
     :param a: planetary radius, m
-    :type a: float64
-        
+    :type a: float64 
     :param dt: time step,s
     :type dt: float64
-    
     Returns
     -------
     :return sigma: coefficient for the diffusion filter for geopotential
     :rtype: array of float64
-
     """
 
 
@@ -181,29 +157,22 @@ def sigma6Phi(M,N,K4,a,dt):
 
     """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
     Gleeson (eq. 12) for geopotential.
-
     Parameters
     ----------
     :param M: spectral dimension
     :type M: int
-    
     :param N: highest degree of associated Legendre polynomials
     :type N: int
- 
     :param K4: hyperviscosity coefficient
     :type K4: float
-    
     :param a: planetary radius, m
     :type a: float
-        
     :param dt: time step,s
     :type dt: float
-    
     Returns
     -------
     :return sigma: coefficient for the diffusion filter for geopotential
     :rtype: array of float
-
     """
     
     sigma=np.zeros((M+1,N+1))
