@@ -156,48 +156,36 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     ----------
     :param deltamn: Fourier coefficients of divergence
     :type deltamn: array of complex
-    
     :param etamn: Fourier coefficients of vorticity
     :type etamn: array of complex
-
     :param fmn: spectral coefficients of the Coriolis force
     :type etamn: array of float
-    
     :param I: number of longitudes 
     :type I: int
-    
     :param J: number of latitudes
     :type J: int
-    
     :param M:  highest wavenumber for associated Legendre polynomials
     :type M: int
-    
     :param N:  highest degree of associated Legendre polynomials
     :type N: int
-    
     :param Pmn: values of the associated Legendre polynomials at Gaussian 
     latitudes mus up to wavenumber M
     :type Pmn: array of float
-    
     :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
     latitudes up to wavenumber M
     :type Hmn: array of float
-        
     :param tstepcoeffmn: coefficient to scale spectral components
     :type tstepcoeffmn: array of float
-    
     :param marray: array to multiply a quantity by a factor of m ranging from 0 through M.
     :type marray: array of float
 
     Returns
     -------
-    
-     :return:
+    :return:
         - Unew 
                 Zonal velocity component
         - Vnew 
                 Meridional velocity component
-
     :rtype: array of float
 
     """
@@ -218,13 +206,12 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     return Unew, Vnew
 
 def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
-    """
-
+    """ 
     Computes vorticity and divergence from zonal and meridional wind fields. This is a diagnostic relationship.
     For details, see Hack and Jakob (1992) equations (5.26)-(5.27).
 
-   
-    
+    Parameters
+    ----------
     :param Um: Fourier coefficient of zonal winds
     :type Um: array of float
     :param Vm: Fourier coefficient of meridional winds
@@ -237,20 +224,15 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     :type J: int
     :param M:  highest wavenumber for associated Legendre polynomials
     :type M: int
-    
     :param N:  highest degree of associated Legendre polynomials
     :type N: int
-    
     :param Pmn: values of the associated Legendre polynomials at Gaussian 
     latitudes mus up to wavenumber M
     :type Pmn: array of float64
-    
     :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
     latitudes up to wavenumber M
-
     :type Hmn: array of float
     :param w: Gauss Legendre weights
-    
     :type w: array of float
     :param tstepcoeff: a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
     from Hack and Jakob (1992)
@@ -260,19 +242,17 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     :param dt: time step, in seconds
     :type dt: float
      Returns
-        -------
-        
-         :return:
-            - neweta 
-                    Absolute vorticity
-            - newdelta 
-                    Divergence
-            - etamn 
-                    Spectral coefficients of absolute vorticity
-            - deltamn 
-                    Spectral coefficients of divergence
-    
-        :rtype: array of float
+    -------
+    :return:
+        - neweta 
+                Absolute vorticity
+        - newdelta 
+                Divergence
+        - etamn 
+                Spectral coefficients of absolute vorticity
+        - deltamn 
+                Spectral coefficients of divergence
+    :rtype: array of float
 
     """
 

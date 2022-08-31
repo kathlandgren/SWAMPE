@@ -56,27 +56,20 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
 
     Parameters
     ----------
-    :param I:
-        number of longitudes.
+    :param I: number of longitudes.
     :type I: int
-    :param J:
-        number of latitudes.
+    :param J: number of latitudes.
     :type J: int
-    :param mus:
-        Array of Gaussian latitudes of length J.
+    :param mus: Array of Gaussian latitudes of length J.
     :type mus: array of float
-    :param lambdas: 
-        Uniformly spaced longitudes of length I.
+    :param lambdas: Uniformly spaced longitudes of length I.
     :type lambdas: array of float
-    :param test:
-        The number of the regime being tested.
+    :param test: The number of the regime being tested from Williamson et al. (1992)
     :type test: int
-    :param etaamp:
-        Amplitude of absolute vorticity.
+    :param etaamp: Amplitude of absolute vorticity.
     :type etaamp: float
     *args : Additional initialization parameters for tests from Williamson et al. (1992)
     
-
     Returns
     -------
     :return: 
@@ -86,7 +79,6 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
         - deltaic1 - Second initial condition for divergence, (J,I).
         - Phiic0 - Initial condition for geopotential, (J,I).
         - Phiic1 - Second initial condition for geopotential, (J,I).
-
     :rtype: tuple of arrays of float
     """
     etaic0=np.zeros((J,I))
