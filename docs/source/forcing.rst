@@ -1,5 +1,5 @@
 Forcing
 ==================
 
-.. automodule:: forcing 
+.. automodule:: SWAMPE.forcing 
 	:members:

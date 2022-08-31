@@ -1,5 +1,5 @@
 Continuation
 =============
 
- .. automodule:: continuation
+.. automodule:: SWAMPE.continuation
 	:members:
