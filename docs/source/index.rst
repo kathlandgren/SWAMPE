@@ -12,6 +12,7 @@ exoplanet atmospheres.
 SWAMPE's features currently include:
 
 * Exoplanet atmosphere simulations that can be run on your laptop.
+* Tuned for synchronously rotating hot Jupiters and sub-Neptunes. 
 * Can be easily adapted to model a variety of substellar objects.
 
 This public release contains tutorials for running atmospheric simulations,
