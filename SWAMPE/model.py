@@ -403,7 +403,7 @@ def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taura
         
         if saveflag==True:
    
-            if dt*t%savefreq==0:                
+            if t%savefreq==0:                
                     
                 timestamp=continuation.compute_timestamp(timeunits,dt,t)
                 
