@@ -16,8 +16,7 @@ Documentation
 -------------
 
 The installation guide and a wide-range of tutorials for different applications
-can be found in the
-SWAMPE documentation *COMING SOON*
+can be found in the [SWAMPE documentation](https://swampe.readthedocs.io). 
 
 Attribution
 -----------
