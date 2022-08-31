@@ -32,7 +32,7 @@ SWAMPE is available under the BSD 3-Clause License.
    :caption: Tutorials:
    
    notebooks/QuickStart
-   notebooks/Plotting
+   notebooks/Plots
    
 .. toctree::
    :maxdepth: 2
