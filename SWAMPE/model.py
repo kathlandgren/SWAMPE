@@ -4,13 +4,13 @@ This module contains the main SWAMPE function which runs the 2D shallow-water ge
 # Import python packages
 import numpy as np
 # Import program packages
-from .initial_conditions import initial_conditions
-from .spectral_transform import spectral_transform
-from .time_stepping import time_stepping
-from .plotting import plotting
-from .forcing import forcing
-from .filters import filters
-from .continuation import continuation
+from .initial_conditions import *
+from .spectral_transform import *
+from .time_stepping import *
+from .plotting import *
+from .forcing import *
+from .filters import *
+from .continuation import *
 
 def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=True, plotfreq=5, minlevel=None, maxlevel=None, diffflag=True,modalflag=True,alpha=0.01,contflag=False,saveflag=True,expflag=False,savefreq=150, K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours',verbose=True):    
     """_summary_
