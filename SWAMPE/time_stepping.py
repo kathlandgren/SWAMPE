@@ -7,7 +7,7 @@ as well as the functions that compute the arrays of coefficients involved in tim
 import numpy as np
 
 #local import
-from spectral_transform import spectral_transform as st
+from . import spectral_transform as st
 
 
 
