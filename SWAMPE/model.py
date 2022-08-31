@@ -13,7 +13,7 @@ from . import filters
 from . import continuation
 
 def run_model(M,dt,tmax,Phibar, omega, a, test=None, g=9.8, forcflag=True, taurad=86400, taudrag=86400, DPhieq=4*(10**6), a1=0.05, plotflag=True, plotfreq=5, minlevel=None, maxlevel=None, diffflag=True,modalflag=True,alpha=0.01,contflag=False,saveflag=True,expflag=False,savefreq=150, K6=1.24*10**33,custompath=None,contTime=None,timeunits='hours',verbose=True):    
-    """_summary_
+    """ This is the main SWAMPE function which runs the model. 
 
     :param M: spectral resolution
     :type M: int
