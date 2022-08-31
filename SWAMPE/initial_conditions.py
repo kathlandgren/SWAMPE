@@ -69,7 +69,6 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     :param etaamp: Amplitude of absolute vorticity.
     :type etaamp: float
     *args : Additional initialization parameters for tests from Williamson et al. (1992)
-    
     Returns
     -------
     :return: 
@@ -81,6 +80,7 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
         - Phiic1 - Second initial condition for geopotential, (J,I).
     :rtype: tuple of arrays of float
     """
+    
     etaic0=np.zeros((J,I))
     Phiic0=np.zeros((J,I))
     deltaic0=np.zeros((J,I))

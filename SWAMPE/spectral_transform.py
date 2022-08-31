@@ -187,7 +187,6 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
         - Vnew 
                 Meridional velocity component
     :rtype: array of float
-
     """
     
     #do not sum over n=0 (see Hack and Jakob 1992 equations 5.24-5.25)
@@ -226,16 +225,13 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
     :type M: int
     :param N:  highest degree of associated Legendre polynomials
     :type N: int
-    :param Pmn: values of the associated Legendre polynomials at Gaussian 
-    latitudes mus up to wavenumber M
+    :param Pmn: values of the associated Legendre polynomials at Gaussian latitudes mus up to wavenumber M
     :type Pmn: array of float64
-    :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
-    latitudes up to wavenumber M
+    :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian latitudes up to wavenumber M
     :type Hmn: array of float
     :param w: Gauss Legendre weights
     :type w: array of float
-    :param tstepcoeff: a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
-    from Hack and Jakob (1992)
+    :param tstepcoeff: a coefficient for time-stepping of the form 2dt/(a(1-mus^2) from Hack and Jakob (1992)
     :type tstepcoeff: array of float
     :param mJarray: coefficients equal to m=0,1,...,M
     :type mJarray: array of float
@@ -253,7 +249,6 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
         - deltamn 
                 Spectral coefficients of divergence
     :rtype: array of float
-
     """
 
     coeff=tstepcoeff/(2*dt)
