@@ -1,5 +1,5 @@
 Initial conditions
 ==================
 
-.. automodule:: initial_conditions
+.. automodule:: SWAMPE.initial_conditions
 	:members:

@@ -1,4 +1,4 @@
 Filters 
 ==================  
-.. automodule:: filters 
+.. automodule:: SWAMPE.filters 
 	:members:

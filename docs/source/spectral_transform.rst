@@ -1,4 +1,4 @@
 Spherical Harmonic Transforms
 ==============================
-.. automodule:: spectral_transform 
-		:members:
+.. automodule:: SWAMPE.spectral_transform 
+	:members:

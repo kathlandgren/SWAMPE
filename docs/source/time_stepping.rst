@@ -1,4 +1,4 @@
 Time stepping
 ==================  
-.. automodule:: time_stepping
+.. automodule:: SWAMPE.time_stepping
     :members:

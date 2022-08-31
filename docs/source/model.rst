@@ -1,5 +1,5 @@
 Model
 ==================
 
-.. automodule:: model
+.. automodule:: SWAMPE.model
 	:members:

@@ -1,5 +1,5 @@
 Plotting
 ==================
 
-.. automodule:: plotting
+.. automodule:: SWAMPE.plotting
 	:members:
