@@ -1,4 +1,3 @@
-## Coming soon!
 
    <div align="center">
    <img src="docs/_static/SWAMPE_logo.png" width="450px">
