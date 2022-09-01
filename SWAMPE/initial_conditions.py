@@ -9,7 +9,7 @@ import scipy.special as sp
 def test1_init(a,omega,a1):
     """
     Initializes the parameters from Test 1 in Williamson et al. (1992),
-    Advection of Cosine Bell over the Pole
+    Advection of Cosine Bell over the Pole.
 
     Parameters
     ----------
@@ -68,7 +68,8 @@ def state_var_init(I,J,mus,lambdas,test,etaamp,*args):
     :type test: int
     :param etaamp: Amplitude of absolute vorticity.
     :type etaamp: float
-    *args : Additional initialization parameters for tests from Williamson et al. (1992)
+    :param *args: Additional initialization parameters for tests from Williamson et al. (1992)
+    :type *args: arrays of float
     Returns
     -------
     :return: 
@@ -165,7 +166,7 @@ def spectral_params(M):
 
 def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     """
-    
+    Initializes the zonal and meridional components of the wind vector field.
 
     Parameters
     ----------
@@ -183,7 +184,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     :type mus: array of float
     :param lambdas: Array of uniformly spaces longitudes of length I.
     :type lambdas: array of float
-    :param test: The number of the regime being tested.
+    :param test: when applicable, number of test from  Williamson et al. (1992).
     :type test: int
     Returns
     -------
@@ -219,7 +220,7 @@ def velocity_init(I,J,SU0,cosa,sina,mus,lambdas,test):
     return Uic, Vic
 
 def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
-    """Initializes the state auxiliary variables
+    """Initializes the auxiliary nonlinear components.
     
     :param Uic: zonal velocity component
     :type Uic: array of float or complex
@@ -251,7 +252,7 @@ def ABCDE_init(Uic,Vic,etaic0,Phiic0,mus,I,J):
 
 def coriolismn(M,omega):
     """
-    Initializes the Coriolis force in spectral space.
+    Initializes the Coriolis parameter in spectral space.
     
     Parameters
     ----------
@@ -261,8 +262,8 @@ def coriolismn(M,omega):
     :type omega:  float
     Returns
     -------
-    :return: fmn The Coriolis force in spectral space of dimension (M+1, M+1).
-    :rtype:  array of float
+    :return: fmn, The Coriolis parameter in spectral space.
+    :rtype:  array of float, size (M+1, M+1)
     """
     
     fmn=np.zeros([M+1,M+1]) 

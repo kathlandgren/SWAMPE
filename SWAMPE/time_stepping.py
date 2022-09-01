@@ -147,16 +147,13 @@ def tstepping(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,
 
 
 def tstepcoeffmn(M,N,a):
-    """
-    Generates the coefficient that multiplies spectral components in invrsUV
+    """ Generates the coefficient that multiplies spectral components in invrsUV.
+
     :param M: highest wave number
     :type M: int
     :param N: highest degree of associated legendre polynomial for m=0
     :param a: radius of the planet, in meters
     :type a: float
-    :param ns: M+1xN+1xIxJ array that only varies along the N axis
-    :type ns: list
-    
     :return: an array of coefficients a/(n(n+1))
     :rtype: list
     """
@@ -174,24 +171,18 @@ def tstepcoeffmn(M,N,a):
 
 def tstepcoeff2(J,M,dt,a):
     """
-    Computes the time stepping coefficient of the form 2dt/a^2 from Hack and 
-    Jakob (1992)
+    Computes the time stepping coefficient of the form 2dt/a^2 from Hack and Jakob (1992).
     
     :param J: number of Gaussian latitudes
     :type J: int
-    
     :param M: spectral dimension
     :type M: int
-    
     :param dt: time step length, s
     :type dt: float
-    
     :param a: planetary radius, m
     :type a: float
-
     :return tstepcoeff2: time stepping coefficients of size (J,M+1)
     :rtype: array of float
-
     """
     tstepcoeff2=np.zeros((J,M+1))
     for m in range(M+1):
@@ -205,10 +196,8 @@ def narray(M,N):
 
     :param M: spectral dimension
     :type M: int
-    
     :param N: highest degreee of associated Legendre polynomials
     :type N: int
-    
     :return narray: coefficients n(n+1) in a matrix of size (M+1,N+1)
     :rtype: array of float
 
@@ -221,8 +210,7 @@ def narray(M,N):
 
 def tstepcoeff(J,M,dt,mus,a):
     """
-    Computes a coefficient for time-stepping of the form 2dt/(a(1-mus^2))
-    from Hack and Jakob (1992)
+    Computes a coefficient for time-stepping of the form 2dt/(a(1-mus^2)) from Hack and Jakob (1992).
     
     :param J: number of Gaussian latitudes
     :type J: int
@@ -246,15 +234,12 @@ def tstepcoeff(J,M,dt,mus,a):
     return tstepcoeff
 
 def mJarray(J,M):
-    """
-    Computes coefficients equal to m=0,1,...,M
+    """Computes coefficients equal to m=0,1,...,M.
 
     :param J: number of Gaussian latitudes
     :type J: int
-    
     :param M: spectral dimension
     :type M: int   
-
     :return mJarray: coefficient m in a matrix of size (J, M+1)
     :rtype: array of float
     """
@@ -267,7 +252,7 @@ def mJarray(J,M):
 
 def marray(M,N):
     """
-    Computes coefficients equal to m=0,1,...,M
+    Computes coefficients equal to m=0,1,...,M.
 
    
     :param M: highest wavenumber of associated Legendre polynomials
@@ -289,25 +274,23 @@ def marray(M,N):
 def RMS_winds(a,I,J,lambdas,mus,U,V):
     """
     Computes RMS winds based on the zonal and meridional wind fields.
+
     :param a: planteray radius, m
     :type a: float
     :param I: number of longitudes
     :type I: int
-     :param J: number of Gaussian latitudes
+    :param J: number of Gaussian latitudes
     :type J: int
     :param mus: Array of Gaussian latitudes of length J
     :type mus: array of float
-        
     :param lambdas: Array of uniformly spaces longitudes of length I.
     :type lambdas: array of float
-        
     :param U: zonal wind field, JxI
     :type U: array of float
     :param V: meridional wind field, JxI
     :type V: array of float
     :return: RMS winds value
     :rtype: float
-
     """
     
     phis=np.arcsin(mus)

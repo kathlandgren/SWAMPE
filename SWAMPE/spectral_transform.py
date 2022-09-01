@@ -4,9 +4,8 @@ import math
 
 
 def PmnHmn(J,M,N,mus):
-    """
-    Calculates the values of associated Legendre polynomials and their 
-     derivatives evaluated at Gaussian latitudes (mus) up to wavenumber M 
+    """Calculates the values of associated Legendre polynomials and their 
+    derivatives evaluated at Gaussian latitudes (mus) up to wavenumber M.
         
     :param J: number of latitudes
     :type J: int
@@ -15,8 +14,7 @@ def PmnHmn(J,M,N,mus):
     :param N: highest degree of the Legendre functions for m=0
     :type N: int
     :param mus: Gaussian latitudes
-    :type mus: array of float
-    
+    :type mus: array of floats
     :return: Pmn array (associated legendre polynomials), Hmn array (derivatives of Pmn*(1-x^2)), both evaluated at the Gaussian latitudes mus
     :rtype: array of float
     """
@@ -44,26 +42,20 @@ def PmnHmn(J,M,N,mus):
 
 
 def fwd_leg(data,J,M,N,Pmn,w):
-    """Calculates the forward legendre transform
+    """Calculates the forward legendre transform.
 
         :param data: input to be transformed (usually output of fft)
         :type data: array of float or array of complex
-        
         :param J: number of latitudes
         :type J: int
-        
         :param M: highest wavenumber for associated Legendre polynomials
         :type M: int
-        
         :param N: highest degree of the Legendre functions for m=0
         :type N: int
-        
         :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
         :type Pmn: array of float
-        
         :param w: Gauss Legendre weights
         :type w: array of float
-
         :return legcoeff: Legendre coefficients (if data was output from FFT, then legcoeff are the spectral coefficients)
         :rtype legcoeff: array of complex
         """
@@ -76,17 +68,14 @@ def fwd_leg(data,J,M,N,Pmn,w):
     return legcoeff
 
 def fwd_fft_trunc(data,I,M):
-    """Calculates and truncates the fast forward Fourier transform of the input
+    """Calculates and truncates the fast forward Fourier transform of the input.
 
         :param data: array of dimension IxJ (usually the values of state variables at lat-long coordinates)
-        :type data: array of float
-        
+        :type data: array of float 
         :param I: number of longitudes
         :type I: int
-        
         :param M: highest wavenumber for associated Legendre polynomials
         :type M: int
-
         :return datam: Fourier coefficients 0 through M
         :rtype datam: array of complex
         """
@@ -95,20 +84,16 @@ def fwd_fft_trunc(data,I,M):
     return datam
 
 def invrs_leg(legcoeff,I,J,M,N,Pmn):
-    """Calculates the inverse Legendre transform function
+    """Calculates the inverse Legendre transform.
     
     :param legcoeff: Legendre coefficients
     :type legcoeff: array of complex
-    
     :param J: number of latitudes
     :type J: int
-    
     :param M: highest wavenumber for associated Legendre polynomials
     :type M: int
-    
     :param Pmn: associated legendre functions evaluated at the Gaussian latitudes mus  up to wavenumber M
     :type Pmn: array of float
-    
     :return: transformed spectral coefficients
     :rtype: array of complex
     """
@@ -132,14 +117,12 @@ def invrs_leg(legcoeff,I,J,M,N,Pmn):
     return approxXim
 
 def invrs_fft(approxXim,I):
-    """Calculates the inverse Fourier transform
+    """Calculates the inverse Fourier transform.
     
     :param approxXim: Fourier coefficients
     :type approxXim: array of complex
-    
     :param I: number of longitudes
-    :type I: integer
-
+    :type I: int
     :return: long-lat coefficients
     :rtype: array of complex
     """
@@ -147,7 +130,6 @@ def invrs_fft(approxXim,I):
     return approxXinew
 
 def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
-    
     """
     Computes the wind velocity from the values of vorticity and divergence. This is a diagnostic relationship.
     For details, see Hack and Jakob (1992) equations (5.24)-(5.25).
@@ -168,11 +150,9 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     :type M: int
     :param N:  highest degree of associated Legendre polynomials
     :type N: int
-    :param Pmn: values of the associated Legendre polynomials at Gaussian 
-    latitudes mus up to wavenumber M
+    :param Pmn: values of the associated Legendre polynomials at Gaussian latitudes mus up to wavenumber M
     :type Pmn: array of float
-    :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian 
-    latitudes up to wavenumber M
+    :param Hmn: values of the associated Legendre polynomial derivatives at Gaussian latitudes up to wavenumber M
     :type Hmn: array of float
     :param tstepcoeffmn: coefficient to scale spectral components
     :type tstepcoeffmn: array of float
@@ -182,10 +162,10 @@ def invrsUV(deltamn,etamn,fmn,I,J,M,N,Pmn,Hmn,tstepcoeffmn,marray):
     Returns
     -------
     :return:
-        - Unew 
-                Zonal velocity component
-        - Vnew 
-                Meridional velocity component
+    - Unew 
+        Zonal velocity component
+    - Vnew 
+        Meridional velocity component
     :rtype: array of float
     """
     
@@ -240,14 +220,14 @@ def diagnostic_eta_delta(Um,Vm, fmn,I,J,M,N,Pmn,Hmn,w,tstepcoeff,mJarray,dt):
      Returns
     -------
     :return:
-        - neweta 
-                Absolute vorticity
-        - newdelta 
-                Divergence
-        - etamn 
-                Spectral coefficients of absolute vorticity
-        - deltamn 
-                Spectral coefficients of divergence
+    - neweta 
+            Absolute vorticity
+    - newdelta 
+            Divergence
+    - etamn 
+            Spectral coefficients of absolute vorticity
+    - deltamn 
+            Spectral coefficients of divergence
     :rtype: array of float
     """
 

@@ -268,7 +268,7 @@ def spinup_plot(plotdata,dt,units='hours',customtitle=None,customxlabel=None,cus
 
 
 def gif_helper(fig,dpi=200):
-    """Converts the figure to image format for gif generation
+    """Converts the figure to image format for gif generation.
 
     :param fig: figure
     :type fig: matplotlib figure

@@ -7,7 +7,7 @@ import numpy as np
 
 def Phieqfun(Phibar,DPhieq,lambdas,mus,I,J,g):
     """
-    Evaluates the equilibrium geopotential from Perez-Becker and Showman.
+    Evaluates the equilibrium geopotential from Perez-Becker and Showman (2013).
 
     Parameters
     ----------
@@ -145,33 +145,25 @@ def Rfun(U,V,Q,Phi,Phibar, taudrag):
     ----------
     :param U: zonal velocity component, (J,I)
     :type U: array of float
-    
     :param V: meridional velocity component, (J,I)
     :type V: array of float
-    
     :param Q: radiative forcing of geopotential, (J,I)
     :type Q: array of float
-    
     :param Phi: geopotential with the mean subtracted, (J,I)
     :type Phi: array of float
-    
     :param Phibar: mean geopotential
     :type Phibar: float
-    
     :param taudrag: drag timescale,in seconds
     :type taudrag: float
-
-
     Returns
     -------
-     :return:
+    :return:
         - F 
-                Zonal component of the velocity forcing vector
+                Zonal component of the velocity forcing vector field
         - G 
-                Meridional component of the velocity forcing vector
+                Meridional component of the velocity forcing vector field
 
-    :rtype: array of float
-
+    :rtype: arrays of float (J,I)
     """
     
     Qclone=Q.copy()

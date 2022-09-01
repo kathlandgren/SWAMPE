@@ -7,6 +7,7 @@ import os
 
 def write_pickle(filename,data,custompath=None):
     """
+    Writes a pickle file from the data.
     
     :param filename: name of the pickle file to be saved
     :type filename: string
@@ -14,7 +15,6 @@ def write_pickle(filename,data,custompath=None):
     :type data: any Python type
     :param custompath: path to the custom directory, defaults to None. If None, files will be saved in the parent_directory/data/.
     :type custompath: string, optional
-
     """
     
     if custompath==None:
@@ -27,6 +27,7 @@ def write_pickle(filename,data,custompath=None):
     
 def read_pickle(filename,custompath=None):
     """
+    Loads a pickle file.
     
     :param filename: name of the pickle file to be read
     :type filename: string
@@ -73,7 +74,8 @@ def compute_timestamp(units,t,dt):
     return timestamp
 
 def compute_t_from_timestamp(units,timestamp,dt):
-    """_summary_
+    """
+    Computes the current timestamp t based on timestamp, units, and timestep size.
 
     :param units: Units of timestamps on the savefile: 'hours','minutes', or 'seconds'
     :type units: str
@@ -81,9 +83,8 @@ def compute_t_from_timestamp(units,timestamp,dt):
     :type timestamp: int
     :param dt: timestep length, in second s
     :type dt: float
-
-    return: number of timestep to continue the simulation
-    rtype: int
+    :return: number of timestep to continue the simulation
+    :rtype: int
     """
 
     if units=='hours':
@@ -151,12 +152,12 @@ def save_data(timestamp,etadata, deltadata, Phidata, U,V, spinupdata,geopotdata,
         
 def load_data(timestamp,custompath=None):
     """
+    Loads the data necessary for continuation based on timestamp.
     
     :param timestamp: timestamp used for naming saved files
     :type timestamp: string
     :param custompath: path to the custom directory, defaults to None. If None, files will be saved in the parent_directory/data/
     :type custompath: string
-    
     :return: arrays of eta, delta, Phi, U, V
     :rtype: arrays of float JxI
 

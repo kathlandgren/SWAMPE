@@ -5,7 +5,7 @@ This module contains the functions associated with filters needed for numerical 
 import numpy as np
 
 def modal_splitting(Xidataslice,alpha):
-    """Applies the modal splitting filter from Hack and Jacob (1992)
+    """Applies the modal splitting filter from Hack and Jacob (1992).
     
     :param Xidata: data array to be filtered
     :type Xidata: list
@@ -18,7 +18,7 @@ def modal_splitting(Xidataslice,alpha):
     return newxi
 
 def diffusion(Ximn,sigma):
-    """ Applies the diffusion filter described in Gelb and Gleeson (eq. 12)
+    """ Applies the diffusion filter described in Gelb and Gleeson (eq. 12).
     
     :param Ximn: the spectral coefficient data to be filtered
     :type Ximn: list
@@ -77,8 +77,7 @@ def sigmaPhi(M,N,K4,a,dt):
 
     """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
     Gleeson (eq. 12) for geopotential.
-    Parameters
-    ----------
+
     :param M: spectral dimension
     :type M: int
     :param N: highest degree of associated Legendre polynomials
@@ -89,8 +88,6 @@ def sigmaPhi(M,N,K4,a,dt):
     :type a: float
     :param dt: time step,s
     :type dt: float
-    Returns
-    -------
     :return sigma: coefficient for the diffusion filter for geopotential
     :rtype: array of float
     """
@@ -115,8 +112,6 @@ def sigma6(M,N,K4,a,dt):
     """Computes the coefficient for the sixth degree diffusion filter 
     for vorticity and divergence.
 
-    Parameters
-    ----------
     :param M: spectral dimension
     :type M: int
     :param N: highest degree of associated Legendre polynomials
@@ -127,8 +122,7 @@ def sigma6(M,N,K4,a,dt):
     :type a: float64 
     :param dt: time step,s
     :type dt: float64
-    Returns
-    -------
+
     :return sigma: coefficient for the diffusion filter for geopotential
     :rtype: array of float64
     """
@@ -157,8 +151,7 @@ def sigma6Phi(M,N,K4,a,dt):
 
     """Computes the coefficient for the fourth degree diffusion Filter described in Gelb and
     Gleeson (eq. 12) for geopotential.
-    Parameters
-    ----------
+
     :param M: spectral dimension
     :type M: int
     :param N: highest degree of associated Legendre polynomials
@@ -169,8 +162,6 @@ def sigma6Phi(M,N,K4,a,dt):
     :type a: float
     :param dt: time step,s
     :type dt: float
-    Returns
-    -------
     :return sigma: coefficient for the diffusion filter for geopotential
     :rtype: array of float
     """
