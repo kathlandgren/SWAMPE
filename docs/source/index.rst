@@ -7,7 +7,8 @@ SWAMPE's documentation
 ===================================
 
 SWAMPE is a 2D shallow-water general circulation model designed for simulating
-exoplanet atmospheres.
+exoplanet atmospheres. SWAMPE is a fully in Python implementation of a spectral
+algorithm described in Hack and Jakob (1992) and previously available only in Fortran.
 
 SWAMPE's features currently include:
 
@@ -33,6 +34,12 @@ SWAMPE is available under the BSD 3-Clause License.
    
    notebooks/QuickStart
    notebooks/Plots
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   methods
    
 .. toctree::
    :maxdepth: 2
