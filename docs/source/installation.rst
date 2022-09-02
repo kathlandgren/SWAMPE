@@ -1,15 +1,15 @@
 Installation
-============
+=============
 
 Install SWAMPE with Pip
-----------------
+-------------------------
 
 .. code-block:: bash 
 
 	pip install SWAMPE
 
 Install SWAMPE with Git
-----------------
+-------------------------
 
 .. code-block:: bash 
 
