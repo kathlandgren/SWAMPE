@@ -39,6 +39,6 @@ via continuous integration with Github Actions.
 SWAMPE has been benchmarked against end-to-end tests 1 and 2 from a standard test set for 
 numerical shallow-water solvers 
 (see `Williamson and Drake (1992) <https://www.sciencedirect.com/science/article/pii/S0021999105800166>`_).
-as well as strongly irradiated hot Jupiters described by `Perez-Becker and Showman <https://ui.adsabs.harvard.edu/abs/2013ApJ...776..134P/abstract>`_.
+as well as strongly irradiated hot Jupiters described by `Perez-Becker and Showman (2013) <https://ui.adsabs.harvard.edu/abs/2013ApJ...776..134P/abstract>`_.
 
 
