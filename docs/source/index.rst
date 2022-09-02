@@ -21,6 +21,10 @@ working with SWAMPE output, and plotting.
 
 SWAMPE is available under the BSD 3-Clause License. 
 
+.. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/testgif.gif?raw=true
+   :width: 300
+   :alt: Example geopotential and wind gif generated with SWAMPE
+
 
 .. toctree::
    :maxdepth: 1
@@ -53,10 +57,6 @@ SWAMPE is available under the BSD 3-Clause License.
    :caption: hidden
    
    methods
-
-.. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/testgif.gif?raw=true
-   :width: 400
-   :alt: Example geopotential and wind gif generated with SWAMPE
 
 
 
