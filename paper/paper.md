@@ -1,8 +1,24 @@
+---
+title: '`SWAMPE`: A Shallow-Water Atmospheric Model in Python for Exoplanets'
+tags:
+  - Python
+  - astronomy
+  - exoplanets
+authors:
+  - name: Ekaterina Landgren
+    orcid: 0000-0001-6029-5216
+    affiliation: 1
+affiliations:
+  - name: Center for Applied Mathematics, Cornell University, Rhodes Hall, Ithaca, NY 14853, USA
+    index: 1
+date: 02 Septempber 2022
+bibliography: paper.bib
+--- 
+
+
 # Summary
 
 # Statement of need
-
-
 In order to answer questions about potential habitability of exoplanets,
 it is important to develop a robust understanding of a variety of dynamic
 processes that can take place in exoplanetary atmospheres. 
@@ -36,3 +52,14 @@ for the varied needs of exoplanetary science.
 
 SWAMP-E is built fully in Python, and is flexible and modular. The code could be easily modified to model dissimilar
 space objects, from Brown Dwarfs to terrestrial, potentially habitable exoplanets. 
+
+
+# Documentation
+
+Documentation for `SWAMPE`, with step-by-step tutorials illustrating research applications, is available at [https://swampe.readthedocs.io/en/latest/](https://swampe.readthedocs.io/en/latest/). 
+
+# Similar tools
+
+# Acknowledgements
+
+# References

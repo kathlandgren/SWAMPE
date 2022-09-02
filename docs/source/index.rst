@@ -54,6 +54,9 @@ SWAMPE is available under the BSD 3-Clause License.
    
    methods
 
+.. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/testgif.gif?raw=true
+
+
 
 Indices and tables
 ==================
