@@ -55,6 +55,8 @@ SWAMPE is available under the BSD 3-Clause License.
    methods
 
 .. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/testgif.gif?raw=true
+   :width: 400
+   :alt: Example geopotential and wind gif generated with SWAMPE
 
 
 
