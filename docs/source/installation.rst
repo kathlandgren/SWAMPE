@@ -1,7 +1,6 @@
 Installation
 ============
 
-
 Install SWAMPE with Pip
 ----------------
 
