@@ -34,12 +34,6 @@ SWAMPE is available under the BSD 3-Clause License.
    
    notebooks/QuickStart
    notebooks/Plots
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-   
-   methods
    
 .. toctree::
    :maxdepth: 2
@@ -53,6 +47,12 @@ SWAMPE is available under the BSD 3-Clause License.
    plotting
    spectral_transform
    time_stepping
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   
+   methods
 
 
 Indices and tables
