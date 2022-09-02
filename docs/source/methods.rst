@@ -2,7 +2,7 @@ Methods
 ============
 
 SWAMPE is based on a spectral method for solving shallow-water equations on a sphere
-described in `Hack and Jakob (1992)<https://opensky.ucar.edu/islandora/object/technotes:112>`_. 
+described in `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_. 
 
 Time stepping
 ----------------
@@ -11,7 +11,7 @@ While Hack and Jakob (1992) describe a semi-implicit time-stepping scheme, we ha
 that modified Euler's method (which has been applied to atmospheric models of exoplanets by 
 `Langton
 <https://www.proquest.com/docview/304661389?pq-origsite=gscholar&fromopenview=true>`_
- yields more stable results. 
+yields more stable results. 
 
 Filters
 ----------------
