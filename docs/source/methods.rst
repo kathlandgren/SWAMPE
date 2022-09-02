@@ -1,8 +1,9 @@
 Methods
-============
+===============
 
 SWAMPE is based on a spectral method for solving shallow-water equations on a sphere
 described in `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_. 
+SWAMPE is designed to replace the previous Fortran implementations of this method.
 
 Time stepping
 ----------------
@@ -25,9 +26,11 @@ To ensure numerical stability, SWAMPE applies the following filters:
 Testing
 ----------------
 
+To ensure the correct operation of the spectral transforms, a series of unit tests are performed 
+via continuous integration with Github Actions. 
 
-Gelb and Gleeson
-Williamson
+SWAMPE has been benchmarked against end-to-end tests 1 and 2 from a standard test set for 
+numerical shallow-water solvers (see Williamson et al. (199?)).
 
 
 

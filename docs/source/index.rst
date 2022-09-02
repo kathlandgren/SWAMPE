@@ -38,7 +38,7 @@ SWAMPE is available under the BSD 3-Clause License.
 .. toctree::
    :maxdepth: 1
    :hidden:
-
+   
    methods
    
 .. toctree::
