@@ -14,12 +14,11 @@ SWAMPE is designed to replace the previous Fortran implementations of this metho
 Time stepping
 ----------------
 
-While `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_ describe a semi-implicit time-stepping scheme, we have found
-that modified Euler's method (which has been tested and endorsed for application to exoplanetary
-atmospheres by 
-`Langton (2008)
-<https://www.proquest.com/docview/304661389?pq-origsite=gscholar&fromopenview=true>`_)
-yields more stable results. 
+While `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_ describe a semi-implicit 
+time-stepping scheme, we follow `Langton (2008)
+<https://www.proquest.com/docview/304661389?pq-origsite=gscholar&fromopenview=true>`_ and implement a 
+modified Euler's method scheme. In practice, this method proves more stable, especially for 
+strongly irradiated planets. 
 
 Filters
 ----------------
@@ -28,7 +27,8 @@ To ensure numerical stability, SWAMPE applies the following filters:
 
 * a modal-splitting filter as described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_.
 * a sixth-degree hyperviscosity filter. We use the formulation based on `Gelb and Gleeson (2001) <https://www.researchgate.net/publication/230675145_Spectral_Viscosity_for_Shallow_Water_Equations_in_Spherical_Geometry>`_.
-
+Note that SWAMPE's default hyperviscosity coefficient has been tested for hot Jupiter and sub-Neptune simulations but might require further tuning
+for drastically different stellar forcings.
 
 Testing
 ----------------
@@ -39,6 +39,6 @@ via continuous integration with Github Actions.
 SWAMPE has been benchmarked against end-to-end tests 1 and 2 from a standard test set for 
 numerical shallow-water solvers 
 (see `Williamson and Drake (1992) <https://www.sciencedirect.com/science/article/pii/S0021999105800166>`_).
-
+as well as strongly irradiated hot Jupiters described by `Perez-Becker and Showman <https://ui.adsabs.harvard.edu/abs/2013ApJ...776..134P/abstract>`_.
 
 
