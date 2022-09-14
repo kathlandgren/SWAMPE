@@ -19,20 +19,17 @@ bibliography: paper.bib
 # Summary
 
 In order to answer questions about potential habitability of exoplanets, it is important to develop a robust understanding of a variety of dynamic
-processes that can take place in exoplanetary atmospheres. While many exoplanets are readily characterized with current facilities like Hubble and the recently-launched James Webb Space Telescope, exoplanet scientists work with indirect and limited observations of the planets that they study. In order to form hypotheses about their climate, weather, and atmospheric composition, astronomers need robust models that demonstrate how atmospheres act under different conditions. One-dimensional energy-balance models can capture complex mechanisms such as cloud formation and can rapidly explore the parameter ranges, but they fail to account for variations with longitude. In contrast, three-dimensional models capture the variation in the three-dimensional space, but they are computationally expensive, sometimes taking months to explore the parameter regimes. Their complexity can also obscure the mechanisms that govern atmospheric phenomena. This leaves a natural gap for two-dimensional models, which can capture the spatial variability as well as rapidly explore the parameter space and study the dynamical mechanisms.
+processes that can take place in exoplanetary atmospheres. While many exoplanets are readily characterized with current facilities like Hubble and the recently-launched James Webb Space Telescope, exoplanet scientists work with indirect and limited observations of the planets that they study. In order to form hypotheses about their climate, weather, and atmospheric composition, astronomers need robust models that demonstrate how atmospheres act under different conditions. One-dimensional energy-balance models can capture complex mechanisms such as cloud formation and can rapidly explore the parameter ranges, but they fail to account for variations with longitude. In contrast, three-dimensional models capture the variation in latitude, longitude, and altitude, but they are computationally expensive, sometimes taking months to explore the parameter regimes. Their complexity can also obscure the mechanisms that govern atmospheric phenomena. This leaves a natural gap for two-dimensional models, which can capture the spatial variability as well as rapidly explore the parameter space and study the dynamical mechanisms.
 
-`SWAMPE` is a Python package for modeling the dynamics of exoplanetary atmospheres. Benchmarked for synchronously rotating hot Jupiters and sub-Neptunes, 
+`SWAMPE` is a Python package for modeling the dynamics of exoplanetary atmospheres. `SWAMPE` is an intermediate-complexity, two-dimensional shallow-water general circulation model. Benchmarked for synchronously rotating hot Jupiters and sub-Neptunes, 
 the code is modular and could be easily modified to model dissimilar space objects, from Brown Dwarfs to terrestrial, potentially habitable exoplanets. 
 
 
 # Modeling Exoplanet Atmospheres with SWAMPE
 
-Exoplanets exist in a vast range of orbital and planetary parameters. `SWAMPE` is designed to reflect this 
-`SWAMPE` has the capability to run simulations of planetary atmospheres based on planetary parameters. The user can specify physical parameters such as radius, surface gravity, rotation rate, stellar radiation, and scale height. 
+Exoplanets exist in a vast range of orbital and planetary parameters. `SWAMPE` is designed to be adaptable to a variety of possible regimes. The user can specify physical parameters such as radius, surface gravity, rotation rate, stellar radiation, and scale height. 
 
 `SWAMPE` solves the shallow-water equations using the spectral method based on @Hack:1992, with a modified Euler's method timestepping scheme [@Langton:2008]. To ensure numerical-stability, two filters are applied: the modal-splitting filter described in @Hack:1992 and a sixth-degree hyperviscosity filter based on @Gelb:2002. `SWAMPE` has the capability to save simulation data at any user-specified frequency. The model outputs geopotential maps and the associated wind fields, which can be used to make inferences about the temperature profiles of exoplanet atmospheres and the dynamical mechanisms behind them.
-
-
 
 # Statement of need
 
@@ -42,7 +39,7 @@ energy-balance models can capture complex mechanisms (e.g. @Bell:2018)
 and can rapidly explore the parameter space, but they fail to account for longitudinal variation.
 Furthermore, recent observations of giant exoplanets have shown that one-dimensional models
 cannot completely describe some of the key atmospheric processes (e.g. @Feng:2016).
-On the other hand, complex three-dimensional (3D) models can capture variation in the physical space. 
+On the other hand, complex three-dimensional (3D) models are able to capture variation in the physical space. 
 They are frequently based on primitive equations (e.g. @Menou:2009, @Kataria:2016,
  @Parmentier:2013) or on the Navier-Stokes equations 
 (e.g. @Cooper:2006, @Dobbs-Dixon:2013) and can be used to understand a variety of radiative,
@@ -52,12 +49,12 @@ to explore the parameter space.
 
 The difference in capability between 1D and 3D models leaves a natural gap for two-dimensional
 shallow-water models, which can capture the spatial variability as well as run fast enough to
-rapidly explore the parameter space and study the dynamical mechanisms. In particular, shallow-water models have been used to study solar system planets (including Earth),
-e.g. @Ferrari:2011, @Brueshaber:2019. Outside of the solar system,
+rapidly explore the parameter space and study the dynamical mechanisms. In particular, shallow-water models have been used to study solar system planets, including Earth
+(e.g. @Ferrari:2011, @Brueshaber:2019). Outside of the solar system,
 shallow-water models have been used to understand a variety of atmospheric phenomena of hot Jupiters,
 such as atmospheric variability [@Menou:2003] and superrotation [@Showman:2011].
-They have also been used to make observational predictions for hot Jupiters (e.g. @Langton:2008b,
-@Perez-Becker:2013). However, many of these models are written in Fortran, which makes them difficult to adapt
+They have also been used to make observational predictions for hot Jupiters [@Langton:2008b,
+@Perez-Becker:2013]. However, many of these models are written in Fortran, which makes them difficult to adapt
 for the varied needs of exoplanetary science.
 
 `SWAMPE` offers a fully Python, open-source implementation of the 2D shallow-water system. This package does not require multiple cores, and is flexible and modular. `SWAMPE` is designed to be easily modified to model dissimilar space objects, from Brown Dwarfs to terrestrial, potentially habitable exoplanets. `SWAMPE` provides the capability to conduct
