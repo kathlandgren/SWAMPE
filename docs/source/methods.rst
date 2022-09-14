@@ -11,6 +11,10 @@ described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/
     These terms are then transformed back into wavenumber space to calculate 
     linear terms and derivatives, and to obtain tendencies for the time-dependent state variables."
 
+.. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/method_illustration.png?raw=true
+:width: 300
+:alt: Example geopotential and wind gif generated with SWAMPE
+
 Time stepping
 ----------------
 
