@@ -30,7 +30,7 @@ the code is modular and could be easily modified to model dissimilar space objec
 Exoplanets exist in a vast range of orbital and planetary parameters. `SWAMPE` is designed to reflect this 
 `SWAMPE` has the capability to run simulations of planetary atmospheres based on planetary parameters. The user can specify physical parameters such as radius, surface gravity, rotation rate, stellar radiation, and scale height. 
 
-`SWAMPE` solves the shallow-water equations using the spectral method based on [@Hack:1992], with a modified Euler's method timestepping scheme [@Langton:2008]. `SWAMPE` has the capability to save simulation data at any user-specified frequency. The model outputs geopotential maps and the associated wind fields, which can be used to make inferences about the temperature profiles of exoplanet atmospheres and the dynamical mechanisms behind them.
+`SWAMPE` solves the shallow-water equations using the spectral method based on @Hack:1992, with a modified Euler's method timestepping scheme [@Langton:2008]. To ensure numerical-stability, two filters are applied: the modal-splitting filter described in @Hack:1992 and a sixth-degree hyperviscosity filter based on @Gelb:2002. `SWAMPE` has the capability to save simulation data at any user-specified frequency. The model outputs geopotential maps and the associated wind fields, which can be used to make inferences about the temperature profiles of exoplanet atmospheres and the dynamical mechanisms behind them.
 
 
 
