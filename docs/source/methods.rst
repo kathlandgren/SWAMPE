@@ -13,7 +13,7 @@ described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/
 
 .. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/method_illustration.png?raw=true
     :width: 300
-    :alt: Example geopotential and wind gif generated with SWAMPE
+    :alt: Illustration of one time step using the spectral method employed by SWAMPE
 
 Time stepping
 ----------------
