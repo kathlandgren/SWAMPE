@@ -1,9 +1,9 @@
 Methods
 ===============
 
-SWAMPE is based on a spectral method for solving shallow-water equations on a sphere
+`SWAMPE` is based on a spectral method for solving shallow-water equations on a sphere
 described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_. 
-SWAMPE is designed to replace the previous Fortran implementations of this method.
+`SWAMPE` is designed to replace the previous Fortran implementations of this method.
 
     "The basic idea behind the spectral transform method is to locally evaluate all nonlinear
     terms (including diabatic physical processes) in physical space on an associated
@@ -27,8 +27,8 @@ To ensure numerical stability, SWAMPE applies the following filters:
 
 * a modal-splitting filter as described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_.
 * a sixth-degree hyperviscosity filter. We use the formulation based on `Gelb and Gleeson (2001) <https://www.researchgate.net/publication/230675145_Spectral_Viscosity_for_Shallow_Water_Equations_in_Spherical_Geometry>`_.
-Note that SWAMPE's default hyperviscosity coefficient has been tested for hot Jupiter and sub-Neptune simulations but might require further tuning
-for drastically different stellar forcings.
+Note that `SWAMPE`'s default hyperviscosity coefficient has been tested for hot Jupiter and sub-Neptune simulations but might require further tuning
+for drastically different stellar forcings. The modal-splitting coefficient typically does not need to be adjusted from its default value.
 
 Testing
 ----------------
@@ -36,7 +36,7 @@ Testing
 To ensure the correct operation of the spectral transforms, a series of unit tests are performed 
 via continuous integration with Github Actions. 
 
-SWAMPE has been benchmarked against end-to-end tests 1 and 2 from a standard test set for 
+`SWAMPE` has been benchmarked against end-to-end tests 1 and 2 from a standard test set for 
 numerical shallow-water solvers 
 (see `Williamson and Drake (1992) <https://www.sciencedirect.com/science/article/pii/S0021999105800166>`_).
 as well as strongly irradiated hot Jupiters described by `Perez-Becker and Showman (2013) <https://ui.adsabs.harvard.edu/abs/2013ApJ...776..134P/abstract>`_.
