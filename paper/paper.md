@@ -29,7 +29,7 @@ the code is modular and could be easily modified to model dissimilar space objec
 
 Exoplanets exist in a vast range of orbital and planetary parameters. `SWAMPE` is designed to be adaptable to a variety of possible regimes. The user can specify physical parameters such as radius, surface gravity, rotation rate, stellar radiation, and scale height. 
 
-`SWAMPE` solves the shallow-water equations using the spectral method [@Hack:1992], with a modified Euler's method timestepping scheme [@Langton:2008]. To ensure numerical-stability, two filters are applied: the modal-splitting filter described in @Hack:1992 and a sixth-degree hyperviscosity filter [@Gelb:2002]. `SWAMPE` has the capability to save simulation data at any user-specified frequency. The model outputs geopotential maps and the associated wind fields, which can be used to make inferences about the temperature profiles of exoplanet atmospheres and the dynamical mechanisms behind them.
+`SWAMPE` solves the shallow-water equations using the spectral method [@Hack:1992], with a modified Euler's method timestepping scheme [@Langton:2008]. To ensure numerical-stability, two filters are applied: the modal-splitting filter [@Hack:1992] and a sixth-degree hyperviscosity filter [@Gelb:2001]. `SWAMPE` has the capability to save simulation data at any user-specified frequency. The model outputs geopotential maps and the associated wind fields, which can be used to make inferences about the temperature profiles of exoplanet atmospheres and the dynamical mechanisms behind them.
 
 # Statement of need
 
@@ -50,7 +50,7 @@ to explore the parameter space.
 The difference in capability between 1D and 3D models leaves a natural gap for two-dimensional
 shallow-water models, which can capture the spatial variability as well as run fast enough to
 rapidly explore the parameter space and study the dynamical mechanisms. In particular, shallow-water models have been used to study solar system planets, including Earth
-[e.g., @Ferrari:2011; @Brueshaber:2019). Outside of the solar system,
+[e.g., @Ferrari:2011; @Brueshaber:2019]. Outside of the solar system,
 shallow-water models have been used to understand a variety of atmospheric phenomena of hot Jupiters,
 such as atmospheric variability [@Menou:2003] and superrotation [@Showman:2011].
 They have also been used to make observational predictions for hot Jupiters [e.g., @Langton:2008b;
