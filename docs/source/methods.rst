@@ -12,7 +12,7 @@ described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/
     linear terms and derivatives, and to obtain tendencies for the time-dependent state variables."
 
 .. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/method_illustration.png?raw=true
-    :width: 300
+    :width: 600
     :alt: Illustration of one time step using the spectral method employed by SWAMPE
 
 Governing equations
