@@ -56,11 +56,11 @@ rapidly explore the parameter space and study the dynamical mechanisms. In parti
 e.g. @Ferrari:2011, @Brueshaber:2019. Outside of the solar system,
 shallow-water models have been used to understand a variety of atmospheric phenomena of hot Jupiters,
 such as atmospheric variability [@Menou:2003] and superrotation [@Showman:2011].
-They have also been used to make observational predictions for hot Jupiters (e.g. \cite{langton2008hydrodynamic},
-\cite{PBS}). However, many of these models are written in Fortran, which makes them difficult to adapt
+They have also been used to make observational predictions for hot Jupiters (e.g. @Langton:2008b,
+@Perez-Becker:2013). However, many of these models are written in Fortran, which makes them difficult to adapt
 for the varied needs of exoplanetary science.
 
-`SWAMPE` offers a fully Python, open-source implementation of the 2D shallow-water system. This package does not require multiple cores, and is flexible and modular. `SwAMPE` is designed to be easily modified to model dissimilar space objects, from Brown Dwarfs to terrestrial, potentially habitable exoplanets. `SWAMPE` provides the capability to conduct
+`SWAMPE` offers a fully Python, open-source implementation of the 2D shallow-water system. This package does not require multiple cores, and is flexible and modular. `SWAMPE` is designed to be easily modified to model dissimilar space objects, from Brown Dwarfs to terrestrial, potentially habitable exoplanets. `SWAMPE` provides the capability to conduct
 wide parameter sweeps and to produce maps of the thermal and wind properties of the planets in latitude and longitude, which can be used to help constrain and make predictions for observations of their atmospheres.
 
 # Documentation
