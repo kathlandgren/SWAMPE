@@ -74,6 +74,8 @@ Documentation for `SWAMPE`, with step-by-step tutorials for research application
 
 # Acknowledgements
 
+EL expresses gratitude to the developers of many open-source Python packages used by `SWAMPE`, in particular `numpy` [@Harris:2020], `SciPy` [@Virtanen:2020], and `Matplotlib` [@Hunter:2007].
+
 EL acknowledges financial support from 
 
 EL thanks Nikole Lewis, Tiffany Kataria, Ryan J. MacDonald, Ishan Mishra, Trevor Foote, [more testers here] for helpful discussions.
