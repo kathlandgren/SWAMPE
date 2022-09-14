@@ -53,9 +53,9 @@ to explore the parameter space.
 The difference in capability between 1D and 3D models leaves a natural gap for two-dimensional
 shallow-water models, which can capture the spatial variability as well as run fast enough to
 rapidly explore the parameter space and study the dynamical mechanisms. In particular, shallow-water models have been used to study solar system planets (including Earth),
-e.g. @Ferrari:2011, \cite{brueshaber2019dynamical}. Outside of the solar system,
+e.g. @Ferrari:2011, @Brueshaber:2019. Outside of the solar system,
 shallow-water models have been used to understand a variety of atmospheric phenomena of hot Jupiters,
-such as atmospheric variability \cite{menou2003weather} and superrotation \cite{showman2011equatorial}.
+such as atmospheric variability [@Menou:2003] and superrotation [@Showman:2011].
 They have also been used to make observational predictions for hot Jupiters (e.g. \cite{langton2008hydrodynamic},
 \cite{PBS}). However, many of these models are written in Fortran, which makes them difficult to adapt
 for the varied needs of exoplanetary science.
