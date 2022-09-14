@@ -31,6 +31,7 @@ SWAMPE is available under the BSD 3-Clause License.
    :hidden:
 
    installation
+   methods
 
 .. toctree::
    :maxdepth: 2
@@ -51,10 +52,6 @@ SWAMPE is available under the BSD 3-Clause License.
    plotting
    spectral_transform
    time_stepping
-
-.. toctree::
-   :maxdepth: 1
-   methods
 
 
 
