@@ -31,6 +31,8 @@ Exoplanets exist in a vast range of orbital and planetary parameters. `SWAMPE` i
 
 `SWAMPE` solves the shallow-water equations using the spectral method [@Hack:1992], with a modified Euler's method timestepping scheme [@Langton:2008]. To ensure numerical-stability, two filters are applied: the modal-splitting filter [@Hack:1992] and a sixth-degree hyperviscosity filter [@Gelb:2001]. `SWAMPE` has the capability to save simulation data at any user-specified frequency. The model outputs geopotential maps and the associated wind fields, which can be used to make inferences about the temperature profiles of exoplanet atmospheres and the dynamical mechanisms behind them.
 
+![Sample `SWAMPE` output: geopotential maps for a hot Jupiter exoplanet at three values of radiative timescale $\tau_{\rm rad}$: 0.1 days, 1 day, and 10 days. \label{fig:SWAMPE-output}](timescale_example-1.png)
+
 # Statement of need
 
 Current efforts to model exoplanet atmospheres primarily focus on minimal-complexity
