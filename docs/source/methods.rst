@@ -39,15 +39,15 @@ We will also rewrite the governing equations in terms of geopotential, the verti
 vorticity :math:`\zeta=\mathbf k\cdot(\nabla\times\mathbf V)`, and horizontal divergence :math:`\delta=\nabla\cdot \mathbf V`.
 Taking the curl (:math:`\mathbf k\cdot\nabla\times[ \ ]`) and divergence (:math:`\nabla\cdot[ \ ]`) of the momentum equation yields the following:
 
-:math:`\frac{\partial \zeta}{\partial t}=-\nabla\cdot (\zeta+f)\mathbf V\`
+:math:`\frac{\partial \zeta}{\partial t}=-\nabla \cdot (\zeta+f)\mathbf V`
 
 :math:`\frac{\partial \delta}{\partial t}=\mathbf k\cdot\nabla\times((\zeta+f)\mathbf V)-\nabla^2\left(\Phi+\frac{\mathbf V\cdot\mathbf V}{2}\right).`
 
 Writing the continuity equation so that the partial time derivative is the only term on the left hand side yields
 :math:`\frac{\partial \Phi}{\partial t}=-(\mathbf V\cdot\nabla)\Phi-\Phi\nabla\cdot\mathbf V=-\nabla\cdot(\Phi\mathbf V).`
 
-It is now convenient to use absolute vorticity :math:`\eta=\zeta+f` (as opposed to relative vorticity :math:`\eta=\zeta+f`), as one of the state variables
-in addition to state variables divergence :math:`\delta`, and geopotential :math:`\Phi`.
+It is now convenient to use absolute vorticity :math:`\eta=\zeta+f`, as opposed to relative vorticity :math:`\eta=\zeta+f`, as one of the state variables
+in addition to divergence :math:`\delta` and geopotential :math:`\Phi`.
 The zonal winds :math:`U` and meridional winds :math:`V`, on the other hand, are diagnostic variables: they will not be time-stepped directly. 
 The winds enter the time-stepping scheme via nonlinear components.
 
