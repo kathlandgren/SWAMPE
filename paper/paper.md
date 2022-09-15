@@ -8,9 +8,15 @@ authors:
   - name: Ekaterina Landgren
     orcid: 0000-0001-6029-5216
     affiliation: 1
+  - name: Alice Nadeau
+    orcid: 0000-0003-4325-8047
+    affiliation: 2
+
 affiliations:
   - name: Center for Applied Mathematics, Cornell University, Rhodes Hall, Ithaca, NY 14853, USA
     index: 1
+  - name: Department of Mathematics, Cornell University, 310 Malott Hall, Ithaca, NY 14853, USA
+    index: 2
 date: 02 Septempber 2022
 bibliography: paper.bib
 --- 
