@@ -277,7 +277,6 @@ def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,
         etacomp3=st.fwd_leg(etacomp3prep, J, M, N, Hmn, w)
     
     
-    
     etamntstep=etacomp1-etacomp2+etacomp3
 
     

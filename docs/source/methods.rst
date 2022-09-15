@@ -15,13 +15,19 @@ described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/
     :width: 600
     :alt: Illustration of one time step using the spectral method employed by SWAMPE
 
+
 Governing equations
 -------------------
 
-:math:`\frac{1}{2}`
+The shallow-water equations on the sphere are given by: 
 
 :math:`\frac{d\mathbf{V}}{dt}=-f\mathbf{k}\times\mathbf V-\nabla\Phi`
+
 :math:`\frac{d\Phi}{dt}=-\Phi\nabla\cdot\mathbf{V}`
+
+where $\mathbf V=u\mathbf{i}+v\mathbf{j}$ is the velocity vector on the surface of the sphere and
+ $\mathbf i$ and $\mathbf j$ are the unit eastward and northward directions, respectively. 
+  The free surface geopotential is given by $\Phi\equiv gh$ where $g$ is the gravitational acceleration. 
 
 
 Time stepping
