@@ -20,7 +20,7 @@ Governing equations
 
 :math:`\frac{1}{2}`
 
-:math:`\frac{d\mathbf{V}}{dt}=-f\mathbf{k}\times\mathbf V-\nabla\Phi\`
+:math:`\frac{d\mathbf{V}}{dt}=-f\mathbf{k}\times\mathbf V-\nabla\Phi`
 :math:`\frac{d\Phi}{dt}=-\Phi\nabla\cdot\mathbf{V}`
 
 
