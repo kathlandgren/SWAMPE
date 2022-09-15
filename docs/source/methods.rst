@@ -162,8 +162,7 @@ Expanding the equations for :math:`K^2_{\delta}` and :math:`K^2_{\Phi}`, we obta
 
 
 We evaluate the time-dependent terms explicitly, assuming
-:math:`
-    \begin{bmatrix}
+:math:`\begin{bmatrix}
 \mathscr{E} (t)\\
 \mathscr{D} (t)\\
 \mathscr{P} (t)
@@ -173,7 +172,10 @@ We evaluate the time-dependent terms explicitly, assuming
 \mathscr{D} (t+1)\\
 \mathscr{P} (t+1)
 \end{bmatrix}`
-to first order. This is what is done in the semi-implicit method in \citet{hack1992description}. An alternative variant would be to approximate $\eta$, $\delta$, $\Phi$, $U$, and $V$ by a different method, such as forward Euler's method or a semi-implicit one. This would result in a higher computational cost and hopefully higher accuracy as well, while maintaining the stability properties of modified Euler's method. 
+to first order. This is what is done in the semi-implicit method in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_.
+An alternative variant would be to approximate :math:`\eta`, :math:`\delta`, :math:`\Phi`, :math:`U`, and :math:`V` by a different method,
+such as forward Euler's method or a semi-implicit one. This would result in a higher computational cost and hopefully higher accuracy as well, 
+while maintaining the stability properties of modified Euler's method. 
 
 Note that in the current implementation, :math:`\eta` time-stepping is equivalent to forward Euler's method, since :math:`\eta` does not depend linearly on other state variables, only nonlinearly in the :math:`\mathscr{E}(t)` term.  
 Writing :math:`(K^1+K^2)/2` in order to evaluate the modified Euler scheme, we can simplify:
