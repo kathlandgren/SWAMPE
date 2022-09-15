@@ -129,43 +129,32 @@ Let :math:`F_{U}=F_{u}\cos \phi` and :math:`F_{V}=F_{v}\cos \phi` be momentum fo
 
 Following the notation of the modified Euler's method, we write :math:`K^1=\Delta t f(t,y_t)`:
 
-\begin{equation}
-    K^1_{\eta}=\Delta t (\mathscr{E} (t)),
-\end{equation}
 
-\begin{equation}
-    K^1_{\delta}=\Delta t \left(\dfrac{n(n+1)}{a^2}\Phi^{m(t)}_n+\mathscr{D} (t)\right),
-\end{equation}
+:math:`K^1_{\eta}=\Delta t (\mathscr{E} (t)),`
 
-\begin{equation}
-    K^1_{\Phi}=\Delta t \left(-\overline{\Phi}\delta^{m(t)}_n+\mathscr{P} (t)\right).
-\end{equation}
+:math:`K^1_{\delta}=\Delta t \left(\dfrac{n(n+1)}{a^2}\Phi^{m(t)}_n+\mathscr{D} (t)\right),`
 
-Then we can write the $K^2=\Delta t (f(t+1,y_t+K^1))$ coefficients. 
+:math:`K^1_{\Phi}=\Delta t \left(-\overline{\Phi}\delta^{m(t)}_n+\mathscr{P} (t)\right).`
 
-\begin{equation}
-    K^2_{\eta}=\Delta t (\mathscr{E} (t+1)),
-\end{equation}
+Then we can write the :math:`K^2=\Delta t (f(t+1,y_t+K^1))` coefficients. 
 
-\begin{equation}
-    K^2_{\delta}=\Delta t \left(\mathscr{D} (t+1) +\dfrac{n(n+1)}{a^2}(\Phi^m_n+K^1_{\Phi})\right),
-\end{equation}
+:math:`K^2_{\eta}=\Delta t (\mathscr{E} (t+1)),`
 
-\begin{equation}
-    K^2_{\Phi}=\Delta t \left(\mathscr{P} (t+1)-\overline{\Phi}(\delta^m_n+K^1_{\delta})\right).
-\end{equation}
+:math:`K^2_{\delta}=\Delta t \left(\mathscr{D} (t+1) +\dfrac{n(n+1)}{a^2}(\Phi^m_n+K^1_{\Phi})\right),`
 
-Expanding the equations for $K^2_{\delta}$ and $K^2_{\Phi}$, we obtain:
-\begin{equation}
-    K^2_{\delta}=\Delta t \left(\mathscr{D} (t+1) +\dfrac{n(n+1)}{a^2}(\mathscr{P}(t))+\dfrac{n(n+1)}{a^2}\Phi^m_n-\overline{\Phi}\dfrac{n(n+1)}{a^2}\delta^m_n \right),
-\end{equation}
 
-\begin{equation}
-    K^2_{\Phi}=\Delta t \left(\mathscr{P} (t+1)-\overline{\Phi}(\mathscr{D}(t))-\overline{\Phi}\delta^m_n-\overline{\Phi}\dfrac{n(n+1)}{a^2} \Phi^m_n\right).
-\end{equation}
+:math:`K^2_{\Phi}=\Delta t \left(\mathscr{P} (t+1)-\overline{\Phi}(\delta^m_n+K^1_{\delta})\right).`
+
+
+Expanding the equations for :math:`K^2_{\delta}` and :math:`K^2_{\Phi}`, we obtain:
+
+:math:`K^2_{\delta}=\Delta t \left(\mathscr{D} (t+1) +\dfrac{n(n+1)}{a^2}(\mathscr{P}(t))+\dfrac{n(n+1)}{a^2}\Phi^m_n-\overline{\Phi}\dfrac{n(n+1)}{a^2}\delta^m_n \right),`
+
+:math:`K^2_{\Phi}=\Delta t \left(\mathscr{P} (t+1)-\overline{\Phi}(\mathscr{D}(t))-\overline{\Phi}\delta^m_n-\overline{\Phi}\dfrac{n(n+1)}{a^2} \Phi^m_n\right).`
+
 
 We evaluate the time-dependent terms explicitly, assuming
-\begin{equation}
+:math:`
     \begin{bmatrix}
 \mathscr{E} (t)\\
 \mathscr{D} (t)\\
@@ -175,23 +164,17 @@ We evaluate the time-dependent terms explicitly, assuming
 \mathscr{E} (t+1)\\
 \mathscr{D} (t+1)\\
 \mathscr{P} (t+1)
-\end{bmatrix}
-\end{equation}
+\end{bmatrix}`
 to first order. This is what is done in the semi-implicit method in \citet{hack1992description}. An alternative variant would be to approximate $\eta$, $\delta$, $\Phi$, $U$, and $V$ by a different method, such as forward Euler's method or a semi-implicit one. This would result in a higher computational cost and hopefully higher accuracy as well, while maintaining the stability properties of modified Euler's method. 
 
-Note that in the current implementation, $\eta$ time-stepping is equivalent to forward Euler's method, since $\eta$ does not depend linearly on other state variables, only nonlinearly in the $\mathscr{E}(t)$ term.  
-Writing $(K^1+K^2)/2$ in order to evaluate the modified Euler scheme as in \eqref{eq:mod_euler}, we can simplify:
-\begin{equation}
-    \dfrac{K^1_{\delta}+K^2_{\delta}}{2}=\Delta t\left( \dfrac{n(n+1)}{a^2} \Phi^m_n +\mathscr{D}(t) + \dfrac{1}{2}\left(   \dfrac{n(n+1)}{a^2}(\mathscr{P}(t) -\overline{\Phi} \delta^m_n        \right)\right),
-\end{equation}
+Note that in the current implementation, :math:`\eta` time-stepping is equivalent to forward Euler's method, since :math:`\eta` does not depend linearly on other state variables, only nonlinearly in the :math:`\mathscr{E}(t)` term.  
+Writing :math:`(K^1+K^2)/2` in order to evaluate the modified Euler scheme, we can simplify:
+
+:math:`\dfrac{K^1_{\delta}+K^2_{\delta}}{2}=\Delta t\left( \dfrac{n(n+1)}{a^2} \Phi^m_n +\mathscr{D}(t) + \dfrac{1}{2}\left(   \dfrac{n(n+1)}{a^2}(\mathscr{P}(t) -\overline{\Phi} \delta^m_n   \right)\right),`
 
 and 
-\begin{equation}
-      \dfrac{K^1_{\Phi}+K^2_{\Phi}}{2}=\Delta t\left( -\overline{\Phi}\delta^m_n +\mathscr{P}(t)\right)-\dfrac{\Delta t}{2}\overline{\Phi} \left( \mathscr{D}(t)+\dfrac{n(n+1)}{a^2} \right).
-\end{equation}
 
-
-
+:math:`\dfrac{K^1_{\Phi}+K^2_{\Phi}}{2}=\Delta t\left( -\overline{\Phi}\delta^m_n +\mathscr{P}(t)\right)-\dfrac{\Delta t}{2}\overline{\Phi} \left( \mathscr{D}(t)+\dfrac{n(n+1)}{a^2} \right).`
 
 
 Filters
