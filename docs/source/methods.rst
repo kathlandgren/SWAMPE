@@ -25,9 +25,9 @@ The shallow-water equations on the sphere are given by:
 
 :math:`\frac{d\Phi}{dt}=-\Phi\nabla\cdot\mathbf{V}`
 
-where :math:`\mathbf V=u\mathbf{i}+v\mathbf{j}` is the velocity vector on the surface of the sphere and
- :math:`\mathbf i` and :math:`\mathbf j` are the unit eastward and northward directions, respectively. 
-  The free surface geopotential is given by :math:`\Phi\equiv gh`, where :math:`g` is the gravitational acceleration. 
+where :math:`\mathbf {V}=u\mathbf{i}+v\mathbf{j}` is the velocity vector on the surface of the sphere and
+:math:`\mathbf{i}` and :math:`\mathbf{j}` are the unit eastward and northward directions, respectively. 
+The free surface geopotential is given by :math:`\Phi\equiv gh`, where :math:`g` is the gravitational acceleration. 
 
 The atmosphere is assumed to be a fluid that is incompressible and hydrostatically balanced.
 For a derivation of the shallow water equations from the continuity equation and the equation of motion, see, e.g.
@@ -41,9 +41,9 @@ We will also rewrite the governing equations in terms of geopotential, the verti
 
 Taking the curl (:math:`\mathbf k\cdot\nabla\times[ \ ]`) and divergence (:math:`\nabla\cdot[ \ ]`) of the momentum equation yields the following:
 
-:math:`\frac{\partial\zeta}{\partial t}=-\nabla\cdot (\zeta+f)\mathbf V\`
+:math:`\frac{\partial \zeta}{\partial t}=-\nabla\cdot (\zeta+f)\mathbf V\`
 
-:math:`\frac{\partial\delta}{\partial t}=\mathbf k\cdot\nabla\times((\zeta+f)\mathbf V)-\nabla^2\left(\Phi+\frac{\mathbf V\cdot\mathbf V}{2}\right).`
+:math:`\frac{\partial \delta}{\partial t}=\mathbf k\cdot\nabla\times((\zeta+f)\mathbf V)-\nabla^2\left(\Phi+\frac{\mathbf V\cdot\mathbf V}{2}\right).`
 
 Writing the continuity equation so that the partial time derivative is the only term on the left hand side yields
 :math:`\frac{\partial \Phi}{\partial t}=-(\mathbf V\cdot\nabla)\Phi-\Phi\nabla\cdot\mathbf V=-\nabla\cdot(\Phi\mathbf V).`
