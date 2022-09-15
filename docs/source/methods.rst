@@ -67,6 +67,143 @@ time-stepping scheme, we follow `Langton (2008)
 modified Euler's method scheme. In practice, this method proves more stable, especially for 
 strongly irradiated planets. 
 
+
+The modified Euler's method for differential equations has the form:
+
+:math:`y_{n+1}=y_n+(\Delta t/2)[f(t_n,y_n)+f(t_{n+1}, y_n+\Delta t f(t_n,y_n)].`
+
+Equivalently, we can write:
+
+:math:`K_1=\Delta t f(t_n,y_n),`
+
+:math:`K_2=\Delta t f(t_{n+1},y_n+K_1),`
+
+:math:`y_{n+1}=y_n+\frac{K_1+K_2}{2}.`
+
+We will now derive these coefficients for the state variables in our timestepping scheme.
+
+Firstly, we can split the unforced shallow-water system into the linear and nonlinear components by rewriting it as follows:
+
+
+:math:`\frac{d}{dt} \begin{bmatrix} \eta^m_n \\ \delta^m_n \\ \Phi^m_n
+\end{bmatrix} =  \begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & \frac{n(n+1)}{a^2} \\
+0 & -\overline{\Phi} & 0
+\end{bmatrix}
+\begin{bmatrix}
+\eta^m_n \\
+\delta^m_n \\
+\Phi^m_n
+\end{bmatrix}
++ \begin{bmatrix}
+\mathscr{E} (t)\\
+\mathscr{D} (t)\\
+\mathscr{P} (t)
+\end{bmatrix}`
+
+where :math:`\begin{bmatrix}
+\mathscr{E} (t)\\
+\mathscr{D} (t)\\
+\mathscr{P} (t)
+\end{bmatrix}` represents the nonlinear time-dependent components.
+We will evaluate the first component of the right hand side implicitly, while evaluating the second component explicitly.
+
+The (unforced) nonlinear components can be expressed as follows:
+
+\begin{equation}
+    \mathscr{E}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial A}{\partial \lambda}-\frac{1}{a}\frac{\partial B}{\partial \mu}, 
+\end{equation}
+\begin{equation}
+    \mathscr{D}(t)=\frac{1}{a(1-\mu^2)}\frac{\partial B}{\partial \lambda}-\frac{1}{a}\frac{\partial A}{\partial \mu}-\nabla^2E, 
+\end{equation}
+\begin{equation}
+    \mathscr{P}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial C}{\partial \lambda}-\frac{1}{a}\frac{\partial D}{\partial \mu}.
+\end{equation}
+
+
+Let $F_{\Phi}$ be the geopotential forcing (for SWAMPE, due to stellar irradiation, but more general in theory). Let $F_{U}=F_{u}\cos \phi$ and $F_{V}=F_{v}\cos \phi$ be momentum forcing. Then the (forced) nonlinear components are as follows:
+
+\begin{equation}
+    \mathscr{E}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial} {\partial \lambda}(A-F_{V})-\frac{1}{a}\frac{\partial }{\partial \mu}(B+F_{U}), 
+\end{equation}
+\begin{equation}
+    \mathscr{D}(t)=\frac{1}{a(1-\mu^2)}\frac{\partial }{\partial \lambda}(B+F_{U})-\frac{1}{a}\frac{\partial }{\partial \mu}(A-F_{V})-\nabla^2E, 
+\end{equation}
+\begin{equation}
+    \mathscr{P}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial C}{\partial \lambda}-\frac{1}{a}\frac{\partial D}{\partial \mu}+ F_{\Phi}.
+\end{equation}
+
+
+
+
+Following the notation of the modified Euler's method, we write $K^1=\Delta t f(t,y_t)$:
+
+\begin{equation}
+    K^1_{\eta}=\Delta t (\mathscr{E} (t)),
+\end{equation}
+
+\begin{equation}
+    K^1_{\delta}=\Delta t \left(\dfrac{n(n+1)}{a^2}\Phi^{m(t)}_n+\mathscr{D} (t)\right),
+\end{equation}
+
+\begin{equation}
+    K^1_{\Phi}=\Delta t \left(-\overline{\Phi}\delta^{m(t)}_n+\mathscr{P} (t)\right).
+\end{equation}
+
+Then we can write the $K^2=\Delta t (f(t+1,y_t+K^1))$ coefficients. 
+
+\begin{equation}
+    K^2_{\eta}=\Delta t (\mathscr{E} (t+1)),
+\end{equation}
+
+\begin{equation}
+    K^2_{\delta}=\Delta t \left(\mathscr{D} (t+1) +\dfrac{n(n+1)}{a^2}(\Phi^m_n+K^1_{\Phi})\right),
+\end{equation}
+
+\begin{equation}
+    K^2_{\Phi}=\Delta t \left(\mathscr{P} (t+1)-\overline{\Phi}(\delta^m_n+K^1_{\delta})\right).
+\end{equation}
+
+Expanding the equations for $K^2_{\delta}$ and $K^2_{\Phi}$, we obtain:
+\begin{equation}
+    K^2_{\delta}=\Delta t \left(\mathscr{D} (t+1) +\dfrac{n(n+1)}{a^2}(\mathscr{P}(t))+\dfrac{n(n+1)}{a^2}\Phi^m_n-\overline{\Phi}\dfrac{n(n+1)}{a^2}\delta^m_n \right),
+\end{equation}
+
+\begin{equation}
+    K^2_{\Phi}=\Delta t \left(\mathscr{P} (t+1)-\overline{\Phi}(\mathscr{D}(t))-\overline{\Phi}\delta^m_n-\overline{\Phi}\dfrac{n(n+1)}{a^2} \Phi^m_n\right).
+\end{equation}
+
+We evaluate the time-dependent terms explicitly, assuming
+\begin{equation}
+    \begin{bmatrix}
+\mathscr{E} (t)\\
+\mathscr{D} (t)\\
+\mathscr{P} (t)
+\end{bmatrix}=
+\begin{bmatrix}
+\mathscr{E} (t+1)\\
+\mathscr{D} (t+1)\\
+\mathscr{P} (t+1)
+\end{bmatrix}
+\end{equation}
+to first order. This is what is done in the semi-implicit method in \citet{hack1992description}. An alternative variant would be to approximate $\eta$, $\delta$, $\Phi$, $U$, and $V$ by a different method, such as forward Euler's method or a semi-implicit one. This would result in a higher computational cost and hopefully higher accuracy as well, while maintaining the stability properties of modified Euler's method. 
+
+Note that in the current implementation, $\eta$ time-stepping is equivalent to forward Euler's method, since $\eta$ does not depend linearly on other state variables, only nonlinearly in the $\mathscr{E}(t)$ term.  
+Writing $(K^1+K^2)/2$ in order to evaluate the modified Euler scheme as in \eqref{eq:mod_euler}, we can simplify:
+\begin{equation}
+    \dfrac{K^1_{\delta}+K^2_{\delta}}{2}=\Delta t\left( \dfrac{n(n+1)}{a^2} \Phi^m_n +\mathscr{D}(t) + \dfrac{1}{2}\left(   \dfrac{n(n+1)}{a^2}(\mathscr{P}(t) -\overline{\Phi} \delta^m_n        \right)\right),
+\end{equation}
+
+and 
+\begin{equation}
+      \dfrac{K^1_{\Phi}+K^2_{\Phi}}{2}=\Delta t\left( -\overline{\Phi}\delta^m_n +\mathscr{P}(t)\right)-\dfrac{\Delta t}{2}\overline{\Phi} \left( \mathscr{D}(t)+\dfrac{n(n+1)}{a^2} \right).
+\end{equation}
+
+
+
+
+
 Filters
 ----------------
 
