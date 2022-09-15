@@ -109,35 +109,25 @@ where :math:`\begin{bmatrix}
 \end{bmatrix}` represents the nonlinear time-dependent components.
 We will evaluate the first component of the right hand side implicitly, while evaluating the second component explicitly.
 
-The (unforced) nonlinear components can be expressed as follows:
+The *unforced* nonlinear components can be expressed as follows:
 
-\begin{equation}
-    \mathscr{E}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial A}{\partial \lambda}-\frac{1}{a}\frac{\partial B}{\partial \mu}, 
-\end{equation}
-\begin{equation}
-    \mathscr{D}(t)=\frac{1}{a(1-\mu^2)}\frac{\partial B}{\partial \lambda}-\frac{1}{a}\frac{\partial A}{\partial \mu}-\nabla^2E, 
-\end{equation}
-\begin{equation}
-    \mathscr{P}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial C}{\partial \lambda}-\frac{1}{a}\frac{\partial D}{\partial \mu}.
-\end{equation}
+:math:`\mathscr{E}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial A}{\partial \lambda}-\frac{1}{a}\frac{\partial B}{\partial \mu}`
 
+:math:`\mathscr{D}(t)=\frac{1}{a(1-\mu^2)}\frac{\partial B}{\partial \lambda}-\frac{1}{a}\frac{\partial A}{\partial \mu}-\nabla^2E`
 
-Let $F_{\Phi}$ be the geopotential forcing (for SWAMPE, due to stellar irradiation, but more general in theory). Let $F_{U}=F_{u}\cos \phi$ and $F_{V}=F_{v}\cos \phi$ be momentum forcing. Then the (forced) nonlinear components are as follows:
+:math:`\mathscr{P}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial C}{\partial \lambda}-\frac{1}{a}\frac{\partial D}{\partial \mu}.`
 
-\begin{equation}
-    \mathscr{E}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial} {\partial \lambda}(A-F_{V})-\frac{1}{a}\frac{\partial }{\partial \mu}(B+F_{U}), 
-\end{equation}
-\begin{equation}
-    \mathscr{D}(t)=\frac{1}{a(1-\mu^2)}\frac{\partial }{\partial \lambda}(B+F_{U})-\frac{1}{a}\frac{\partial }{\partial \mu}(A-F_{V})-\nabla^2E, 
-\end{equation}
-\begin{equation}
-    \mathscr{P}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial C}{\partial \lambda}-\frac{1}{a}\frac{\partial D}{\partial \mu}+ F_{\Phi}.
-\end{equation}
+Let :math:`F_{\Phi}`$` be the geopotential forcing (for `SWAMPE`, due to stellar irradiation, but more general in theory). 
+Let :math:`F_{U}=F_{u}\cos \phi` and :math:`F_{V}=F_{v}\cos \phi` be momentum forcing. Then the *forced* nonlinear components are as follows:
+
+:math:`\mathscr{E}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial} {\partial \lambda}(A-F_{V})-\frac{1}{a}\frac{\partial }{\partial \mu}(B+F_{U}),`
+
+:math:`\mathscr{D}(t)=\frac{1}{a(1-\mu^2)}\frac{\partial }{\partial \lambda}(B+F_{U})-\frac{1}{a}\frac{\partial }{\partial \mu}(A-F_{V})-\nabla^2E,`
+
+:math:`\mathscr{P}(t)=-\frac{1}{a(1-\mu^2)}\frac{\partial C}{\partial \lambda}-\frac{1}{a}\frac{\partial D}{\partial \mu}+ F_{\Phi}.`
 
 
-
-
-Following the notation of the modified Euler's method, we write $K^1=\Delta t f(t,y_t)$:
+Following the notation of the modified Euler's method, we write :math:`K^1=\Delta t f(t,y_t)`:
 
 \begin{equation}
     K^1_{\eta}=\Delta t (\mathscr{E} (t)),
