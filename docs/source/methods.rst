@@ -11,6 +11,7 @@ described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/
     These terms are then transformed back into wavenumber space to calculate 
     linear terms and derivatives, and to obtain tendencies for the time-dependent state variables."
 
+
 .. image:: https://github.com/kathlandgren/SWAMPE/blob/main/docs/_static/method_illustration.png?raw=true
     :width: 600
     :alt: Illustration of one time step using the spectral method employed by SWAMPE
@@ -194,9 +195,14 @@ To ensure numerical stability, SWAMPE applies the following filters:
 
 * a modal-splitting filter as described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_.
 * a sixth-degree hyperviscosity filter. We use the formulation based on `Gelb and Gleeson (2001) <https://www.researchgate.net/publication/230675145_Spectral_Viscosity_for_Shallow_Water_Equations_in_Spherical_Geometry>`_.
-**Note**
-`SWAMPE`'s default hyperviscosity coefficient has been tested for hot Jupiter and sub-Neptune simulations but might require further tuning
+
+
+```eval_rst
+.. Note::
+    `SWAMPE`'s default hyperviscosity coefficient has been tested for hot Jupiter and sub-Neptune simulations but might require further tuning
 for drastically different stellar forcings. The modal-splitting coefficient typically does not need to be adjusted from its default value.
+```
+
 
 Testing
 ----------------
