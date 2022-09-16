@@ -52,6 +52,7 @@ SWAMPE is available under the BSD 3-Clause License.
    plotting
    spectral_transform
    time_stepping
+   modEuler_tdiff
 
 
 
