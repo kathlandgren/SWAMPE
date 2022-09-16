@@ -453,7 +453,7 @@ def delta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,E
 
 
 def eta_timestep(etam0,etam1,deltam0,deltam1,Phim0,Phim1,I,J,M,N,Am,Bm,Cm,Dm,Em,Fm,Gm,Um,Vm,Pmn,Hmn,w,tstepcoeff1,tstepcoeff2,mJarray,narray,PhiFm,dt,a,Phibar,taurad,taudrag,forcflag,diffflag,sigma,sigmaPhi,test,t):
-     """This function timesteps the absolute vorticity eta forward.
+    """This function timesteps the absolute vorticity eta forward.
 
     :param etam0: Fourier coefficents of absolute vorticity for one time step
     :type etam0: array of float
