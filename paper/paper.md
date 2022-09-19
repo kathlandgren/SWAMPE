@@ -83,6 +83,6 @@ EL expresses gratitude to the developers of many open-source Python packages use
 
 EL acknowledges financial support from 
 
-EL thanks Nikole Lewis, Tiffany Kataria, Ryan J. MacDonald, Ishan Mishra, Trevor Foote, [more testers here] for helpful discussions.
+EL thanks Nikole Lewis, Tiffany Kataria, Ryan J. MacDonald, Ishan Mishra, Trevor Foote, and Max Ruth for helpful discussions.
 
 # References
