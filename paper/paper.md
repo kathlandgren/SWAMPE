@@ -79,10 +79,6 @@ Documentation for `SWAMPE`, with step-by-step tutorials for research application
 
 # Acknowledgements
 
-EL expresses gratitude to the developers of many open-source Python packages used by `SWAMPE`, in particular `numpy` [@Harris:2020], `SciPy` [@Virtanen:2020], and `Matplotlib` [@Hunter:2007].
-
-EL acknowledges financial support from 
-
-EL thanks Nikole Lewis, Tiffany Kataria, Ryan J. MacDonald, Ishan Mishra, Trevor Foote, and Max Ruth for helpful discussions.
+This research was carried out at the Jet Propulsion Laboratory, California Institute of Technology, under a contract with the National Aeronautics and Space Administration and funded through the internal Research and Technology Development program. The authors express gratitude to the developers of many open-source Python packages used by `SWAMPE`, in particular `numpy` [@Harris:2020], `SciPy` [@Virtanen:2020], and `Matplotlib` [@Hunter:2007]. EL thanks Nikole Lewis, Tiffany Kataria, Ryan J. MacDonald, Ishan Mishra, Trevor Foote, and Max Ruth for helpful discussions.
 
 # References
