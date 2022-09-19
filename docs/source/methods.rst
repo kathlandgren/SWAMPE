@@ -197,10 +197,10 @@ To ensure numerical stability, SWAMPE applies the following filters:
 * a sixth-degree hyperviscosity filter. We use the formulation based on `Gelb and Gleeson (2001) <https://www.researchgate.net/publication/230675145_Spectral_Viscosity_for_Shallow_Water_Equations_in_Spherical_Geometry>`_.
 
 
-```eval_rst note::
+.. note::
 `SWAMPE`'s default hyperviscosity coefficient has been tested for hot Jupiter and sub-Neptune simulations but might require further tuning
 for drastically different stellar forcings. The modal-splitting coefficient typically does not need to be adjusted from its default value.
-```
+
 
 
 
