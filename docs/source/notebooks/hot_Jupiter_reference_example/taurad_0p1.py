@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
 """
-Created on Wed Nov  2 11:44:57 2022
-
-@author: ezets
+This script runs a simulation of a hot Jupiter based on Perez-Becker and Showman (2013) with taurad=0.1 days and no drag.
 """
 
 import numpy
@@ -32,7 +29,7 @@ M=42
 
 DPhieq=Phibar
 
-taurad=int(3600*24*10) 
+taurad=int(3600*24*0.1) 
 taudrag=-1
 
 plotflag=False

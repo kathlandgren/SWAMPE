@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov  2 11:44:57 2022
 
-@author: ezets
+"""
+This script runs a simulation of a hot Jupiter based on Perez-Becker and Showman (2013) with taurad=1 day and no drag.
 """
 
 import numpy
