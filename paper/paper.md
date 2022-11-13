@@ -75,7 +75,7 @@ Documentation for `SWAMPE`, with step-by-step tutorials for research application
 # Similar tools
 
 [Bell EBM](https://github.com/taylorbell57/Bell_EBM/tree/v1.3) [@Bell:2018] is an energy-balance model.
-[MITgcm](https://github.com/MITgcm/MITgcm/) [@Marshall:1997] is an open-source, Fortran-based 3D global circulation model which includes a shallow-water mode. [GFDL FMS](https://www.gfdl.noaa.gov/idealized-spectral-models-quickstart/) is also a 3D GCM that supports a shallow-water mode.
+[MITgcm](https://github.com/MITgcm/MITgcm/) [@Marshall:1997] is an open-source, Fortran-based 3D global circulation model which includes a shallow-water mode. [GFDL FMS](https://www.gfdl.noaa.gov/idealized-spectral-models-quickstart/)[@Dunne:2020] is also a 3D GCM that supports a shallow-water mode.
 [Dedalus](https://dedalus-project.org/) [@Burns:2020] is a framework for solving partial differential equations using spectral methods, including on a sphere.
 
 # Acknowledgements
