@@ -20,7 +20,7 @@ can be found in the [SWAMPE documentation](https://swampe.readthedocs.io).
 Attribution
 -----------
 
-A JOSS paper describing this open source release is currently in prep.
+A JOSS paper describing this open source release is currently under review.
 
 License
 -------
