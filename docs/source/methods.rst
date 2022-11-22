@@ -2,7 +2,7 @@ Methods
 ===============
 
 `SWAMPE` is based on a spectral method for solving shallow-water equations on a sphere
-described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_. 
+described in `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_. 
 `SWAMPE` is designed to replace the previous Fortran implementations of this method.
 
     "The basic idea behind the spectral transform method is to locally evaluate all nonlinear
@@ -32,7 +32,7 @@ The free surface geopotential is given by :math:`\Phi\equiv gh`, where :math:`g`
 
 The atmosphere is assumed to be a fluid that is incompressible and hydrostatically balanced.
 For a derivation of the shallow water equations from the continuity equation and the equation of motion, see, e.g.
-`Kaper and Engel (2013) <"https://epubs-siam-org.proxy.library.cornell.edu/doi/book/10.1137/1.9781611972610">`_.
+`Kaper and Engel (2013) <https://epubs-siam-org.proxy.library.cornell.edu/doi/book/10.1137/1.9781611972610>`_.
 
 For the spherical harmonic transform method that we use, it is convenient to multiply the velocity 
 :math:`\mathbf V` by the cosine of latitude so that the velocity arguments are smooth at the poles. 
@@ -52,7 +52,7 @@ in addition to divergence :math:`\delta` and geopotential :math:`\Phi`.
 The zonal winds :math:`U` and meridional winds :math:`V`, on the other hand, are diagnostic variables: they will not be time-stepped directly. 
 The winds enter the time-stepping scheme via nonlinear components.
 
-We follow `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_ in our notation for the nonlinear terms, 
+We follow `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_ in our notation for the nonlinear terms, 
 namely:
 
 :math:`A=U\eta`, 
@@ -70,7 +70,7 @@ namely:
 Time stepping
 ----------------
 
-While `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_ describe a semi-implicit 
+While `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_ describe a semi-implicit 
 time-stepping scheme, we follow `Langton (2008)
 <https://www.proquest.com/docview/304661389?pq-origsite=gscholar&fromopenview=true>`_ and implement a 
 modified Euler's method scheme. In practice, this method proves more stable, especially for 
@@ -173,7 +173,7 @@ We evaluate the time-dependent terms explicitly, assuming
 \mathscr{D} (t+1)\\
 \mathscr{P} (t+1)
 \end{bmatrix}`
-to first order. This is what is done in the semi-implicit method in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_.
+to first order. This is what is done in the semi-implicit method in `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_.
 An alternative variant would be to approximate :math:`\eta`, :math:`\delta`, :math:`\Phi`, :math:`U`, and :math:`V` by a different method,
 such as forward Euler's method or a semi-implicit one. This would result in a higher computational cost and hopefully higher accuracy as well, 
 while maintaining the stability properties of modified Euler's method. 
@@ -193,7 +193,7 @@ Filters
 
 To ensure numerical stability, SWAMPE applies the following filters:
 
-* a modal-splitting filter as described in `Hack and Jakob (1992) <"https://opensky.ucar.edu/islandora/object/technotes:112">`_.
+* a modal-splitting filter as described in `Hack and Jakob (1992) <https://opensky.ucar.edu/islandora/object/technotes:112>`_.
 * a sixth-degree hyperviscosity filter. We use the formulation based on `Gelb and Gleeson (2001) <https://www.researchgate.net/publication/230675145_Spectral_Viscosity_for_Shallow_Water_Equations_in_Spherical_Geometry>`_.
 
 
