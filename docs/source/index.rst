@@ -26,6 +26,13 @@ SWAMPE is available under the BSD 3-Clause License.
    :width: 300
    :alt: Example geopotential and wind gif generated with SWAMPE
 
+Contributing
+==============
+
+To report a bug or request a new feature, please open a `new issue <"https://github.com/kathlandgren/SWAMPE/issues/new">`_
+
+If you would like to get more actively involved in SWAMPE development, you are invited to get in touch ek672-at-cornell-dot-edu,
+and I will be happy to help you understand the codebase as you work on your contribution.
 
 .. toctree::
    :maxdepth: 1
