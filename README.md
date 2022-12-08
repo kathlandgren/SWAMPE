@@ -42,3 +42,4 @@ and I will be happy to answer questions about the codebase.
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Github Actions CI](https://github.com/kathlandgren/SWAMPE/actions/workflows/main.yml/badge.svg)](https://github.com/kathlandgren/SWAMPE/actions/workflows/main.yml)
 [![Documentation Status](https://readthedocs.org/projects/swampe/badge/?version=latest)](https://swampe.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7402247.svg)](https://doi.org/10.5281/zenodo.7402247)
