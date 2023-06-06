@@ -43,3 +43,4 @@ and I will be happy to answer questions about the codebase.
 [![Github Actions CI](https://github.com/kathlandgren/SWAMPE/actions/workflows/main.yml/badge.svg)](https://github.com/kathlandgren/SWAMPE/actions/workflows/main.yml)
 [![Documentation Status](https://readthedocs.org/projects/swampe/badge/?version=latest)](https://swampe.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.04872/status.svg)](https://doi.org/10.21105/joss.04872)
+[![EMAC](https://img.shields.io/badge/EMAC-2306--003-blue)](https://emac.gsfc.nasa.gov?cid=2306-003)
